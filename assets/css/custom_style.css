@@ -1,0 +1,177 @@
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* PLACEHOLDER */
+::-webkit-input-placeholder {
+  font-size: 16px !important;
+}
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  font-size: 16px !important;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  font-size: 16px !important;
+}
+
+/*
+|----------------------------------------------------
+| Vertical allignment for page content
+|----------------------------------------------------
+| * Class name will be initiated as .vertical-center-height
+| * Do not use bootstrap 4 predefined classes  
+|----------------------------------------------------
+*/
+.vertical-center-25 {
+  min-height: 25%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 25vh;
+  /* These two lines are counted as one :-)		 	  */
+  display: flex;
+  align-items: center;
+}
+.vertical-center-50 {
+  min-height: 50%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 50vh;
+  /* These two lines are counted as one :-)		 	  */
+  display: flex;
+  align-items: center;
+}
+.vertical-center-75 {
+  min-height: 75%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 75vh;
+  /* These two lines are counted as one :-)		 	  */
+  display: flex;
+  align-items: center;
+}
+.vertical-center-80 {
+  min-height: 80%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 80vh;
+  /* These two lines are counted as one :-)		 	  */
+  display: flex;
+  align-items: center;
+}
+.vertical-center-85 {
+  min-height: 85%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 85vh;
+  /* These two lines are counted as one :-)		 	  */
+  display: flex;
+  align-items: center;
+}
+.vertical-center-90 {
+  min-height: 90%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 90vh;
+  /* These two lines are counted as one :-)		 	  */
+  display: flex;
+  align-items: center;
+}
+.vertical-center-100 {
+  min-height: 100%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 100vh;
+  /* These two lines are counted as one :-)		 	  */
+  display: flex;
+  align-items: center;
+}
+
+/*
+|----------------------------------------------------
+| Background colors
+|----------------------------------------------------
+| * Class name will be initiated as .bg-colorname
+| * Do not use bootstrap 4 predefined classes
+|----------------------------------------------------
+*/
+.bg-gainsboro {
+  background-color: #f6f6f6 !important;
+}
+
+.bg-snow {
+  background-color: #fafafa !important;
+}
+
+.bg-ghostwhite {
+  background-color: #f6f8fa !important;
+}
+
+.bg-slategray {
+  background-color: #404e67 !important;
+}
+
+.bg-whitesmoke {
+  background-color: #f5f7fa !important;
+}
+
+.text-gainsboro {
+  background-color: #f6f6f6 !important;
+}
+
+.text-snow {
+  background-color: #fafafa !important;
+}
+
+.text-ghostwhite {
+  background-color: #f6f8fa !important;
+}
+
+.text-slategray {
+  background-color: #404e67 !important;
+}
+
+.text-whitesmoke {
+  background-color: #f5f7fa !important;
+}
+
+/*
+|----------------------------------------------------
+| Required fields asterstik 
+|----------------------------------------------------
+| * Class name will be initiated as .req-position
+| * Add this class in field label
+|----------------------------------------------------
+*/
+.req-after::after {
+  content: " *";
+  color: red;
+  font-weight: bolder;
+}
+
+.req-before::before {
+  content: "* ";
+  color: red;
+  font-weight: bolder;
+}
+
+/* Utilities */
+.content-hide {
+  display: none;
+}
+
+/*
+|----------------------------------------------------
+| Overlays
+|----------------------------------------------------
+| * Class name will be initiated as .ovl-content
+| * Do not use bootstrap 4 predefined classes
+|----------------------------------------------------
+*/
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/*# sourceMappingURL=custom_style.css.map */
