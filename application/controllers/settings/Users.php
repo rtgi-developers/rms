@@ -2,16 +2,16 @@
 defined('BASEPATH') or exit("No direct script access allowed.");
 
 /**
- * Settings Menu
+ * Users settings
  * 
  * @package CI
  * @subpackage Contoller
  * @author MD TARIQUE ANWER <mtarique@outlook.com>
  */
-class Menu extends CI_Controller
+class Users extends CI_Controller
 {	
 	/**
-	 * Constructor
+	 * Constructor function
 	 */
 	public function __construct()
 	{
@@ -22,16 +22,16 @@ class Menu extends CI_Controller
 	}
 
 	/**
-	 * Loads menu page 
+	 * Users settings page 
 	 * 
-	 * @return [type] [description]
+	 * @return [boject] [Users view page]
 	 */
 	public function index()
 	{
-		$page['title'] = "Settings";
-		$page['description'] = "Manage system administrative settings.";
+		$page['title'] = "Users";
+		$page['description'] = "Use permission manager to grant access rights to other users.";
 
-		$this->load->view('settings/menu_view', $page);
+		$this->load->view('settings/users_view', $page);
 	}
 }
 

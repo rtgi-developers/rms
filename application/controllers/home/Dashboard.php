@@ -17,11 +17,8 @@ class Dashboard extends CI_controller
 	{
 		parent::__construct();
 
-		// Load libraries
-		$this->load->library(array('session'));
-
-		// Redirect to session expired page if session error 
-		if(!$this->session->tempdata('_username')) redirect('errors/session_error');
+		// Load helpers
+		$this->load->helper('auth_helper');
 	}
 
 	/**
