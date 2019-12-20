@@ -17,15 +17,11 @@ class Dashboard extends CI_controller
 	{
 		parent::__construct();
 
-		// Load library
+		// Load libraries
 		$this->load->library(array('session'));
 
-		// Check for active session
-		if(!$this->session->tempdata('_username'))
-		{
-			// Redirect to session expired page
-			redirect('errors/session_error');
-		}
+		// Redirect to session expired page if session error 
+		if(!$this->session->tempdata('_username')) redirect('errors/session_error');
 	}
 
 	/**

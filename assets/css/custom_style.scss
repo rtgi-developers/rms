@@ -1,3 +1,11 @@
+/*
+|----------------------------------------------------
+| Render smooth font
+|----------------------------------------------------
+| * Antialiased font
+| * Do not use bootstrap 4 predefined classes  
+|----------------------------------------------------
+*/
 @mixin font-smoothing($value: antialiased) {
   @if $value == antialiased {
     -webkit-font-smoothing: antialiased;
@@ -13,17 +21,6 @@
 	@include font-smoothing;
 }
 
-/* PLACEHOLDER */
-::-webkit-input-placeholder {
-   font-size: 16px !important;
-}
-
-:-moz-placeholder { /* Firefox 18- */
-      font-size: 16px !important;
-}
-::-moz-placeholder {  /* Firefox 19+ */
-      font-size: 16px !important;
-}
 /*
 |----------------------------------------------------
 | Vertical allignment for page content
@@ -32,36 +29,26 @@
 | * Do not use bootstrap 4 predefined classes  
 |----------------------------------------------------
 */
-$heights: (
-	center-25: 25,
-	center-50: 50,
-	center-75: 75,
-	center-80: 80,
-	center-85: 85,
-	center-90: 90,
-	center-100: 100
-);
-
 @mixin vertical-aligners {
-	@each $name, $height in $heights {
-		&-#{$name}{
-			min-height: $height+0%;  /* Fallback for browsers that do NOT support vh unit */
-			min-height: $height+0vh; /* These two lines are counted as one :-)		 	  */
-			display: flex;
-			align-items: center;
-		}
-	}
+    @for $i from 25 through 100 {
+        @if $i % 5 == 0 {
+            .vertical-center-#{$i} {
+                min-height: $i+0%;  /* Fallback for browsers that do NOT support vh unit */
+                min-height: $i+0vh; /* These two lines are counted as one :-)            */
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
 }
 
-.vertical {
-	@include vertical-aligners;
-}
+@include vertical-aligners;
 
 /*
 |----------------------------------------------------
-| Background colors
+| Background and text colors
 |----------------------------------------------------
-| * Class name will be initiated as .bg-colorname
+| * Class name will be initiated as .bg-colorname .text-colorname
 | * Do not use bootstrap 4 predefined classes
 |----------------------------------------------------
 */
@@ -81,41 +68,49 @@ $colors: (
     }
 }
 
-@include gen-props('bg', 'background-color');
-@include gen-props('text', 'background-color');
-//@inllude gen-props('bg-grad');
+@include gen-props('bg', 'background-color');   // Generates background colors
+@include gen-props('text', 'background-color'); // Generates text colors
 
 /*
 |----------------------------------------------------
-| Required fields asterstik 
+| Utilities
 |----------------------------------------------------
-| * Class name will be initiated as .req-position
-| * Add this class in field label
+| * Contains all utilities and helpers
+| * Like required asterstick, hide content etc.
 |----------------------------------------------------
 */
+/* REQUIRED AFTER */
 .req-after::after{
     content: " *";
     color: red;
     font-weight: bolder;
 }
+
+/* REQUIRED BEFORE */
 .req-before::before{
     content: "* ";
     color: red;
     font-weight: bolder;
 }
-/* Utilities */
+
+/* PLACEHOLDER FONT SIZE */
+::-webkit-input-placeholder {
+   font-size: 16px !important;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+      font-size: 16px !important;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+      font-size: 16px !important;
+}
+
+/* HIDE CONTENT */
 .content-hide{
     display: none;
 }
 
-/*
-|----------------------------------------------------
-| Overlays
-|----------------------------------------------------
-| * Class name will be initiated as .ovl-content
-| * Do not use bootstrap 4 predefined classes
-|----------------------------------------------------
-*/
+/* BACKGROUND OVERLAY */
 .bg-overlay{
     position: fixed;
     top: 0; 

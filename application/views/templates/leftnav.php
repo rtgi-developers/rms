@@ -1,9 +1,9 @@
 <style>
 /*
- * Sidebar
+ * leftnav
  */
 
-.sidebar {
+.leftnav {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -13,7 +13,7 @@
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
-.sidebar-sticky {
+.leftnav-sticky {
   position: -webkit-sticky;
   position: sticky;
   top: 55px; /* Height of navbar */
@@ -23,26 +23,26 @@
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
-.sidebar .nav-link {
+.leftnav .nav-link {
   font-weight: 500;
   color: #333;
 }
 
-.sidebar .nav-link .feather {
+.leftnav .nav-link .feather {
   margin-right: 4px;
   color: #999;
 }
 
-.sidebar .nav-link.active {
+.leftnav .nav-link.active {
   color: #007bff;
 }
 
-.sidebar .nav-link:hover .feather,
-.sidebar .nav-link.active .feather {
+.leftnav .nav-link:hover .feather,
+.leftnav .nav-link.active .feather {
   color: inherit;
 }
 
-.sidebar-heading {
+.leftnav-heading {
   font-size: .75rem;
   text-transform: uppercase;
 }
@@ -50,8 +50,8 @@
 </style>
 
 <!-- Side navbar -->
-<nav class="col-md-2 d-none d-md-block bg-whitesmoke sidebar">
-	<div class="sidebar-sticky">
+<nav class="col-md-2 d-none d-md-block bg-whitesmoke leftnav">
+	<div class="leftnav-sticky">
     	<ul class="nav flex-column">
     		<li class="nav-item">
         		<a class="nav-link" href="#">

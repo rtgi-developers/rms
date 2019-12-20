@@ -43,7 +43,7 @@
                 </a>
             </li>
             <li class="nav-item mt-1">
-                <a class="nav-link menu-nav-item" href="<?php echo base_url('settings'); ?>">
+                <a class="nav-link menu-nav-item" href="<?php echo base_url('settings/menu'); ?>">
                     <i class="la la-cog text-white" style="font-size: 24px;"></i>
                 </a>
             </li>

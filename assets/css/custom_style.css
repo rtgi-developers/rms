@@ -1,21 +1,14 @@
+/*
+|----------------------------------------------------
+| Render smooth font
+|----------------------------------------------------
+| * Antialiased font
+| * Do not use bootstrap 4 predefined classes  
+|----------------------------------------------------
+*/
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* PLACEHOLDER */
-::-webkit-input-placeholder {
-  font-size: 16px !important;
-}
-
-:-moz-placeholder {
-  /* Firefox 18- */
-  font-size: 16px !important;
-}
-
-::-moz-placeholder {
-  /* Firefox 19+ */
-  font-size: 16px !important;
 }
 
 /*
@@ -30,64 +23,151 @@
   min-height: 25%;
   /* Fallback for browsers that do NOT support vh unit */
   min-height: 25vh;
-  /* These two lines are counted as one :-)		 	  */
+  /* These two lines are counted as one :-)            */
   display: flex;
   align-items: center;
 }
+
+.vertical-center-30 {
+  min-height: 30%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 30vh;
+  /* These two lines are counted as one :-)            */
+  display: flex;
+  align-items: center;
+}
+
+.vertical-center-35 {
+  min-height: 35%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 35vh;
+  /* These two lines are counted as one :-)            */
+  display: flex;
+  align-items: center;
+}
+
+.vertical-center-40 {
+  min-height: 40%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 40vh;
+  /* These two lines are counted as one :-)            */
+  display: flex;
+  align-items: center;
+}
+
+.vertical-center-45 {
+  min-height: 45%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 45vh;
+  /* These two lines are counted as one :-)            */
+  display: flex;
+  align-items: center;
+}
+
 .vertical-center-50 {
   min-height: 50%;
   /* Fallback for browsers that do NOT support vh unit */
   min-height: 50vh;
-  /* These two lines are counted as one :-)		 	  */
+  /* These two lines are counted as one :-)            */
   display: flex;
   align-items: center;
 }
+
+.vertical-center-55 {
+  min-height: 55%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 55vh;
+  /* These two lines are counted as one :-)            */
+  display: flex;
+  align-items: center;
+}
+
+.vertical-center-60 {
+  min-height: 60%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 60vh;
+  /* These two lines are counted as one :-)            */
+  display: flex;
+  align-items: center;
+}
+
+.vertical-center-65 {
+  min-height: 65%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 65vh;
+  /* These two lines are counted as one :-)            */
+  display: flex;
+  align-items: center;
+}
+
+.vertical-center-70 {
+  min-height: 70%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 70vh;
+  /* These two lines are counted as one :-)            */
+  display: flex;
+  align-items: center;
+}
+
 .vertical-center-75 {
   min-height: 75%;
   /* Fallback for browsers that do NOT support vh unit */
   min-height: 75vh;
-  /* These two lines are counted as one :-)		 	  */
+  /* These two lines are counted as one :-)            */
   display: flex;
   align-items: center;
 }
+
 .vertical-center-80 {
   min-height: 80%;
   /* Fallback for browsers that do NOT support vh unit */
   min-height: 80vh;
-  /* These two lines are counted as one :-)		 	  */
+  /* These two lines are counted as one :-)            */
   display: flex;
   align-items: center;
 }
+
 .vertical-center-85 {
   min-height: 85%;
   /* Fallback for browsers that do NOT support vh unit */
   min-height: 85vh;
-  /* These two lines are counted as one :-)		 	  */
+  /* These two lines are counted as one :-)            */
   display: flex;
   align-items: center;
 }
+
 .vertical-center-90 {
   min-height: 90%;
   /* Fallback for browsers that do NOT support vh unit */
   min-height: 90vh;
-  /* These two lines are counted as one :-)		 	  */
+  /* These two lines are counted as one :-)            */
   display: flex;
   align-items: center;
 }
+
+.vertical-center-95 {
+  min-height: 95%;
+  /* Fallback for browsers that do NOT support vh unit */
+  min-height: 95vh;
+  /* These two lines are counted as one :-)            */
+  display: flex;
+  align-items: center;
+}
+
 .vertical-center-100 {
   min-height: 100%;
   /* Fallback for browsers that do NOT support vh unit */
   min-height: 100vh;
-  /* These two lines are counted as one :-)		 	  */
+  /* These two lines are counted as one :-)            */
   display: flex;
   align-items: center;
 }
 
 /*
 |----------------------------------------------------
-| Background colors
+| Background and text colors
 |----------------------------------------------------
-| * Class name will be initiated as .bg-colorname
+| * Class name will be initiated as .bg-colorname .text-colorname
 | * Do not use bootstrap 4 predefined classes
 |----------------------------------------------------
 */
@@ -133,37 +213,47 @@
 
 /*
 |----------------------------------------------------
-| Required fields asterstik 
+| Utilities
 |----------------------------------------------------
-| * Class name will be initiated as .req-position
-| * Add this class in field label
+| * Contains all utilities and helpers
+| * Like required asterstick, hide content etc.
 |----------------------------------------------------
 */
+/* REQUIRED AFTER */
 .req-after::after {
   content: " *";
   color: red;
   font-weight: bolder;
 }
 
+/* REQUIRED BEFORE */
 .req-before::before {
   content: "* ";
   color: red;
   font-weight: bolder;
 }
 
-/* Utilities */
+/* PLACEHOLDER FONT SIZE */
+::-webkit-input-placeholder {
+  font-size: 16px !important;
+}
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  font-size: 16px !important;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  font-size: 16px !important;
+}
+
+/* HIDE CONTENT */
 .content-hide {
   display: none;
 }
 
-/*
-|----------------------------------------------------
-| Overlays
-|----------------------------------------------------
-| * Class name will be initiated as .ovl-content
-| * Do not use bootstrap 4 predefined classes
-|----------------------------------------------------
-*/
+/* BACKGROUND OVERLAY */
 .bg-overlay {
   position: fixed;
   top: 0;
