@@ -25,5 +25,5 @@ $CI = & get_instance();
 $CI->load->library(array('session'));
 
 // Check for active session
-if(!$CI->session->tempdata('_username')) redirect('errors/session_error');
+if(!$CI->session->userdata('_username')) redirect('errors/session_error');
 ?>

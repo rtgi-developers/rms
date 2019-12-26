@@ -72,7 +72,8 @@ class Login extends CI_Controller
 			}
 			elseif($result['status'] == false) 
 			{
-				array_push($errors, "Email id does not exist in our database.");
+				//array_push($errors, "Email id does not exist in our database.");
+				array_push($errors, $result['data']);
 			}
 		}
 		else array_push($errors, validation_errors());
@@ -89,7 +90,7 @@ class Login extends CI_Controller
 			);
 
 			// Set session for active user
-			$this->session->set_tempdata($sess_users_data);
+			$this->session->set_userdata($sess_users_data);
 
 			// Redirect to dashboard
 			$html = '<script>window.location.href="'.base_url('home/dashboard').'"</script>';

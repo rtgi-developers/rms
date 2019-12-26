@@ -54,8 +54,8 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link menu-nav-item" href="#">
-                    <span class="pr-2 text-white"><?php echo $this->session->tempdata('_username'); ?></span>
-                    <span data-letters="<?php echo substr($this->session->tempdata('_username'), 0, 1); ?>"></span>
+                    <span class="pr-2 text-white"><?php echo $this->session->userdata('_username'); ?></span>
+                    <span data-letters="<?php echo substr($this->session->userdata('_username'), 0, 1); ?>"></span>
                 </a>
             </li>
         </ul>

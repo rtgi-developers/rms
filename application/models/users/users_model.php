@@ -62,11 +62,11 @@ class Users_model extends CI_Model
 	 * Get user details by email
 	 * 
 	 * @param  [string] $email [User email address]
-	 * @return [type]        [description]
+	 * @return [array]        [description]
 	 */
 	public function get_user_by_email($email)
 	{	
-		// Queru to get user details by email
+		// Query to get user details by email
 		$query = $this->db->get_where('users', array('email'=>$email));
 
 		// Validate query and non empty response 
@@ -79,15 +79,22 @@ class Users_model extends CI_Model
 
 			return $result;
 		}
-		else{
-			// Get db errors
-			$db_error = $this->db->error();
+		else return $this->get_db_error();
+	}
 
-			$result['status'] 	= false;
-			$result['data']  = $db_error['message'];
+	/**
+	 * Get database query error
+	 * 
+	 * @return [array] [status, data]
+	 */
+	public function get_db_error()
+	{
+		$db_error = $this->db->error();
 
-			return $result;
-		}
+		$result['status'] = false;
+		$result['data']   = $db_error['message'];
+
+		return $result;
 	}
 }
 

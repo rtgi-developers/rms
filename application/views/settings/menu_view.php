@@ -48,8 +48,3 @@ function menu_item($url, $title, $description)
 
 <!-- Footer -->
 <?php $this->load->view('templates/footer'); ?>
-
-<!-- Javascript -->
-<script type="text/javascript">
-	$(document).ready(function(){});
-</script>
