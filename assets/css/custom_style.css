@@ -211,6 +211,26 @@
   background-color: #f5f7fa !important;
 }
 
+.border-gainsboro {
+  border: 1px solid #f6f6f6 !important;
+}
+
+.border-snow {
+  border: 1px solid #fafafa !important;
+}
+
+.border-ghostwhite {
+  border: 1px solid #f6f8fa !important;
+}
+
+.border-slategray {
+  border: 1px solid #404e67 !important;
+}
+
+.border-whitesmoke {
+  border: 1px solid #f5f7fa !important;
+}
+
 /*
 |----------------------------------------------------
 | Utilities
@@ -262,6 +282,11 @@
   width: 100%;
   z-index: 10;
   background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* POINTER CURSOR */
+.cursor-pointer {
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=custom_style.css.map */

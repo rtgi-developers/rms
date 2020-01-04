@@ -24,7 +24,7 @@ class Dashboard extends CI_controller
 	/**
 	 * Loads dashboard page
 	 * 
-	 * @return [type] [description]
+	 * @return [html] [Loads dashboard view page]
 	 */
 	public function index()
 	{

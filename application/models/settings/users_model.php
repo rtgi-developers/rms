@@ -85,6 +85,30 @@ class Users_model extends CI_Model
 	}
 
 	/**
+	 * Update user role 
+	 * 
+	 * @param  int 	  $userid 	User id
+	 * @param  char   $role  	User role ADMIN or BASIC
+	 * @return array       		Result status and data
+	 */
+	public function update_role($userid, $role)
+	{
+		$query = $this->db
+						->set('role', $role)
+						->where('user_id', $userid)
+						->update('users');
+
+		if($query)
+		{
+			$result['status'] = true;
+			$result['data'] = "User role changed to ".$role;
+
+			return $result;
+		}
+		else return $this->get_db_error();
+	}
+
+	/**
 	 * Save user permission changes
 	 * 
 	 * @param  [INT] 	$userid [User id]
@@ -169,14 +193,15 @@ class Users_model extends CI_Model
 	 */
 	public function del_user($userid)
 	{
-		$this->db->where('user_id', $userid);
-		$this->db->delete('users');
+		$query = $this->db
+						->where('user_id', $userid)
+						->delete('users');
 
 		// Validate query
-		if($this->db->affected_rows() > 0)
+		if($query)
 		{
 			$result['status'] = true;
-			$result['data'] = "The user and it's record has been completely removed from the system.";
+			$result['data'] = "The user and it's record has been removed.";
 
 			return $result;
 		}

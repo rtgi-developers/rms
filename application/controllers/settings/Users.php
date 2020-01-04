@@ -69,7 +69,7 @@ class Users extends CI_Controller
 		{	
 			// Html table
 			$html = '
-				<table class="table table-sm border border-light table-borderles">
+				<table class="table table-sm border border-gainsboro-2 table-borderles">
 					<thead>
 						<tr class="bg-light">
 							<th class="align-middle text-left">Name</th>
@@ -94,7 +94,7 @@ class Users extends CI_Controller
 				else{
 					$user_status = 'PENDING';
 					$button_verify = '
-						<a href="#" class="btn btn-outline-success btn-sm btn-verify-user" user-id="'.$row['user_id'].'" user-email="'.$row['email'].'" id="btnVerifyUser'.$row['user_id'].'" user-name="'.$row['name'].'"><i class="las la-user-check"></i> Verify User</a>
+						<a href="#" class="btn btn-outline-success btn-sm btn-bloc text-nowrap btn-verify-user" user-id="'.$row['user_id'].'" user-email="'.$row['email'].'" id="btnVerifyUser'.$row['user_id'].'" user-name="'.$row['name'].'"><i class="las la-user-check"></i> Verify User</a>
 					';
 				} 
 
@@ -107,13 +107,13 @@ class Users extends CI_Controller
 						<td class="align-middle text-left">'.$user_status.'</td>
 						<td class="align-middle text-left">
 							<div class="row">
-								<div class="co-md-5 py-0 px-1">
-									<a href="'.base_url('settings/users/user_permissions/'.$row['user_id']).'" class="btn btn-sm btn-outline-info" user-name="'.$row['name'].'" user-email="'.$row['email'].'">Manage Permissions</a>
+								<div class="col-md-4 py-0 px-2">
+									<a href="'.base_url('settings/users/user_permissions?userid='.base64_encode($row['user_id']).'&username='.base64_encode($row['name']).'&useremail='.base64_encode($row['email']).'&userrole='.base64_encode($row['role'])).'" class="btn btn-sm btn-bloc btn-outline-info text-nowrap" user-name="'.$row['name'].'" user-email="'.$row['email'].'">Manage Permissions</a>
 								</div>
-								<div class="co-md-2 py-0 px-1">
-									<a href="#" class="btn btn-sm btn-outline-danger btn-delete-user" id="btnDeleteUser'.$row['user_id'].'" user-id="'.$row['user_id'].'"><i class="lar la-trash-alt"></i> Delete User</a>
+								<div class="col-md-3 py-0 px-2">
+									<a href="#" class="btn btn-sm btn-bloc btn-outline-danger text-nowrap btn-delete-user" id="btnDeleteUser'.$row['user_id'].'" user-id="'.$row['user_id'].'"><i class="lar la-trash-alt"></i> Delete User</a>
 								</div>
-								<div class="co-md-2 py-0 px-1">
+								<div class="col-md-3 py-0 px-2">
 									'.$button_verify.'
 								</div>
 							</div>
@@ -137,102 +137,166 @@ class Users extends CI_Controller
 	/**
 	 * Get user permissions by user id
 	 * 
-	 * @param  [INT] $userid [Will be passed via url]
 	 * @return [type]        [description]
 	 */
-	public function user_permissions($userid)
-	{
-		// Query to get all tasks
-		$result = $this->tasks_model->get_tasks($userid);
+	public function user_permissions()
+	{	
+		// Decode parameter
+		$userid    = base64_decode($this->input->get('userid'));
+		$username  = base64_decode($this->input->get('username'));
+		$useremail = base64_decode($this->input->get('useremail'));
+		$userrole  = base64_decode($this->input->get('userrole'));
 
-		// Validate query result
-		if($result['status'] == true)
+		if($userrole == 'ADMIN')
 		{
 			$html = '
-				<form action="" id="formSaveUserPerms">
-					<div class="form-group content-hide">
-						<input type="text" name="txtUserId" value="'.$userid.'">
-					</div>
-					<table class="table table-sm border border-light table-borderles">
-						<tbody>
+				<div class="alert alert-danger alert-dismissible rounded-0 fade show" role="alert">
+				  This user is an admin and have all rights to access all function of this sytem.
+				</div>
 			';
+		}
+		else{
+			// Query to get all tasks
+			$result = $this->tasks_model->get_tasks();
 
-			$mod_name = '';
-
-			foreach ($result['data'] as $row) 
+			// Validate query result
+			if($result['status'] == true)
 			{
-				// Print module name row only once
-				if($row['mod_name'] != $mod_name)
-				{
-					$html .= '
-						<tr class="bg-light">
-							<th class="align-middle text-left">'.$row['mod_name'].'</th>
-							<th class="align-middle text-center">
-								<div class="custom-control custom-radio custom-control-inline">
-								  	<input type="radio" id="rdoNone'.$row['mod_id'].'" name="rdo'.$row['mod_id'].'" class="custom-control-input rdo-mod" mod-id="'.$row['mod_id'].'" value="None">
-								  	<label class="custom-control-label" for="rdoNone'.$row['mod_id'].'">None</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-								  	<input type="radio" id="rdoPartial'.$row['mod_id'].'" name="rdo'.$row['mod_id'].'" class="custom-control-input rdo-mod" mod-id="'.$row['mod_id'].'" value="Partial">
-								  	<label class="custom-control-label" for="rdoPartial'.$row['mod_id'].'">Partial</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-								  	<input type="radio" id="rdoFull'.$row['mod_id'].'" name="rdo'.$row['mod_id'].'" class="custom-control-input rdo-mod" mod-id="'.$row['mod_id'].'" value="Full">
-								  	<label class="custom-control-label" for="rdoFull'.$row['mod_id'].'">Full</label>
-								</div>
-							</th>
-						</tr>
-					';
-				}
-
-				// Get permission for current iteration task
-				$perms = $this->users_model->get_user_perms($userid, $row['task_id']);
-
-				// Validate query response
-				if($perms['status'] == true && $perms['data'][0]['permission'] == 1)
-				{
-					$perm = 1;
-					$chkd = "checked";
-				}
-				else{
-					$perm = 0;
-					$chkd = "";
-				}
-
-				// Tasks and permissions row
-				$html .= '
-					<tr>
-						<td class="align-middle text-right">'.$row['task_name'].'</td>
-						<td class="align-middle text-center">
-							<div class="content-hide text-center">
-								<input type="text" name="txtTaskIds[]" value="'.$row['task_id'].'" class="form-control form-control-sm m-1 text-center">
-								<input type="text" name="txtPerms[]" id="txtTask'.$row['task_id'].'"  value="'.$perm.'" class="form-control form-control-sm m-1 text-center txt-task-mod-'.$row['mod_id'].'">
-							</div>
-							<div class="custom-control custom-checkbox">
-							  	<input type="checkbox" class="custom-control-input cbx-task cbx-task-mod-'.$row['mod_id'].'" id="cbxPerm'.$row['task_id'].'" name="cbxPerms[]" task-id="'.$row['task_id'].'" value="" '.$chkd.'>
-							  	<label class="custom-control-label" for="cbxPerm'.$row['task_id'].'"></label>
-							</div>
-						</td>
-					</tr>
+				$html = '
+					<div class="d-flex flex-rw border border-gainsboro-2 mb-3">
+					  	<div class="p-2">
+					  		Check individual task to give access permission or make this user admin to grant permission in all functions of the system.
+					  	</div>
+					  	<div class="p-2">
+					  		<a href="#" class="btn btn-sm btn-primary text-nowrap align-middle" id="btnMakeAdmin" user-id="'.$userid.'" user-name="'.$username.'">Make Admin</a>
+					  	</div>
+					</div>
+					<form id="formSaveUserPerms">
+						<div class="form-group content-hide">
+							<input type="text" name="txtUserId" value="'.$userid.'">
+						</div>
+						<div class="table-responsive-sm">
+						<table class="table table-sm border table-borderles table-hover border-gainsboro-2" id="tblUserPerms">
+							<tbody>
 				';
 
-				$mod_name = $row['mod_name'];
-			}
+				$task_cat = '';
 
-			$html .= '
-				</tbody></table>
-					<div class="form-group">
-						<button class="btn btn-sm btn-primary">Save Changes</button>
-						<a href="'.base_url('settings/users').'" class="btn btn-sm btn-secondary">Cancel</a>
-					</div>
-				</form>';
+				foreach ($result['data'] as $row) 
+				{
+					// Print module name row only once
+					if($row['task_cat'] != $task_cat)
+					{
+						$html .= '
+							<tr class="bg-light">
+								<th class="align-middle text-left px-5">'.$row['task_cat'].'</th>
+								<th class="align-middle text-center">
+									<div class="row justify-content-center" data-toggle="buttons">
+										<label class="btn btn-sm btn-block btn-outline-info cursor-pointer my-0 mx-1 col-md-2" for="rdoNone'.$row['task_cat'].'">
+											<input type="radio" id="rdoNone'.$row['task_cat'].'" name="rdo'.$row['task_cat'].'" class="custom-control-input rdo-task-cat" task-cat="'.$row['task_cat'].'" value="None"> None
+										</label>
+										<label class="btn btn-sm btn-block btn-outline-info cursor-pointer my-0 mx-1 col-md-2" for="rdoPartial'.$row['task_cat'].'">
+											<input type="radio" id="rdoPartial'.$row['task_cat'].'" name="rdo'.$row['task_cat'].'" class="custom-control-input rdo-task-cat" task-cat="'.$row['task_cat'].'" value="Partial"> Partial
+										</label>
+										<label class="btn btn-sm btn-block btn-outline-info cursor-pointer my-0 mx-1 col-md-2" for="rdoFull'.$row['task_cat'].'"> <input type="radio" id="rdoFull'.$row['task_cat'].'" name="rdo'.$row['task_cat'].'" class="custom-control-input rdo-task-cat" task-cat="'.$row['task_cat'].'" value="Full"> Full
+										</label>
+									</div>
+								</th>
+							</tr>
+						';
+					}
+
+					// Get permission for current iteration task
+					$perms = $this->users_model->get_user_perms($userid, $row['task_id']);
+
+					// Validate query response
+					if($perms['status'] == true && $perms['data'][0]['permission'] == 1)
+					{
+						$perm = 1;
+						$chkd = "checked";
+					}
+					else{
+						$perm = 0;
+						$chkd = "";
+					}
+
+					// Tasks and permissions row
+					$html .= '
+						<tr>
+							<td class="align-middle text-left pl-5">'.$row['task_name'].'</td>
+							<td class="align-middle text-center">
+								<div class="content-hide text-center">
+									<input type="text" name="txtTaskIds[]" value="'.$row['task_id'].'" class="form-control form-control-sm m-1 text-center">
+									<input type="text" name="txtPerms[]" id="txtTask'.$row['task_id'].'"  value="'.$perm.'" class="form-control form-control-sm m-1 text-center txt-task-cat-'.$row['task_cat'].'">
+								</div>
+								<div class="custom-control custom-checkbox">
+								  	<input type="checkbox" class="custom-control-input cbx-task cbx-task-cat-'.$row['task_cat'].'" id="cbxPerm'.$row['task_id'].'" name="cbxPerms[]" task-id="'.$row['task_id'].'" value="" '.$chkd.'>
+								  	<label class="custom-control-label" for="cbxPerm'.$row['task_id'].'"></label>
+								</div>
+							</td>
+						</tr>
+					';
+
+					$task_cat = $row['task_cat'];
+				}
+
+				$html .= '
+					</tbody></table></div>
+						<div class="form-group text-right">
+							<button type="submit" name="btnSaveUserPerms" id="btnSaveUserPerms" class="btn btn-sm btn-primary">Save Changes</button>
+							<a href="'.base_url('settings/users').'" class="btn btn-sm btn-secondary">Cancel</a>
+						</div>
+					</form>';
+			}
 		}
+		
 
 		$page['title']       = "User Permissions";
-		$page['description'] = "Add or edit user permissions.";
+		$page['description'] = "Add or edit user permissions for $username (<a href='mailto: $useremail' class='text-decoration-none'>$useremail</a>).";
 		$page['tasks']        = $html;
 
 		$this->load->view('settings/perms_view.php', $page);
+	}
+
+	/**
+	 * Make user an admin 
+	 * 
+	 * @return json Sucess or error response
+	 */
+	public function make_admin()
+	{
+		$user_id = $this->input->get('userid');
+
+		// Query to update user role
+		$result = $this->users_model->update_role($user_id, "ADMIN");
+
+		if($result['status'] == true)
+		{	
+			// Success message
+			$html = '
+				<div class="alert alert-success rounded-0 fade show" role="alert"> 
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					 </button>
+				  	<strong>Success! </strong>'.$result['data'].'
+				</div>
+			';
+
+			echo json_encode(array('success'=>true, 'data'=>$result['data']));
+		}
+		else {
+			// Error message
+			$html = '
+				<div class="alert alert-danger rounded-0 fade show" role="alert"> 
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					 </button>
+				  	<strong>Oops! </strong>'.$result['data'].'
+				</div>
+			';
+
+			echo json_encode(array('success'=>false, 'data'=>$result['data']));
+		}
 	}
 
 	/**

@@ -46,7 +46,7 @@
 
 /*
 |----------------------------------------------------
-| Background and text colors
+| Background and text colors and borders
 |----------------------------------------------------
 | * Class name will be initiated as .bg-colorname .text-colorname
 | * Do not use bootstrap 4 predefined classes
@@ -54,6 +54,7 @@
 */
 $colors: (
     "gainsboro": #f6f6f6,
+    "gainsboro-2": #dee2e6,
     "snow": #fafafa,
     "ghostwhite": #f6f8fa, 
     "slategray": #404e67, 
@@ -63,13 +64,19 @@ $colors: (
 @mixin gen-props($prefix, $property) {
     @each $color-name, $color in $colors {
         .#{$prefix}-#{$color-name} {
-            #{$property}: $color !important
+            @if $property == 'border' {
+                #{$property}: 1px solid $color !important    
+            }
+            @else {
+                #{$property}: $color !important    
+            } 
         }
     }
 }
 
 @include gen-props('bg', 'background-color');   // Generates background colors
 @include gen-props('text', 'background-color'); // Generates text colors
+@include gen_props('border', 'border');          // Generate border color
 
 /*
 |----------------------------------------------------
@@ -120,3 +127,9 @@ $colors: (
     z-index: 10;
     background-color: rgba(255, 255, 255, 0.7);
 }
+
+/* POINTER CURSOR */
+.cursor-pointer {
+    cursor: pointer;
+}
+

@@ -48,7 +48,7 @@
                 </a>
             </li>
             <li class="nav-item mt-1">
-                <a class="nav-link menu-nav-item" href="#">
+                <a class="nav-link menu-nav-item" href="<?php echo base_url('users/logout'); ?>">
                     <i class="las la-power-off text-white" style="font-size: 24px;"></i>
                 </a>
             </li>

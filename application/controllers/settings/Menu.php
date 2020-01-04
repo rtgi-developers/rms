@@ -17,7 +17,6 @@ class Menu extends CI_Controller
 	{
 		parent::__construct();
 
-		// Load helpers
 		$this->load->helper('auth_helper');
 	}
 
@@ -27,7 +26,7 @@ class Menu extends CI_Controller
 	 * @return [type] [description]
 	 */
 	public function index()
-	{
+	{	
 		$page['title'] = "Settings";
 		$page['description'] = "Manage system administrative settings.";
 

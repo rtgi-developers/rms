@@ -10,9 +10,6 @@ defined('BASEPATH') OR exit("No direct script access allowed");
  */
 class Errors extends CI_controller
 {	
-	/**
-	 * Construtor method
-	 */
 	public function __construct()
 	{
 		parent::__construct();
@@ -26,7 +23,7 @@ class Errors extends CI_controller
 	public function js_error()
 	{
 		// Page data array
-		$page['title'] = "Javascript Error";
+		$page['title']       = "Javascript Error";
 		$page['description'] = "";
 
 		// Load view
@@ -41,11 +38,26 @@ class Errors extends CI_controller
 	public function session_error()
 	{
 		// Page data
-		$page['title'] = "Session expired";
+		$page['title']       = "Session expired";
 		$page['description'] = "";
 
 		// Load view
 		$this->load->view('errors/custom/error_session', $page);	
+	}
+
+	/**
+	 * Loads permission error page
+	 * 
+	 * @return [type] [description]
+	 */
+	public function perms_error()
+	{
+		// Page data
+		$page['title']       = "Access Denied!";
+		$page['description'] = "";
+
+		// Load view
+		$this->load->view('errors/custom/error_perms', $page);
 	}
 }
 

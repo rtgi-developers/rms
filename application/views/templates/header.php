@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<noscript>
 		<!-- Redirect to javascript error page if javascript is disabled -->
-		<meta HTTP-EQUIV="Refresh" CONTENT="0;URL=<?php echo base_url('custom/error_js');?>">
+		<meta HTTP-EQUIV="Refresh" CONTENT="0;URL=<?php echo base_url('systems/errors/js_error');?>">
 	</noscript>
 	<title><?php echo $title." | ".$this->config->item('app_title'); ?></title>
 	<!-- Favicon -->

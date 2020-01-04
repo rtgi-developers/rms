@@ -42,7 +42,7 @@ function menu_item($url, $title, $description)
 		echo menu_item(base_url('settings/users'), "User Permisssions", "Add or edit user permisssions."); 
 
 		// MENU ITEM :: MANAGE TASKS
-		echo menu_item(base_url('settings/tasks'), "Manage Tasks", "Manage tasks and modules."); 
+		echo menu_item(base_url('settings/tasks'), "Manage Tasks", "Add or edit tasks and modules."); 
 	?>
 </div>
 
