@@ -119,5 +119,18 @@ class Auth_model extends CI_Model
 		else return $this->get_db_error();
 	}
 
+	public function log_activity($logdata)
+	{
+		$query = $this->db->insert('logs', $logdata);
+
+		if($query)
+		{
+			$result['status'] = true;
+
+			return $result;
+		}
+		else return $this->get_db_error();
+	}
+
 }
 ?>

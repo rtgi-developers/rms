@@ -43,6 +43,9 @@ function menu_item($url, $title, $description)
 
 		// MENU ITEM :: MANAGE TASKS
 		echo menu_item(base_url('settings/tasks'), "Manage Tasks", "Add or edit tasks and modules."); 
+
+		// MENU ITEM :: USER LOGS
+		echo menu_item(base_url('settings/logs'), "User Logs", "Manage users activiy."); 
 	?>
 </div>
 
