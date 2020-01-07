@@ -72,10 +72,15 @@ class Users_model extends CI_Model
 		// Validate query and non empty response 
 		if($query)
 		{
-			$result['status'] = true;
-
-			if($query->num_rows() > 0) $result['data'] = $query->result_array();
-			else $result['data'] = "User does not exist";
+			if($query->num_rows() > 0)
+			{
+				$result['status'] = true;	
+				$result['data'] = $query->result_array();
+			}
+			else {
+				$result['status'] = false;	
+				$result['data'] = "User does not exist.";
+			}
 
 			return $result;
 		}

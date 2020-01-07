@@ -62,19 +62,18 @@ class Login extends CI_Controller
 			$result = $this->users_model->get_user_by_email($email);
 
 			// Validate query and verify password
-			if($result['status'] == true && (!password_verify($pswd, $result['data'][0]['password'])))
+			if($result['status'] == true)
 			{
-				array_push($errors, "Incorrect email or password.");
+				if(password_verify($pswd, $result['data'][0]['password']))
+				{
+					if($result['data'][0]['is_verified'] == 0) 
+					{
+						array_push($errors, "Your account is pending for verification. Please check back again.");
+					}
+				}
+				else array_push($errors, "Incorrect password.");
 			}
-			elseif($result['status'] == true && (password_verify($pswd, $result['data'][0]['password'])) && $result['data'][0]['is_verified'] == 0)
-			{
-				array_push($errors, "Your account is pending for verification. Please check back again.");
-			}
-			elseif($result['status'] == false) 
-			{
-				//array_push($errors, "Email id does not exist in our database.");
-				array_push($errors, $result['data']);
-			}
+			else array_push($errors, $result['data']);
 		}
 		else array_push($errors, validation_errors());
 
