@@ -23,7 +23,7 @@
 </style>
 
 <!-- Top navbar -->
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-slategray shadow-sm py-1">
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark shadow-sm py-1" id="topNav">
     
     <div class="mx-auto rder-0">
         <a class="navbar-brand" href="#">

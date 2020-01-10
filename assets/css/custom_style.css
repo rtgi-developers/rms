@@ -9,6 +9,8 @@
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-text-stroke: 0.1px;
+  /* -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1); */
 }
 
 /*
@@ -165,7 +167,7 @@
 
 /*
 |----------------------------------------------------
-| Background and text colors
+| Background and text colors and borders
 |----------------------------------------------------
 | * Class name will be initiated as .bg-colorname .text-colorname
 | * Do not use bootstrap 4 predefined classes
@@ -173,6 +175,10 @@
 */
 .bg-gainsboro {
   background-color: #f6f6f6 !important;
+}
+
+.bg-gainsboro-2 {
+  background-color: #dee2e6 !important;
 }
 
 .bg-snow {
@@ -195,6 +201,10 @@
   background-color: #f6f6f6 !important;
 }
 
+.text-gainsboro-2 {
+  background-color: #dee2e6 !important;
+}
+
 .text-snow {
   background-color: #fafafa !important;
 }
@@ -213,6 +223,10 @@
 
 .border-gainsboro {
   border: 1px solid #f6f6f6 !important;
+}
+
+.border-gainsboro-2 {
+  border: 1px solid #dee2e6 !important;
 }
 
 .border-snow {

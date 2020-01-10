@@ -19,6 +19,8 @@
 
 *{
 	@include font-smoothing;
+    -webkit-text-stroke: 0.1px;
+    /* -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1); */
 }
 
 /*

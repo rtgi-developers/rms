@@ -81,6 +81,30 @@ function get_req_data($reqmethod)
 {
 	$CI = & get_instance(); 
 
-	return ($reqmethod == 'POST') ? json_encode($CI->input->post()) : json_encode($CI->input->get());
+	$request_data = '';
+
+	if($reqmethod == 'POST')
+	{	
+		if(!empty($CI->input->post()))
+		{
+			foreach ($CI->input->post() as $key => $value) 
+			{
+				$request_data .= $key.": ".$value."\n";
+			}	
+		}
+		else $request_data .= "No data";
+	}
+	else {
+		if(!empty($CI->input->get()))
+		{
+			foreach ($CI->input->get() as $key => $value) 
+			{
+				$request_data .= $key.": ".$value."\n";	
+			}
+		}
+		else $request_data .= "No data";
+	} 
+
+	return $request_data;
 }
 ?>
