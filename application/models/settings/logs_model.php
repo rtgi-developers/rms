@@ -37,8 +37,8 @@ class Logs_model extends CI_Model
 
  		if($query)
  		{	
- 			$result['status'] = true;
- 			$result['data'] = $query->result_array();
+			$result['status'] = true;
+			$result['data']   = $query->result_array();
 
  			return $result;
  		}
