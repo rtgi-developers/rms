@@ -38,14 +38,17 @@ function menu_item($url, $title, $description)
 <!-- Content -->
 <div class="row">
 	<?php  
+		// MENU ITEM :: NOIFICATIONS
+		echo menu_item(base_url('settings/notifs'), "Notifications", "Manage system notifications");
+
 		// MENU ITEM :: USER PERMISSIONS
 		echo menu_item(base_url('settings/users'), "User Permisssions", "Add or edit user permisssions."); 
 
-		// MENU ITEM :: MANAGE TASKS
-		echo menu_item(base_url('settings/tasks'), "Manage Tasks", "Add or edit tasks and modules."); 
-
 		// MENU ITEM :: USER LOGS
 		echo menu_item(base_url('settings/logs'), "User Logs", "Manage users activiy."); 
+
+		// MENU ITEM :: MANAGE TASKS
+		echo menu_item(base_url('settings/tasks'), "Manage Tasks", "Add or edit tasks and modules."); 
 	?>
 </div>
 

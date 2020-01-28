@@ -15,10 +15,19 @@
     line-height:2.5em;
     text-align:center;
     border-radius:50%;
+    border: white 1px solid;
     background:#16d39a;
     vertical-align:middle;
     margin-right:0em;
     color:#ffffff;
+}
+span.notif-badge {
+    position: relative;
+    top: -14px;
+    right: 15px;
+    border: white 1px solid;
+    font-size:11px;
+    margin-right: -14px;
 }
 </style>
 
@@ -38,7 +47,7 @@
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item mt-1">
-                <a class="nav-link menu-nav-item" href="#">
+                <a class="nav-link menu-nav-item" id="navLinkNotif" href="<?php echo base_url('systems/notifs'); ?>">
                     <i class="lar la-bell text-white" style="font-size: 24px;"></i>
                 </a>
             </li>
@@ -61,3 +70,23 @@
         </ul>
     </div>
 </nav>
+
+<script>
+    $(document).ready(function(){
+        /*
+        |------------------------------------------
+        | Get number of unread notificatin
+        |------------------------------------------
+         */
+        $.ajax({
+            type: "get", 
+            url: "<?php echo base_url('systems/notifs/count_unread_notif');  ?>", 
+            dataType: "json", 
+            success: function(resp)
+            {   
+                if(resp.success) $('#navLinkNotif').html(resp.data);
+                else $('#navLinkNotif').html(resp.data);
+            }
+        });
+    }); 
+</script>

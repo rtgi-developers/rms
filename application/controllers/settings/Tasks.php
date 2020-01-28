@@ -1,6 +1,4 @@
 <?php  
-defined('BASEPATH') or exit('No direct script access allowed.');
-
 /**
  * Task settings
  *
@@ -8,11 +6,11 @@ defined('BASEPATH') or exit('No direct script access allowed.');
  * @subpackage Controller
  * @author MD TARIQUE ANWER <mtarique@outlook.com>
  */
+
+defined('BASEPATH') or exit('No direct script access allowed.');
+
 class Tasks extends CI_Controller
 {	
-	/**
-	 * Constructor function
-	 */
 	public function __construct()
 	{
 		parent::__construct();
@@ -33,6 +31,7 @@ class Tasks extends CI_Controller
 	{
 		$page['title']       = "Tasks";
 		$page['description'] = "Add or edit system tasks and modules";
+		$page['content']     = $this->show_tasks_table();
 
 		$this->load->view('settings/tasks_view', $page);
 	}
@@ -42,74 +41,116 @@ class Tasks extends CI_Controller
 	 * 
 	 * @return [html] [html table]
 	 */
-	public function list_tasks()
+	public function show_tasks_table()
 	{
+		// Html table
+		$html = '
+			<style>
+				.dataTables_filter, .dataTables_length, .dataTables_info{
+					display: none;
+				}
+				.table-tool-input:focus {
+				    outline: 0 !important;
+				    border-color: initial;
+				    box-shadow: none;
+				    background-color: white !important;
+				}
+			</style>
+
+			<!-- Table actions -->
+			<div class="row mb-2">
+				<div class="col-md-10 pr-0">
+					<div class="input-group">
+					    <span class="input-group-prepend">
+					    	<div class="input-group-text order-right-0 border bg-whitesmoke">
+					    		<i class="la la-search"></i>
+					    	</div>
+					    </span>
+					    <input class="form-control form-control-sm py-2 border-left-0 border bg-whitesmoke table-tool-input" type="search" id="txtSearchTasks" placeholder="Search all tasks">
+					</div>
+				</div>
+				<div class="col-md-2 text-right export-buttons">
+					<a href="#" class="btn btn-primary btn-sm btn-block text-nowrap border-gainsboro-2" id="linkCreateNewTask" data-toggle="modal" data-target="#mdlCreateTask" data-backdrop="static" data-keyboard="false"><i class="las la-plus-circle la-lg"></i> Create Task</a>
+				</div>
+			</div>
+
+			<!-- Table -->
+			<table class="table table-sm table-hover border border-gainsboro-2" id="tblTasks">
+				<thead>
+					<tr class="bg-light">
+						<!--td class="align-middle font-weight-bold small py-2 text-center">Task Id</td-->
+						<td class="align-middle font-weight-bold small py-2 text-left">Task Category</td>
+						<td class="align-middle font-weight-bold small py-2 text-left">Task Name</td>
+						<!--td class="align-middle font-weight-bold small py-2 text-left">Class Name</td>
+						<td class="align-middle font-weight-bold small py-2 text-left">Metdod Name</td>
+						<td class="align-middle font-weight-bold small py-2 text-left">Parent Directory</td-->
+						<td class="align-middle font-weight-bold small py-2 text-left">Is permission Required?</td>
+						<td class="align-middle font-weight-bold small py-2 text-left"></td>
+					</tr>
+				</thead>
+				<tbody>
+		';
+
 		// Query to get tasks list
 		$result = $this->tasks_model->get_tasks();
 
 		// Validate query result
 		if($result['status'] == true)
 		{
-			// Html table
-			$html = '
-				<style>
-					.dataTables_filter{
-						display: none;
-					}
-				</style>
-				<table class="table table-sm border border-gainsboro-2" id="tblTasks">
-					<thead>
-						<tr class="bg-light">
-							<th class="align-middle text-center">Task Id</th>
-							<th class="align-middle text-left">Task Name</th>
-							<th class="align-middle text-left">Task Category</th>
-							<th class="align-middle text-left">Class Name</th>
-							<th class="align-middle text-left">Method Name</th>
-							<th class="align-middle text-left">Parent Directory</th>
-							<th class="align-middle text-left"></th>
-						</tr>
-					</thead>
-					<tbody>
-			';
-
 			// Loop through resutl data and print rows
 			foreach($result['data'] as $row)
 			{
+				($row['is_perm_req'] == 1) ? $isPermReq = "Yes" : $isPermReq = "No";
+
 				$html .= '
 					<tr>
-						<td class="align-middle text-center">'.$row['task_id'].'</td>
+						<!--td class="align-middle text-center">'.$row['task_id'].'</td-->
+						<td class="align-middle text-left">'.str_replace('_', ' ', $row['task_cat']).'</td>
 						<td class="align-middle text-left">'.$row['task_name'].'</td>
-						<td class="align-middle text-left">'.$row['task_cat'].'</td>
-						<td class="align-middle text-left">'.$row['task_class'].'</td>
+						<!--td class="align-middle text-left">'.$row['task_class'].'</td>
 						<td class="align-middle text-left">'.$row['task_method'].'</td>
-						<td class="align-middle text-left">'.$row['task_dir'].'</td>
+						<td class="align-middle text-left">'.$row['task_dir'].'</td-->
+						<td class="align-middle text-left">'.$isPermReq.'</td>
 						<td class="align-middle text-center">
-							<div class="row text-center">
-								<div class="col-md-5 py-0 px-1">
-									<a href="#" class="btn btn-sm btn-block btn-outline-info btn-edit-task"  data-toggle="modal" data-target="#mdlEditTask" data-backdrop="static" data-keyboard="false" 
-										task-id="'.$row['task_id'].'" 
-										task-name="'.$row['task_name'].'" 
-										task-cat="'.$row['task_cat'].'" 
-										class-name="'.$row['task_class'].'" 
-										method-name="'.$row['task_method'].'" 
-										task-dir="'.$row['task_dir'].'">Edit</a>
-								</div>
-								<div class="col-md-5 py-0 px-1">
-									<a href="#" class="btn btn-sm btn-block btn-outline-danger btn-del-task" id="btnDeleteUser" task-id="'.$row['task_id'].'">Delete</a>
-								</div>
+							<div class="d-flex flex-row">
+							<a href="#" 
+								class="px-1 text-decoration-none lnk-edit-task text-primary" 
+								data-toggle="modal" 
+								data-target="#mdlEditTask" 
+								data-backdrop="static" 
+								data-keyboard="false" 
+								title="Edit task"
+								task-id="'.$row['task_id'].'" 
+								task-name="'.$row['task_name'].'" 
+								task-cat="'.$row['task_cat'].'" 
+								class-name="'.$row['task_class'].'" 
+								method-name="'.$row['task_method'].'" 
+								task-dir="'.$row['task_dir'].'" 
+								is-perm-req="'.$row['is_perm_req'].'">
+								<i class="las la-pencil-alt la-lg"></i>
+							</a>
+							<a href="#" 
+								class="px-1 text-decoration-none lnk-del-task text-danger" 
+								id="btnDeleteUser" 
+								task-id="'.$row['task_id'].'" 
+								title="Delete task">
+								<i class="las la-trash la-lg"></i>
+							</a>
 							</div>
 						</td>
 					</tr>
 				';
 			}
-
-			// Close table
-			$html .= '</tbody></table>';
-
-			// Send json encoded success response 
-			echo json_encode(array('success'=>true, 'data'=>$html));
 		}
-		else echo json_encode(array('success'=>false, 'data'=>$result['data']));
+		else {
+			$html .= '
+			<tr><td class="align-middle text-center" colspan="4">'.$result['data'].'</td></tr>';
+		}
+
+		// Close table
+		$html .= '</tbody></table>';
+
+		return $html;
 	}
 
 	/**
@@ -117,7 +158,7 @@ class Tasks extends CI_Controller
 	 * 
 	 * @return [type] [description]
 	 */
-	public function task_cat_list()
+	public function load_task_cat_options()
 	{	
 		$result = $this->tasks_model->get_task_cat();
 
@@ -127,9 +168,9 @@ class Tasks extends CI_Controller
 
 			foreach($result['data'] as $row) $html .= '<option value="'.$row['task_cat'].'"></option>';
 
-			echo json_encode(array('success'=>true, 'data'=>$html));
+			echo json_encode(array('success'=>true, 'type'=>'success', 'title'=>'Task Category','data'=>$html));
 		}
-		else echo json_encode(array('success'=>false, 'data'=>$result['data']));
+		else echo json_encode(array('success'=>false, 'type'=>'error', 'title'=>'Oops!','data'=>$result['data']));
 	}
 
 	/**
@@ -140,24 +181,26 @@ class Tasks extends CI_Controller
 	public function create_task()
 	{
 		// Set validation rules for user inputs
-		$this->form_validation->set_rules('txtTaskCat', 'Task Category', 'required');
-		$this->form_validation->set_rules('txtTaskName', 'Task Name', 'required');
-		$this->form_validation->set_rules('txtClassName', 'Task Desc', 'required');
-		$this->form_validation->set_rules('txtMethodName', 'Task Desc', 'required');
+		$this->form_validation->set_rules('txtTaskCat', 'Task category', 'required');
+		$this->form_validation->set_rules('txtTaskName', 'Task name', 'required');
+		$this->form_validation->set_rules('txtClassName', 'Class or controller name', 'required');
+		$this->form_validation->set_rules('txtMethodName', 'Method or function name', 'required');
+		$this->form_validation->set_rules('txtIsPermReq', 'Is permission requierd?', 'required');
 
 		// If valid inputs
 		if($this->form_validation->run() == true)
 		{
 			$form_data = array(
-				'task_cat'	  => $this->input->post('txtTaskCat'), 
+				'task_cat'	  => str_replace(' ', '_', $this->input->post('txtTaskCat')), 
 				'task_name'   => $this->input->post('txtTaskName'), 
 				'task_class'  => strtolower($this->input->post('txtClassName')), 
 				'task_method' => strtolower($this->input->post('txtMethodName')), 
-				'task_dir'    => strtolower($this->input->post('txtDir'))  
+				'task_dir'    => strtolower($this->input->post('txtDir')) , 
+				'is_perm_req' => $this->input->post('txtIsPermReq') 
 			);
 
 			// Query
-			$result = $this->tasks_model->save_task($form_data);
+			$result = $this->tasks_model->add_task($form_data);
 
 			// Validate query
 			if($result['status'] == true)
@@ -173,7 +216,7 @@ class Tasks extends CI_Controller
 				';
 
 				// Send json encoded message in ajax response
-				echo json_encode(array('success'=>true, 'data'=>$html));
+				echo json_encode(array('success'=>true, 'type'=>'success', 'title'=>'Task created!', 'data'=>$html));
 			}
 			else{
 				// Response error
@@ -187,7 +230,7 @@ class Tasks extends CI_Controller
 				';
 
 				// Send json encoded message in ajax response
-				echo json_encode(array('success'=>false, 'data'=>$html));
+				echo json_encode(array('success'=>false,  'type'=>'error', 'title'=>'Oops!', 'data'=>$html));
 			}
 		}
 		else{
@@ -202,7 +245,7 @@ class Tasks extends CI_Controller
 			';
 
 			// Send json encoded message in ajax response
-			echo json_encode(array('success'=>false, 'data'=>$html));
+			echo json_encode(array('success'=>false,  'type'=>'error', 'title'=>'Missing or invalid inputs!', 'data'=>$html));
 		}
 	}
 
@@ -215,21 +258,24 @@ class Tasks extends CI_Controller
 	{
 		// Set validation rules for user inputs
 		$this->form_validation->set_rules('txtEditTaskId', 'Task Id', 'required');
-		$this->form_validation->set_rules('txtEditTaskCat', 'Task Category', 'required');
-		$this->form_validation->set_rules('txtEditTaskName', 'Task Name', 'required');
-		$this->form_validation->set_rules('txtEditClassName', 'Task Desc', 'required');
-		$this->form_validation->set_rules('txtEditMethodName', 'Task Desc', 'required');
+		$this->form_validation->set_rules('txtEditTaskCat', 'Task category', 'required');
+		$this->form_validation->set_rules('txtEditTaskName', 'Task name', 'required');
+		$this->form_validation->set_rules('txtEditClassName', 'Class or controller name', 'required');
+		$this->form_validation->set_rules('txtEditMethodName', 'Method or function name', 'required');
+		$this->form_validation->set_rules('txtEditIsPermReq', 'Is permission required?', 'required');
 
 		// If valid inputs
 		if($this->form_validation->run() == true)
 		{	
 			$task_id = $this->input->post('txtEditTaskId');
+
 			$task_data = array(
-				'task_cat'	  => $this->input->post('txtEditTaskCat'), 
+				'task_cat'	  => str_replace(' ', '_', $this->input->post('txtEditTaskCat')), 
 				'task_name'   => $this->input->post('txtEditTaskName'), 
 				'task_class'  => strtolower($this->input->post('txtEditClassName')), 
 				'task_method' => strtolower($this->input->post('txtEditMethodName')), 
-				'task_dir'    => strtolower($this->input->post('txtEditDir'))  
+				'task_dir'    => strtolower($this->input->post('txtEditDir')), 
+				'is_perm_req' => $this->input->post('txtEditIsPermReq')
 			);
 
 			// Query
@@ -249,7 +295,7 @@ class Tasks extends CI_Controller
 				';
 
 				// Send json encoded message in ajax response
-				echo json_encode(array('success'=>true, 'data'=>$html));
+				echo json_encode(array('success'=>true,  'type'=>'success', 'title'=>'Task uodated!', 'data'=>$html));
 			}
 			else{
 				// Response error
@@ -263,7 +309,7 @@ class Tasks extends CI_Controller
 				';
 
 				// Send json encoded message in ajax response
-				echo json_encode(array('success'=>false, 'data'=>$html));
+				echo json_encode(array('success'=>false,  'type'=>'error', 'title'=>'Oops!', 'data'=>$html));
 			}
 		}
 		else{
@@ -278,7 +324,7 @@ class Tasks extends CI_Controller
 			';
 
 			// Send json encoded message in ajax response
-			echo json_encode(array('success'=>false, 'data'=>$html));
+			echo json_encode(array('success'=>false,  'type'=>'error', 'title'=>'Missing or invalid inputs!', 'data'=>$html));
 		}
 	}
 
@@ -293,8 +339,11 @@ class Tasks extends CI_Controller
 
 		$result = $this->tasks_model->del_task($task_id);
 
-		if($result['status'] == true) echo json_encode(array('success'=>true, 'data'=>$result['data']));
-		else echo json_encode(array('success'=>false, 'data'=>$result['data']));
+		if($result['status'] == true) 
+		{
+			echo json_encode(array('success'=>true, 'type'=>'success', 'title'=>"Deleted!",  'data'=>$result['data']));
+		}
+		else echo json_encode(array('success'=>false, 'type'=>'error', 'title'=>'Oops!', 'data'=>$result['data']));
 	}
 }
 ?>

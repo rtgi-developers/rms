@@ -22,12 +22,13 @@ class Logs extends CI_Controller
 	public function index()
 	{
 		$page['title']       = "Logs"; 
-		$page['description'] = "Track users activity.";
+		$page['description'] = "Shows only last 7 days users activity.";
+		$page['content']	 = $this->show_logs_table();
 
 		$this->load->view('settings/logs_view.php', $page);
 	}
 
-	public function show_logs()
+	public function show_logs_table()
 	{	
 		$result = $this->logs_model->get_user_logs();
 
@@ -51,7 +52,7 @@ class Logs extends CI_Controller
 					}
 				</style>
 				<div class="row mb-2">
-					<div class="col-md-7 pr-0">
+					<div class="col-md-10">
 						<div class="input-group">
 						    <span class="input-group-prepend">
 						    	<div class="input-group-text order-right-0 border bg-whitesmoke"><i class="la la-search"></i></div>
@@ -59,11 +60,10 @@ class Logs extends CI_Controller
 						    <input class="form-control form-control-sm py-2 border-left-0 border bg-whitesmoke" type="search" id="txtSearchUserLogs" placeholder="Search all logs">
 						</div>
 					</div>
-					<div class="col-md-5 export-buttons"></div>
+					<div class="col-md-2 export-buttons"></div>
 				</div>
 
-				<div class="row">
-				<div class="col-md-12">
+				<!-- Logs table -->
 				<table class="table table-sm table-hover border border-gainsboro-2" id="tblUserLogs">
 					<thead>
 						<tr class="bg-whitesmoke">
@@ -108,9 +108,9 @@ class Logs extends CI_Controller
 				';
 			}
 
-			$html .= '</tbody></table></div></div>';
+			$html .= '</tbody></table>';
 
-			echo json_encode(array('success'=>true, 'data'=>$html));
+			return $html;
 		}
 		else {
 			// Error message
@@ -123,7 +123,7 @@ class Logs extends CI_Controller
 				</div>
 			';
 
-			echo json_encode(array('success'=>false, 'data'=>$html));
+			return $html;
 		}
 	}
 }

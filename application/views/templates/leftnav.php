@@ -69,8 +69,14 @@
                 <ul class="collapse flex-column list-unstyled pl-4 pb3" id="submenuItems">
                     <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Products</a></li>
                     <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Materials</a></li>
+                    <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Category</a></li>
                 </ul>
         	</li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="las la-people-carry la-lg"></i> Manufacture
+                </a>
+            </li>
         	<li class="nav-item">
         		<a class="nav-link" href="#">
         			<i class="las la-cubes la-lg"></i> Stocks

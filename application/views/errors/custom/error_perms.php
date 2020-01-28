@@ -8,6 +8,9 @@
 				You do not have enough privileges to access this page or function.<br>
 				Kindly contact system administrator.
 			</h4>
+			<?php  
+				if(isset($errormsg)) echo '<p class="text-danger">'.base64_decode($errormsg).'</p>';
+			?>
 			<a href="javascript:history.back()" class="text-decoration-none">&larr; Go Back</a> 
 		</div>
 	</div>

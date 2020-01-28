@@ -45,58 +45,42 @@ class Auth_model extends CI_Model
 	 * @param  string 	$taskmethod description
 	 * @return array             	description
 	 */
-	public function get_user_perms($userid, $taskdir, $taskclass, $taskmethod)
-	{	
-		// Query to get all task
-		$tasks = $this->get_task_id($taskdir, $taskclass, $taskmethod);
+	public function get_user_perms($userid, $taskid)
+	{
+		// Query to get permission details
+		$query = $this->db->get_where('permissions', array('user_id'=>$userid, 'task_id'=>$taskid));
 
-		if($tasks['status'] == true)
-		{		
-			// Get task id
-			$taskid = $tasks['data'][0]['task_id'];
-
-			// Query to 
-			$query = $this->db->get_where('permissions', array('user_id'=>$userid, 'task_id'=>$taskid));
-
-			// Validate
-			if($query)
-			{	
-				if($query->num_rows() > 0)
-				{
-					$result['status'] = true;
-					$result['data'] = $query->result_array();
-
-					return $result;	
-				}
-				else {
-					$result['status'] = false;
-					$result['data'] = "Permissions record not found";
-
-					return $result;	
-				}
+		// Validate and return query result
+		if($query)
+		{	
+			if($query->num_rows() > 0)
+			{
+				$result['status'] = true;
+				$result['data'] = $query->result_array();
 			}
-			else return $this->db->get_db_error();
-		}
-		else {
-			$result['status'] = $tasks['status'];
-			$result['data'] = $tasks['data'];
+			else {
+				$result['status'] = false;
+				$result['data'] = "Permissions record not found.";
+			}
 
-			return $result; 
+			return $result;
 		}
+		else return $this->get_db_error();
 	}
 
 	/**
 	 * Get task id
 	 * 
 	 * @param  string 	$taskdir     	Task directory name
-	 * @param  string 	$taskclass   	Task class name
+	 * @param  string 	$taskclass   	Task class or controller name
 	 * @param  string 	$taskmethod  	Task method name
 	 * @return array              		Query result status and data
 	 */
-	public function get_task_id($taskdir, $taskclass, $taskmethod)
+	public function get_task_details($taskdir, $taskclass, $taskmethod)
 	{
 		$task_data = array('task_dir'=>$taskdir, 'task_class'=>$taskclass, 'task_method'=>$taskmethod);
 
+		// Query 
 		$query = $this->db->get_where('tasks', $task_data);
 
 		// Validate query and non empty response 
@@ -106,15 +90,13 @@ class Auth_model extends CI_Model
 			{	
 				$result['status'] = true;
 				$result['data'] = $query->result_array();
-
-				return $result;
 			}
 			else{
 				$result['status'] = false;
-				$result['data'] = "No such task found.";
-
-				return $result;
+				$result['data'] = "The requested task does not exist in our database.";
 			}
+
+			return $result;
 		}
 		else return $this->get_db_error();
 	}

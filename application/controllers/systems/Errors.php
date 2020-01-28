@@ -50,11 +50,13 @@ class Errors extends CI_controller
 	 * 
 	 * @return [type] [description]
 	 */
-	public function perms_error()
+	public function perms_error($errormsg = null)
 	{
 		// Page data
 		$page['title']       = "Access Denied!";
 		$page['description'] = "";
+
+		if(isset($errormsg)) $page['errormsg'] = $errormsg;
 
 		// Load view
 		$this->load->view('errors/custom/error_perms', $page);

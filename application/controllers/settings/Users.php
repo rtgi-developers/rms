@@ -50,16 +50,17 @@ class Users extends CI_Controller
 	{
 		$page['title']       = "Users";
 		$page['description'] = "Use permission manager to grant access rights to other users.";
+		$page['content']     = $this->show_users_table();
 
 		$this->load->view('settings/users_view', $page);
 	}
 
 	/**
-	 * Get users list in html table
+	 * Get users table in html table
 	 * 
 	 * @return [json] [Html table contains users details]
 	 */
-	public function list_users()
+	public function show_users_table()
 	{
 		// Query to get users list
 		$result = $this->users_model->get_users();
@@ -69,14 +70,50 @@ class Users extends CI_Controller
 		{	
 			// Html table
 			$html = '
-				<table class="table table-sm border border-gainsboro-2 table-borderles">
+				<style>
+					.col-wd-200{
+						word-wrap: break-word;
+						min-width: 200px;
+						max-width: 200px;
+					}
+					.dataTables_filter, .dataTables_length, .dataTables_info{
+						display: none;
+					}
+					.table-tool-input:focus {
+					    outline: 0 !important;
+					    border-color: initial;
+					    box-shadow: none;
+					    background-color: white !important;
+					}
+				</style>
+
+				<!-- Table actions -->
+				<div class="row mb-2">
+					<div class="col-md-10 pr-0">
+						<div class="input-group">
+						    <span class="input-group-prepend">
+						    	<div class="input-group-text order-right-0 border bg-whitesmoke"><i class="la la-search"></i></div>
+						    </span>
+						    <input class="form-control form-control-sm py-2 border-left-0 border bg-whitesmoke table-tool-input" type="search" id="txtSearchUsers" placeholder="Search all users">
+						</div>
+					</div>
+					<div class="col-md-2 text-right export-buttons">
+						<button id="btnInviteUser" class="btn btn-primary btn-sm btn-block text-nowrap border-gainsboro-2" data-backdrop="static" data-keyboard="false">
+							<i class="las la-user-plus la-lg"></i> Invite New User
+						</button>
+					</div>
+				</div>
+				<table class="table table-sm border border-gainsboro-2 table-borderles" id="tblUsers">
 					<thead>
 						<tr class="bg-light">
 							<th class="align-middle text-left">Name</th>
 							<th class="align-middle text-left">Email</th>
+							<th class="align-middle text-left">Title</th>
 							<th class="align-middle text-left">Role</th>
 							<th class="align-middle text-left">Status</th>
-							<th class="align-middle text-left"></th>
+							<th class="align-middle text-center"></th>
+							<th class="align-middle text-center"></th>
+							<th class="align-middle text-center"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -94,7 +131,7 @@ class Users extends CI_Controller
 				else{
 					$user_status = 'PENDING';
 					$button_verify = '
-						<a href="#" class="btn btn-outline-success btn-sm btn-bloc text-nowrap btn-verify-user" user-id="'.$row['user_id'].'" user-email="'.$row['email'].'" id="btnVerifyUser'.$row['user_id'].'" user-name="'.$row['name'].'"><i class="las la-user-check"></i> Verify User</a>
+						<a href="#" class="btn btn-outline-success btn-sm btn-block text-nowrap btn-verify-user" user-id="'.$row['user_id'].'" user-email="'.$row['email'].'" id="btnVerifyUser'.$row['user_id'].'" user-name="'.$row['name'].'"><i class="las la-user-check"></i> Verify</a>
 					';
 				} 
 
@@ -102,21 +139,22 @@ class Users extends CI_Controller
 				$html .= '
 					<tr>
 						<td class="align-middle text-left">'.$row['name'].'</td>
-						<td class="align-middle text-left">'.$row['email'].'</td>
+						<td class="align-middle text-left">
+							<a href="mailto:'.$row['email'].'" class="text-decoration-none">
+								'.$row['email'].'
+							</a>
+						</td>
+						<td class="align-middle text-left">'.$row['title'].'</td>
 						<td class="align-middle text-left">'.$row['role'].'</td>
 						<td class="align-middle text-left">'.$user_status.'</td>
-						<td class="align-middle text-left">
-							<div class="row">
-								<div class="col-md-4 py-0 px-2">
-									<a href="'.base_url('settings/users/user_permissions?userid='.base64_encode($row['user_id']).'&username='.base64_encode($row['name']).'&useremail='.base64_encode($row['email']).'&userrole='.base64_encode($row['role'])).'" class="btn btn-sm btn-bloc btn-outline-info text-nowrap" user-name="'.$row['name'].'" user-email="'.$row['email'].'">Manage Permissions</a>
-								</div>
-								<div class="col-md-3 py-0 px-2">
-									<a href="#" class="btn btn-sm btn-bloc btn-outline-danger text-nowrap btn-delete-user" id="btnDeleteUser'.$row['user_id'].'" user-id="'.$row['user_id'].'"><i class="lar la-trash-alt"></i> Delete User</a>
-								</div>
-								<div class="col-md-3 py-0 px-2">
-									'.$button_verify.'
-								</div>
-							</div>
+						<td class="align-middle text-center">
+							<a href="'.base_url('settings/users/user_permissions?userid='.base64_encode($row['user_id']).'&username='.base64_encode($row['name']).'&useremail='.base64_encode($row['email']).'&userrole='.base64_encode($row['role'])).'" class="btn btn-sm btn-block btn-outline-info text-nowrap" user-name="'.$row['name'].'" user-email="'.$row['email'].'">Manage Permissions</a>
+						</td>
+						<td class="align-middle text-center">
+							<a href="#" class="btn btn-sm btn-block btn-outline-danger text-nowrap btn-delete-user" id="btnDeleteUser'.$row['user_id'].'" user-id="'.$row['user_id'].'"><i class="lar la-trash-alt"></i> Delete</a>
+						</td>
+						<td class="align-middle text-center">
+							'.$button_verify.'
 						</td>
 					</tr>
 				';
@@ -125,13 +163,9 @@ class Users extends CI_Controller
 			// Close table
 			$html .= '</tbody></table>';
 
-			// Send json encoded success response 
-			echo json_encode(array('success'=>true, 'data'=>$html));
+			return $html;
 		}
-		else{
-			// Send json encode error response
-			echo json_encode(array('success'=>false, 'data'=>$result['data']));
-		}
+		else return $result['data'];
 	}
 
 	/**
@@ -147,17 +181,36 @@ class Users extends CI_Controller
 		$useremail = base64_decode($this->input->get('useremail'));
 		$userrole  = base64_decode($this->input->get('userrole'));
 
+		// Data to be sent on page
+		$page['title']       = "User Permissions";
+		$page['description'] = "Add or edit user permissions for $username (<a href='mailto: $useremail' class='text-decoration-none'>$useremail</a>).";
+		$page['tasks']       = $this->show_tasks_table($userid, $username, $userrole);
+		
+		// Load permissions view page
+		$this->load->view('settings/perms_view.php', $page);
+	}
+
+	/**
+	 * Show tasks table for user permissions
+	 * 
+	 * @param  [type] $userrole [description]
+	 * @return [type]           [description]
+	 */
+	public function show_tasks_table($userid, $username, $userrole)
+	{
 		if($userrole == 'ADMIN')
 		{
 			$html = '
-				<div class="alert alert-danger alert-dismissible rounded-0 fade show" role="alert">
-				  This user is an admin and have all rights to access all function of this sytem.
+				<div class="alert alert-info alert-dismissible rounded-0 fade show" role="alert">
+					<i class="las la-info-circle la-lg text-primary"></i>
+				  	The user is an admin and have access all to tasks and functions of this sytem.
+				  	<a href="javascript:history.back()" class="btn btn-primary btn-sm">&larr; Go Back</a>
 				</div>
 			';
 		}
 		else{
-			// Query to get all tasks
-			$result = $this->tasks_model->get_tasks();
+			// Query to get only permission required tasks
+			$result = $this->tasks_model->get_perm_req_tasks();
 
 			// Validate query result
 			if($result['status'] == true)
@@ -182,14 +235,14 @@ class Users extends CI_Controller
 
 				$task_cat = '';
 
-				foreach ($result['data'] as $row) 
+				foreach($result['data'] as $row) 
 				{
 					// Print module name row only once
 					if($row['task_cat'] != $task_cat)
 					{
 						$html .= '
 							<tr class="bg-light">
-								<th class="align-middle text-left px-5">'.$row['task_cat'].'</th>
+								<th class="align-middle text-left px-5">'.str_replace('_', ' ', $row['task_cat']).'</th>
 								<th class="align-middle text-center">
 									<div class="row justify-content-center" data-toggle="buttons">
 										<label class="btn btn-sm btn-block btn-outline-info cursor-pointer my-0 mx-1 col-md-2" for="rdoNone'.$row['task_cat'].'">
@@ -248,14 +301,10 @@ class Users extends CI_Controller
 						</div>
 					</form>';
 			}
+			else $html = '<div class="alert alert-danger rounded-0" role="alert">'.$result['data'].'</div>';
 		}
-		
 
-		$page['title']       = "User Permissions";
-		$page['description'] = "Add or edit user permissions for $username (<a href='mailto: $useremail' class='text-decoration-none'>$useremail</a>).";
-		$page['tasks']        = $html;
-
-		$this->load->view('settings/perms_view.php', $page);
+		return $html; 
 	}
 
 	/**
@@ -282,7 +331,7 @@ class Users extends CI_Controller
 				</div>
 			';
 
-			echo json_encode(array('success'=>true, 'data'=>$result['data']));
+			echo json_encode(array('success'=>true, 'title'=>"Done!", 'data'=>$result['data'], 'type'=>'success'));
 		}
 		else {
 			// Error message
@@ -295,7 +344,7 @@ class Users extends CI_Controller
 				</div>
 			';
 
-			echo json_encode(array('success'=>false, 'data'=>$result['data']));
+			echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$result['data'], 'type'=>'error'));
 		}
 	}
 
@@ -341,7 +390,7 @@ class Users extends CI_Controller
 			';
 
 			// Send json encoded message in ajax response
-			echo json_encode(array('success'=>true, 'data'=>$html));
+			echo json_encode(array('success'=>true, 'title'=>"Done!", 'data'=>$html, 'type'=>'success'));
 		}
 		else{
 			// Error message
@@ -358,7 +407,7 @@ class Users extends CI_Controller
 			$html .= '</div>';
 
 			// Send json encoded message in ajax response
-			echo json_encode(array('success'=>false, 'data'=>$html));
+			echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$html, 'type'=>'error'));
 		}
 	}
 
@@ -373,8 +422,11 @@ class Users extends CI_Controller
 		$result = $this->users_model->del_user($this->input->get('userid'));
 
 		// Validate query response and send json encoded response to ajax
-		if($result['status'] == true) echo json_encode(array('success'=>true, 'data'=>$result['data']));
-		else echo json_encode(array('success'=>false, 'data'=>$result['data']));
+		if($result['status'] == true) 
+		{
+			echo json_encode(array('success'=>true, 'title'=>"Deleted!", 'data'=>$result['data'], 'type'=>'success'));
+		}
+		else echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$result['data'], 'type'=>'error'));
 		
 	}
 
@@ -395,15 +447,15 @@ class Users extends CI_Controller
 			$this->email->set_mailtype('html');
 
 			// Email header
-			$this->email->from($this->config->item('email_1'), $this->config->item('app_name'));
+			$this->email->from($this->config->item('email_1'), $this->config->item('app_title'));
 			$this->email->to($this->input->get('useremail'));
-			$this->email->subject($this->config->item('app_title').' account verified');
+			$this->email->subject($this->config->item('app_name').' account verified');
 
 			// Email content
 			$message = '
 				<p>Hi '.$this->input->get('username').',</p>
 				<p>Your '.$this->config->item('app_title').' account has been verified.</P>
-				<p>Please click on below link to login to '.$this->config->item('app_name').'.</p>
+				<p>Please click on below link to login to '.$this->config->item('app_title').'.</p>
 				<p><a href="'.base_url('users/login').'">'.base_url('users/login').'</a></p>
 				<br>
 				<address>Best Regards,
@@ -417,10 +469,53 @@ class Users extends CI_Controller
 			$this->email->message($message);
 
 			// Email sent confirmation
-			if($this->email->send()) echo json_encode(array('success'=>true, 'data'=>$result['data']));
-			else echo json_encode(array('success'=>false, 'data'=>$this->email->print_debugger()));
+			if($this->email->send()) 
+			{
+				echo json_encode(array('success'=>true, 'title'=>"Verified!", 'data'=>$result['data'], 'type'=>'success'));
+			}
+			else echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$this->email->print_debugger(), 'type'=>'error'));
 		}
-		else echo json_encode(array('success'=>false, 'data'=>$result['data']));
+		else echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$result['data'], 'type'=>'error'));
+	}
+
+	/**
+	 * Invite new user
+	 * 
+	 * @return [type] [description]
+	 */
+	public function invite_user()
+	{
+		$user_email = $this->input->get('email');
+
+		// Send invitation email
+		$this->email->set_mailtype('html');
+
+		// Email header
+		$this->email->from($this->config->item('email_1'), $this->config->item('app_title'));
+		$this->email->to($user_email);
+		$this->email->subject("You’ve been invited to become an authorized user of ".$this->config->item('app_title'));
+
+		// Email content
+		$message = '
+			<p>Good day '.strstr($user_email, '@', true).',</p>
+			<p>We would like to invite you to become an authorized (that is, trusted) '.$this->config->item('app_name').' user. The process is simple, just follow the steps below.</P>
+			<ol>
+				<li>Create your account at <a href="'.base_url('users/register').'">'.base_url('users/register').'</a>.</li>
+				<li>We approve your account after reviewing it.</li>
+				<li>Once approved you will get a confirmation email.</li>
+				<li>Login to 
+					<a href="'.base_url('users/login').'">'.$this->config->item('app_title').'</a>
+				</li>
+			</ol>
+			<br>'.$this->config->item('email_sign_1').'
+		';
+
+		// Email content
+		$this->email->message($message);
+
+		// Email sent confirmation
+		if($this->email->send()) echo json_encode(array('success'=>true, 'title'=>"Invitation Sent!", 'data'=>'Your invitation to '.$user_email.' has been sent.', 'type'=>'success'));
+		else echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$this->email->print_debugger(), 'type'=>'error'));
 	}
 }
 

@@ -1,116 +1,78 @@
 <!-- Javascript -->
 <script>
 	$(document).ready(function(){
+
 		/*
 		|-----------------------------------------------------
-		| GET TASKS LIST
+		| INITIALIZE JQUERY DATATABLE FOR TASKS TABLE
 		|-----------------------------------------------------
-		*/
-		$.ajax({
-			type: "get", 
-			url: "<?php echo base_url('settings/tasks/list_tasks'); ?>", 
-			dataType: "json", 
-			beforeSend: function(){$('#loader').show()}, 
-			complete: function(){$('#loader').hide()}, 
-			success: function(resp){
-				if(resp.success)
-				{
-					$('#resTasksTable').html(resp.data);
-
-					$('#tblTasks').DataTable({
-						/*scrollY:        '55vh',
-    					scrollCollapse: true,*/
-						fixedHeader: {headerOffset: $('#topNav').outerHeight()},
-						"aaSorting": [], 
-						"order": [[ 1, "desc" ]],
-						"paging": false, 
-					});
-
-					// Search import shipment items table from custom search box
-					var tbl_tasks = $("#tblTasks").DataTable();
-					//$("#btnSearchTasks").click(function(){
-					$("#txtSearchTasks").on('keyup', function(){
-						tbl_tasks.search($('#txtSearchTasks').val()).draw();
-					});
-
-					/*
-					|-----------------------------------------------------
-					| EDIT TASKS VALUE
-					|-----------------------------------------------------
-					*/ 
-					$('.btn-edit-task').each(function(){
-						$(this).click(function(){
-
-							// Get category options
-							$.ajax({
-								type: "get", 
-								url: "<?php echo base_url('settings/tasks/task_cat_list'); ?>", 
-								dataType: "json", 
-								success: function(resp){
-									if(resp.success) $('#listEditTaskCat').html(resp.data);
-									else $('#resEditTask').html(resp.data);
-								}
-							});
-
-							// Get textbox values from link attributes
-							$('#txtEditTaskId').val($(this).attr('task-id'));
-							$('#txtEditTaskName').val($(this).attr('task-name'));
-							$('#txtEditTaskCat').val($(this).attr('task-cat'));
-							$('#txtEditClassName').val($(this).attr('class-name'));
-							$('#txtEditMethodName').val($(this).attr('method-name'));
-							$('#txtEditDir').val($(this).attr('task-dir'));
-						});
-					});
-
-					/*
-					|-----------------------------------------------------
-					| DLETETE TASK
-					|-----------------------------------------------------
-					*/ 
-					$('.btn-del-task').each(function(){
-						$(this).click(function(){
-							var task_id = $(this).attr('task-id');
-							var del_row = $(this).closest('tr');
-
-							// Sweet alert confirmation before delete
-							swal({
-								title: "Cofirm Delete!", 
-								text: "Are you sure you want to delete this task?",
-								icon: "warning",
-								buttons: ["No", "Yes"],
-								dangerMode: true
-							})
-							.then((willDelete) => {
-								if(willDelete)
-								{	
-									// Ajax request to delete user
-									$.ajax({
-										type: "get",
-										url: "<?php echo base_url('settings/tasks/delete_task'); ?>",
-										data: "taskid="+task_id, 
-										dataType: "json", 
-										beforeSend: function(){$('#loader').show()}, 
-										complete: function(){$('#loader').hide()}, 
-										success: function(resp){
-											if(resp.success)
-											{	
-												// Show success message
-												swal({title: "Deleted!", text: resp.data, icon: "success"});
-
-												// Remove verify button
-												del_row.remove();	
-											} 
-											else swal({title: "Oops!", text: resp.data, icon: "error"});
-										}
-									});
-								}
-							});
-						});
-					}); 
-				}
-				else $('#resTasksTable').html(resp.data);
-			}
+		*/ 
+		var dt_tasks = $('#tblTasks').DataTable({
+			fixedHeader: {headerOffset: $('#topNav').outerHeight()},
+			"aaSorting": [], 
+			"paging": true, 
 		});
+
+		/*
+		|-----------------------------------------------------
+		| SEARCH TASKS DATATABLE
+		|-----------------------------------------------------
+		*/ 
+		$("#txtSearchTasks").on('keyup', function(){
+			dt_tasks.search($('#txtSearchTasks').val()).draw();
+		});
+
+		/*
+		|-----------------------------------------------------
+		| DELETE TASK
+		|-----------------------------------------------------
+		*/ 
+		$('#tblTasks').on('click', '.lnk-del-task', function(){
+			var task_id = $(this).attr('task-id');
+			var del_row = $(this).closest('tr');
+
+			// Sweet alert confirmation before delete
+			swal({
+				title: "Cofirm Delete!", 
+				text: "Are you sure you want to delete this task?",
+				icon: "warning",
+				buttons: ["No", "Yes"],
+				dangerMode: true
+			})
+			.then((willDelete) => {
+				if(willDelete) ajax_del_task(task_id, del_row);
+			})
+		});
+
+		/**
+		 * Ajax request to delete task
+		 * 
+		 * @param  {[type]} taskid [description]
+		 * @return {[type]}        [description]
+		 */
+		function ajax_del_task(taskid, deletedrow)
+		{
+			// Ajax request to delete user
+			$.ajax({
+				type: "get",
+				url: "<?php echo base_url('settings/tasks/delete_task'); ?>",
+				data: "taskid="+taskid, 
+				dataType: "json", 
+				beforeSend: function(){$('#loader').show()}, 
+				complete: function(){$('#loader').hide()}, 
+				success: function(resp){
+					if(resp.success)
+					{	
+						// Show success message
+						swal({title: resp.title, text: resp.data, icon: resp.type});
+
+						// Remove verify button
+						deletedrow.remove();	
+					} 
+					else swal({title: resp.title, text: resp.data, icon: resp.type});
+				}
+			});
+		}
 
 		/*
 		|-----------------------------------------------------
@@ -118,13 +80,10 @@
 		|-----------------------------------------------------
 		*/ 
 		$('#linkCreateNewTask').click(function(){
-			// Empty existing task category list
-			//$('#listTaskCat').empty();
-
 			// Ajax get request
 			$.ajax({
 				type: "get", 
-				url: "<?php echo base_url('settings/tasks/task_cat_list'); ?>", 
+				url: "<?php echo base_url('settings/tasks/load_task_cat_options'); ?>", 
 				dataType: "json", 
 				success: function(resp){
 					if(resp.success) $('#listTaskCat').html(resp.data);
@@ -159,6 +118,33 @@
 
 		/*
 		|-----------------------------------------------------
+		| GET TASK CATEGORY EDIT TASK
+		|-----------------------------------------------------
+		*/ 
+		$('#tblTasks').on('click', '.lnk-edit-task', function(){
+			// Get category options
+			$.ajax({
+				type: "get", 
+				url: "<?php echo base_url('settings/tasks/load_task_cat_options'); ?>", 
+				dataType: "json", 
+				success: function(resp){
+					if(resp.success) $('#listEditTaskCat').html(resp.data);
+					else $('#resEditTask').html(resp.data);
+				}
+			});
+
+			// Get textbox values from link attributes
+			$('#txtEditTaskId').val($(this).attr('task-id'));
+			$('#txtEditTaskName').val($(this).attr('task-name'));
+			$('#txtEditTaskCat').val($(this).attr('task-cat'));
+			$('#txtEditClassName').val($(this).attr('class-name'));
+			$('#txtEditMethodName').val($(this).attr('method-name'));
+			$('#txtEditDir').val($(this).attr('task-dir'));
+			$('#txtEditIsPermReq').val($(this).attr('is-perm-req')).change();
+		});
+
+		/*
+		|-----------------------------------------------------
 		| SUBMIT EDIT TASK AND SAVE CHANGES FORM
 		|-----------------------------------------------------
 		*/ 
@@ -179,6 +165,16 @@
 					else $('#resEditTask').html(resp.data);
 				}
 			});
+		});
+
+		/*
+		|----------------------------------------------------
+		| Bootstrap modal on close
+		|----------------------------------------------------
+		*/
+		$('#mdlEditTask').on('hidden.bs.modal', function(){
+			$('#formEditTask').trigger('reset'); // Reset the form
+			$('#resEditTask').empty(); // Clear the processing result
 		});
 	});
 </script>

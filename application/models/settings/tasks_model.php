@@ -44,16 +44,56 @@ class Tasks_model extends CI_Model
 	public function get_tasks()
 	{
 		// Query to get all tasks
-		$query = $this->db->get('tasks');
+		$this->db->select('*');
+		$this->db->from('tasks');
+		$this->db->order_by('task_cat asc', 'task_class asc');
+
+		$query = $this->db->get();
 
 		// Validate query and non empty response 
 		if($query)
 		{
-			$result['status'] = true;
+			if($query->num_rows() > 0)
+			{
+				$result['status'] = true;
+				$result['data']   = $query->result_array();
+			}
+			else {
+				$result['status'] = false;
+				$result['data']   = "<strong>No system tasks found!</strong><br>Please contact developer or admin.";
+			}
+			return $result;
+		}
+		else return $this->get_db_error();
+	}
 
-			if($query->num_rows() > 0) $result['data'] = $query->result_array();
-			else $result['data'] = "No records found.";
+	/**
+	 * Query to get only permission required task
+	 * 
+	 * @return array
+	 */
+	public function get_perm_req_tasks()
+	{
+		// Query to get only permisssion required tasks
+		$this->db->select('*');
+		$this->db->from('tasks');
+		$this->db->where('is_perm_req', '1');
+		$this->db->order_by('task_cat asc', 'task_class asc');
 
+		$query = $this->db->get();
+
+		// Validate query and non empty response 
+		if($query)
+		{
+			if($query->num_rows() > 0)
+			{
+				$result['status'] = true;
+				$result['data']   = $query->result_array();
+			}
+			else {
+				$result['status'] = false;
+				$result['data']   = "<strong>No system tasks found!</strong><br>Please contact developer or admin.";
+			}
 			return $result;
 		}
 		else return $this->get_db_error();
@@ -87,16 +127,16 @@ class Tasks_model extends CI_Model
 	 * @param  [array] $taskdata [Task data contains field name as key and dats as value]
 	 * @return [array]           [description]
 	 */
-	public function save_task($tasksdata)
+	public function add_task($tasksdata)
 	{	
 		// Query to insert into tasks table
-		$this->db->insert('tasks', $tasksdata);
+		$query = $this->db->insert('tasks', $tasksdata);
 
 		// Number rows greater than zero 
-		if($this->db->affected_rows() > 0) 
+		if($query) 
 		{
 			$result['status'] = true;
-			$result['data'] = "Task created.";
+			$result['data'] = "Task created!";
 
 			return $result;	
 		}
