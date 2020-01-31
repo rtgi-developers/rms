@@ -62,9 +62,14 @@ if($CI->session->userdata('_username'))
 	if($check_perm['status'] == false)
 	{	
 		if($CI->input->is_ajax_request()) 
-		{
+		{	
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Access denied!', 
+				'data'   => $check_perm['message']
+			);
 			// Ajax response since the reques was ajax		
-			echo json_encode(array('success'=>false, 'title'=>"Access denied!", 'data'=>$check_perm['message'], 'type'=>'error'));
+			echo json_encode($json_data);
 
 			// Stop program execution 
 			exit();
@@ -93,21 +98,11 @@ function get_sent_data($reqmethod)
 
 	if($reqmethod == 'POST')
 	{	
-		if(!empty($CI->input->post()))
-		{
-			foreach ($CI->input->post() as $key => $value) 
-			{	
-				if(is_array($value)) foreach($value as $val) $sentdata .= $key.": ".$val."\n";
-				else $sentdata .= $key.": ".$value."\n";
-			}
-		}
+		if(!empty($CI->input->post())) $sentdata .= extract_sent_data($CI->input->post());
 		else $sentdata .= "No data sent by user.";
 	}
 	else {
-		if(!empty($CI->input->get()))
-		{
-			foreach ($CI->input->get() as $key => $value) $sentdata .= $key.": ".$value."\n";	
-		}
+		if(!empty($CI->input->get())) $sentdata .= extract_sent_data($CI->input->get());
 		else $sentdata .= "No data sent by user.";
 	} 
 	return $sentdata;
@@ -243,9 +238,14 @@ function add_new_req_task()
 		if($add_task['status'] == false)
 		{
 			if($CI->input->is_ajax_request()) 
-			{
-				// Ajax response since the reques was ajax		
-				echo json_encode(array('success'=>false, 'title'=>"Access denied!", 'data'=>$add_task['data'], 'type'=>'error'));
+			{	
+				$json_data = array(
+					'status' => 'error', 
+					'title'  => 'Access denied!', 
+					'data'   => $add_task['data']
+				);
+				// Ajax response since the reques was ajax			
+				echo json_encode($json_data); 
 
 				// Stop program execution 
 				exit();
@@ -253,5 +253,28 @@ function add_new_req_task()
 			else redirect('systems/errors/perms_error/'.base64_encode($add_task['data']));
 		}
 	}
+}
+
+/**
+ * Recursive function to extract the data 
+ * sent by user in request 
+ * 
+ * @param  array 	$data 	GET or POST data array
+ * @return string           Array converted to string
+ */
+function extract_sent_data($data)
+{	
+	$output = "";
+
+	foreach($data as $key => $val)
+	{
+		if(is_array($val))
+		{
+			$output .= extract_sent_data($val);
+		}
+		else $output .= $key.": ".$val."\n";
+	}
+
+	return $output;
 }
 ?>

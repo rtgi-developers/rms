@@ -322,30 +322,23 @@ class Users extends CI_Controller
 		if($result['status'] == true)
 		{	
 			// Success message
-			$html = '
-				<div class="alert alert-success rounded-0 fade show" role="alert"> 
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					    <span aria-hidden="true">&times;</span>
-					 </button>
-				  	<strong>Success! </strong>'.$result['data'].'
-				</div>
-			';
-
-			echo json_encode(array('success'=>true, 'title'=>"Done!", 'data'=>$result['data'], 'type'=>'success'));
+			$json_data = array(
+				'status' => 'success', 
+				'title'  => 'Done!', 
+				'data'   => $result['data']
+			);
 		}
 		else {
 			// Error message
-			$html = '
-				<div class="alert alert-danger rounded-0 fade show" role="alert"> 
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					    <span aria-hidden="true">&times;</span>
-					 </button>
-				  	<strong>Oops! </strong>'.$result['data'].'
-				</div>
-			';
-
-			echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$result['data'], 'type'=>'error'));
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Oops!', 
+				'data'   => $result['data']
+			);
 		}
+
+		// Send json encoded ajax response
+		echo json_encode($json_data);
 	}
 
 	/**
@@ -389,8 +382,11 @@ class Users extends CI_Controller
 				</div>
 			';
 
-			// Send json encoded message in ajax response
-			echo json_encode(array('success'=>true, 'title'=>"Done!", 'data'=>$html, 'type'=>'success'));
+			$json_data = array(
+				'status' => 'success', 
+				'title'  => 'Done!', 
+				'data'   => $html
+			);
 		}
 		else{
 			// Error message
@@ -406,9 +402,15 @@ class Users extends CI_Controller
 	
 			$html .= '</div>';
 
-			// Send json encoded message in ajax response
-			echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$html, 'type'=>'error'));
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Oops!', 
+				'data'   => $html
+			);
 		}
+
+		// Send json encoded message in ajax response
+		echo json_encode($json_data);
 	}
 
 	/**
@@ -423,10 +425,23 @@ class Users extends CI_Controller
 
 		// Validate query response and send json encoded response to ajax
 		if($result['status'] == true) 
-		{
-			echo json_encode(array('success'=>true, 'title'=>"Deleted!", 'data'=>$result['data'], 'type'=>'success'));
+		{	
+			$json_data = array(
+				'status' => 'success', 
+				'title'  => 'User Deleted!', 
+				'data'   => $result['data']
+			);
 		}
-		else echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$result['data'], 'type'=>'error'));
+		else {
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Oops!', 
+				'data'   => $result['data']
+			);
+		}
+
+		// Send json encoded response 
+		echo json_encode($json_data); 
 		
 	}
 
@@ -470,12 +485,32 @@ class Users extends CI_Controller
 
 			// Email sent confirmation
 			if($this->email->send()) 
-			{
-				echo json_encode(array('success'=>true, 'title'=>"Verified!", 'data'=>$result['data'], 'type'=>'success'));
+			{	
+				$json_data = array(
+					'status' => 'success', 
+					'title'  => 'User Verified!', 
+					'data'   => $result['data']
+				);
 			}
-			else echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$this->email->print_debugger(), 'type'=>'error'));
+			else 
+			{
+				$json_data = array(
+					'status' => 'error', 
+					'title'  => 'Oops!', 
+					'data'   => $this->email->print_debugger()
+				);
+			}
 		}
-		else echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$result['data'], 'type'=>'error'));
+		else {
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Oops!', 
+				'data'   => $result['data']
+			);
+		}
+
+		// Send json encoded reponse
+		echo json_encode($json_data);
 	}
 
 	/**
@@ -514,8 +549,24 @@ class Users extends CI_Controller
 		$this->email->message($message);
 
 		// Email sent confirmation
-		if($this->email->send()) echo json_encode(array('success'=>true, 'title'=>"Invitation Sent!", 'data'=>'Your invitation to '.$user_email.' has been sent.', 'type'=>'success'));
-		else echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$this->email->print_debugger(), 'type'=>'error'));
+		if($this->email->send()) 
+		{
+			$json_data = array(
+				'status' => 'success', 
+				'title'  => 'Invitation sent!', 
+				'data'   => 'Your invitation to '.$user_email.' has been sent.'
+			);
+		}
+		else {	
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Oops!', 
+				'data'   => $this->email->print_debugger()
+			);
+		}
+
+		// Send json encoded response
+		echo json_encode($json_data);
 	}
 }
 

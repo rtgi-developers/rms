@@ -65,9 +65,14 @@ $(document).ready(function(){
 			dataType: "json", 
 			success: function(resp)
 			{
-				if(resp.success) swal({title: resp.title, text: resp.data, icon: resp.type});
-				else swal({title: resp.title, text: resp.data, icon: resp.type});
+				if(resp.status == 'success') swal({title: resp.title, text: resp.data, icon: resp.status});
+				else swal({title: resp.title, text: resp.data, icon: resp.status});
 			}, 
+			error: function(xhr)
+			{
+				var xhr_text = xhr.status+" "+xhr.statusText;
+				swal({title: "Request Error!", text: xhr_text, icon: "error"});
+			}
 		});
 	}
 
@@ -111,19 +116,30 @@ $(document).ready(function(){
 			url: "<?php echo base_url('settings/users/delete_user'); ?>",
 			data: "userid="+userid, 
 			dataType: "json", 
-			beforeSend: function(){$('#loader').show()}, 
-			complete: function(){$('#loader').hide()}, 
+			beforeSend: function()
+			{
+				$('#loader').show();
+			}, 
+			complete: function()
+			{
+				$('#loader').hide();
+			}, 
 			success: function(resp){
-				if(resp.success) 
+				if(resp.status == 'success') 
 				{
 					// Display message 
-					swal({title: resp.title, text: resp.data, icon: resp.type});
+					swal({title: resp.title, text: resp.data, icon: resp.status});
 
 					// Remove user from view after successful delete
 					var user_row = $('#btnDeleteUser'+userid).closest('tr');
 					user_row.hide('slow', function(){user_row.remove();});
 				}
-				else swal({title: resp.title, text: resp.data, icon: resp.type});
+				else swal({title: resp.title, text: resp.data, icon: resp.status});
+			}, 
+			error: function(xhr)
+			{
+				var xhr_text = xhr.status+" "+xhr.statusText;
+				swal({title: "Request Error!", text: xhr_text, icon: "error"});
 			}
 		});
 	}
@@ -172,18 +188,29 @@ $(document).ready(function(){
 			url: "<?php echo base_url('settings/users/verify_user'); ?>",
 			data: "userid="+userid+"&useremail="+useremail+"&username="+username, 
 			dataType: "json", 
-			beforeSend: function(){$('#loader').show()}, 
-			complete: function(){$('#loader').hide()}, 
+			beforeSend: function()
+			{
+				$('#loader').show();
+			}, 
+			complete: function()
+			{
+				$('#loader').hide();
+			}, 
 			success: function(resp){
-				if(resp.success)
+				if(resp.status == 'success')
 				{	
 					// Show success message
-					swal({title: resp.title, text: resp.data, icon: resp.type});
+					swal({title: resp.title, text: resp.data, icon: resp.status});
 
 					// Remove verify button
 					$('#btnVerifyUser'+userid).remove();	
 				} 
-				else swal({title: resp.title, text: resp.data, icon: resp.type});
+				else swal({title: resp.title, text: resp.data, icon: resp.status});
+			}, 
+			error: function(xhr)
+			{
+				var xhr_text = xhr.status+" "+xhr.statusText;
+				swal({title: "Request Error!", text: xhr_text, icon: "error"});
 			}
 		});
 	}

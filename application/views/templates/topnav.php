@@ -84,7 +84,7 @@ span.notif-badge {
             dataType: "json", 
             success: function(resp)
             {   
-                if(resp.success) $('#navLinkNotif').html(resp.data);
+                if(resp.status == 'success') $('#navLinkNotif').html(resp.data);
                 else $('#navLinkNotif').html(resp.data);
             }
         });

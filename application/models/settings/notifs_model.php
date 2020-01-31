@@ -136,7 +136,7 @@ class Notifs_model extends CI_Model
 		if($query)
 		{
 			$result['status'] = true;
-			$result['data']   = "Noifications created.";
+			$result['data']   = "Noification created.";
 
 			return $result;
 		}

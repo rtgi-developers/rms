@@ -158,14 +158,24 @@ class Notifs extends CI_Controller
 				';
 			}
 
-			echo json_encode(array('success'=>true, 'type'=>'success', 'title'=>'List of Recipients', 'data'=>$html));
+			$json_data = array(
+				'status' => 'success', 
+				'title'  => 'Recipients List', 
+				'data'   => $html
+			);
 		}
 		else {
-
 			$html = '<tr><td class="align-middle text-center" colspan="3">'.$result['data'].'</td></tr>';
 
-			echo json_encode(array('success'=>false, 'type'=>'error', 'title'=>'Oops!', 'data'=>$html));
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Oops!', 
+				'data'   => $html
+			);
 		}
+
+		// Send json encoded data as response
+		echo json_encode($json_data);
 	}
 
 	/**
@@ -210,11 +220,15 @@ class Notifs extends CI_Controller
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						    <span aria-hidden="true">&times;</span>
 						 </button>
-					  	<strong>Done! </strong> '.$result['data'].'
+					  	<strong>'.$result['data'].'</strong>
 					</div>
 				';
 
-				echo json_encode(array('success'=>true, 'title'=>"Created!", 'type'=>"success", 'data'=>$html));
+				$json_data = array(
+					'status' => 'success', 
+					'title'  => 'Notification Created!', 
+					'data'   => $html
+				);
 			}
 			else{
 				// Error message
@@ -231,7 +245,11 @@ class Notifs extends CI_Controller
 		
 				$html .= '</div>';
 
-				echo json_encode(array('success'=>false, 'title'=>"Oops!", 'type'=>"error", 'data'=>$html));
+				$json_data = array(
+					'status' => 'error', 
+					'title'  => 'Oops!', 
+					'data'   => $html
+				);
 			}
 		}
 		else {
@@ -240,12 +258,18 @@ class Notifs extends CI_Controller
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						    <span aria-hidden="true">&times;</span>
 						 </button>
-					  	<strong>Oopsnew! </strong> '.$result['data'].'
+					  	<strong>Oops! </strong> '.$result['data'].'
 					</div>
 				';
 
-			echo json_encode(array('success'=>false, 'title'=>"Oops!", 'type'=>"error", 'data'=>$html));
+			$json_data = array(
+					'status' => 'error', 
+					'title'  => 'Oops!', 
+					'data'   => $html
+				);
 		}
+
+		echo json_encode($json_data);
 	}
 
 	/**
@@ -261,9 +285,22 @@ class Notifs extends CI_Controller
 		// Query response 
 		if($result['status'] == true) 
 		{
-			echo json_encode(array('success'=>true, 'title'=>"Deleted!", 'data'=>$result['data'], 'type'=> 'success'));
+			$json_data = array(
+				'status' => 'success', 
+				'title'  => 'Notification Deleted!', 
+				'data'   => $result['data']
+			);
 		}
-		else echo json_encode(array('success'=>false, 'title'=>"Oops!", 'data'=>$result['data'], 'type'=> 'error'));
+		else {
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Oops!', 
+				'data'   => $result['data']
+			);
+		}
+
+		// Send json encoded response
+		echo json_encode($json_data);
 	}
 }
 

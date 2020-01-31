@@ -58,18 +58,30 @@
 				url: "<?php echo base_url('settings/tasks/delete_task'); ?>",
 				data: "taskid="+taskid, 
 				dataType: "json", 
-				beforeSend: function(){$('#loader').show()}, 
-				complete: function(){$('#loader').hide()}, 
-				success: function(resp){
-					if(resp.success)
+				beforeSend: function()
+				{
+					$('#loader').show();
+				}, 
+				complete: function()
+				{
+					$('#loader').hide();
+				}, 
+				success: function(resp)
+				{
+					if(resp.status == 'success')
 					{	
 						// Show success message
-						swal({title: resp.title, text: resp.data, icon: resp.type});
+						swal({title: resp.title, text: resp.data, icon: resp.status});
 
 						// Remove verify button
 						deletedrow.remove();	
 					} 
-					else swal({title: resp.title, text: resp.data, icon: resp.type});
+					else swal({title: resp.title, text: resp.data, icon: resp.status});
+				}, 
+				error: function(xhr)
+				{
+					var xhr_text = xhr.status+" "+xhr.statusText;
+					swal({title: "Request Error!", text: xhr_text, icon: "error"});
 				}
 			});
 		}
@@ -86,8 +98,13 @@
 				url: "<?php echo base_url('settings/tasks/load_task_cat_options'); ?>", 
 				dataType: "json", 
 				success: function(resp){
-					if(resp.success) $('#listTaskCat').html(resp.data);
+					if(resp.status == 'success') $('#listTaskCat').html(resp.data);
 					else $('#resCreateTask').html(resp.data);
+				}, 
+				error: function(xhr)
+				{
+					var xhr_text = xhr.status+" "+xhr.statusText;
+					swal({title: "Request Error!", text: xhr_text, icon: "error"});
 				}
 			});
 		});
@@ -107,11 +124,23 @@
 				url: "<?php echo base_url('settings/tasks/create_task'); ?>",
 				data: $(this).serialize(), 
 				dataType: "json",
-				beforeSend: function(){$('#loaderCreateTask').show()},
-				complete: function(){$('#loaderCreateTask').hide()},
-				success: function(resp){
-					if(resp.success) $('#resCreateTask').html(resp.data);
+				beforeSend: function()
+				{
+					$('#loaderCreateTask').show();
+				},
+				complete: function()
+				{
+					$('#loaderCreateTask').hide();
+				},
+				success: function(resp)
+				{
+					if(resp.status == 'success') $('#resCreateTask').html(resp.data);
 					else $('#resCreateTask').html(resp.data);
+				}, 
+				error: function(xhr)
+				{
+					var xhr_text = xhr.status+" "+xhr.statusText;
+					swal({title: "Request Error!", text: xhr_text, icon: "error"});
 				}
 			});
 		});
@@ -127,9 +156,15 @@
 				type: "get", 
 				url: "<?php echo base_url('settings/tasks/load_task_cat_options'); ?>", 
 				dataType: "json", 
-				success: function(resp){
-					if(resp.success) $('#listEditTaskCat').html(resp.data);
+				success: function(resp)
+				{
+					if(resp.status == 'success') $('#listEditTaskCat').html(resp.data);
 					else $('#resEditTask').html(resp.data);
+				}, 
+				error: function(xhr)
+				{
+					var xhr_text = xhr.status+" "+xhr.statusText;
+					swal({title: "Request Error!", text: xhr_text, icon: "error"});
 				}
 			});
 
@@ -158,11 +193,23 @@
 				url: "<?php echo base_url('settings/tasks/edit_task'); ?>",
 				data: $(this).serialize(), 
 				dataType: "json",
-				beforeSend: function(){$('#loaderEditTask').show()},
-				complete: function(){$('#loaderEditTask').hide()},
-				success: function(resp){
-					if(resp.success) $('#resEditTask').html(resp.data);
+				beforeSend: function()
+				{
+					$('#loaderEditTask').show(); 
+				},
+				complete: function()
+				{
+					$('#loaderEditTask').hide(); 
+				},
+				success: function(resp)
+				{
+					if(resp.status == 'success') $('#resEditTask').html(resp.data);
 					else $('#resEditTask').html(resp.data);
+				}, 
+				error: function(xhr)
+				{
+					var xhr_text = xhr.status+" "+xhr.statusText;
+					swal({title: "Request Error!", text: xhr_text, icon: "error"});
 				}
 			});
 		});

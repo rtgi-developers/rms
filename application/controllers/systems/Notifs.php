@@ -90,6 +90,7 @@ class Notifs extends CI_Controller
 				<tbody>
 		';
 
+		// Query to get notification by user 
 		$result = $this->notifs_model->get_notifs_by_user($this->session->userdata('_userid'));
 
 		if($result['status'] == true)
@@ -125,9 +126,9 @@ class Notifs extends CI_Controller
 		// Mark as read or seen
 		$html .= $this->mark_notif_read($unread_notif_count);
 
-		$page['title']       = "Notifications";
-		$page['description'] = $page_description;
-		$page['content']	 = $html;
+		$page['title']        = "Notifications";
+		$page['description']  = $page_description;
+		$page['table_notifs'] = $html;
 
 		$this->load->view('systems/notifs_view', $page);
 	}
@@ -178,14 +179,23 @@ class Notifs extends CI_Controller
 				<span class="badge badge-danger notif-badge">'.$result['data'].'</span>
 			';
 
-			echo json_encode(array('success'=>true, 'data'=>$html));
+			$json_data = array(
+				'status' => 'success', 
+				'title'  => 'New notifications!', 
+				'data'   => $html
+			);
 		}
 		else {
-			$html = '
-				<i class="lar la-bell text-white" style="font-size: 24px;"></i>
-			';
+			$html = '<i class="lar la-bell text-white" style="font-size: 24px;"></i>';
 
-			echo json_encode(array('success'=>false, 'data'=>$html));
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Oops!', 
+				'data'   => $html
+			);
 		}
+
+		// Send json encoded ajax response
+		echo json_encode($json_data);
 	}
 }

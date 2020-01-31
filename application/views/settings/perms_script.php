@@ -82,11 +82,24 @@
 				url: "<?php echo base_url('settings/users/make_admin'); ?>", 
 				data: "userid="+userid, 
 				dataType: "json", 
-				beforeSend: function(){$('#loader').show()}, 
-				complete: function(){$('#loader').hide()}, 
-				success: function(resp){
-					if(resp.success) swal({title: resp.title, text: resp.data, icon: resp.type});
-					else swal({title: resp.title, text: resp.data, icon: resp.type});
+				beforeSend: function()
+				{
+					$('#loader').show();
+				}, 
+				complete: function()
+				{
+					$('#loader').hide();
+				}, 
+				success: function(resp)
+				{
+					if(resp.status == 'success') 
+						swal({title: resp.title, text: resp.data, icon: resp.status});
+					else swal({title: resp.title, text: resp.data, icon: resp.status});
+				}, 
+				error: function(xhr)
+				{
+					var xhr_text = xhr.status+" "+xhr.statusText;
+					swal({title: "Request Error!", text: xhr_text, icon: "error"});
 				}
 			});
 		}
@@ -106,12 +119,23 @@
 				url: "<?php echo base_url('settings/users/save_user_perms'); ?>",
 				data: $(this).serialize(),
 				dataType: "json", 
-				beforeSend: function(){$('#loader').show()},
-				complete: function(){$('#loader').hide()},
+				beforeSend: function()
+				{
+					$('#loader').show(); 
+				},
+				complete: function()
+				{
+					$('#loader').hide(); 
+				},
 				success: function(resp)
 				{
-					if(resp.success) $('#resUserPermsChanges').html(resp.data);
-					else $('#resUserPermsChanges').html(resp.data);
+					if(resp.status == 'success') $('#resUserPermsChanges').html(resp.data);
+					else swal({title: resp.title, text: resp.data, icon: resp.status});
+				}, 
+				error: function(xhr)
+				{
+					var xhr_text = xhr.status+" "+xhr.statusText;
+					swal({title: "Request Error!", text: xhr_text, icon: "error"});
 				}
 			});
 		});

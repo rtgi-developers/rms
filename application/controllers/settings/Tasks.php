@@ -6,7 +6,6 @@
  * @subpackage Controller
  * @author MD TARIQUE ANWER <mtarique@outlook.com>
  */
-
 defined('BASEPATH') or exit('No direct script access allowed.');
 
 class Tasks extends CI_Controller
@@ -113,29 +112,29 @@ class Tasks extends CI_Controller
 						<td class="align-middle text-left">'.$isPermReq.'</td>
 						<td class="align-middle text-center">
 							<div class="d-flex flex-row">
-							<a href="#" 
-								class="px-1 text-decoration-none lnk-edit-task text-primary" 
-								data-toggle="modal" 
-								data-target="#mdlEditTask" 
-								data-backdrop="static" 
-								data-keyboard="false" 
-								title="Edit task"
-								task-id="'.$row['task_id'].'" 
-								task-name="'.$row['task_name'].'" 
-								task-cat="'.$row['task_cat'].'" 
-								class-name="'.$row['task_class'].'" 
-								method-name="'.$row['task_method'].'" 
-								task-dir="'.$row['task_dir'].'" 
-								is-perm-req="'.$row['is_perm_req'].'">
-								<i class="las la-pencil-alt la-lg"></i>
-							</a>
-							<a href="#" 
-								class="px-1 text-decoration-none lnk-del-task text-danger" 
-								id="btnDeleteUser" 
-								task-id="'.$row['task_id'].'" 
-								title="Delete task">
-								<i class="las la-trash la-lg"></i>
-							</a>
+								<a href="#" 
+									class="px-1 text-decoration-none lnk-edit-task text-primary" 
+									data-toggle="modal" 
+									data-target="#mdlEditTask" 
+									data-backdrop="static" 
+									data-keyboard="false" 
+									title="Edit task"
+									task-id="'.$row['task_id'].'" 
+									task-name="'.$row['task_name'].'" 
+									task-cat="'.$row['task_cat'].'" 
+									class-name="'.$row['task_class'].'" 
+									method-name="'.$row['task_method'].'" 
+									task-dir="'.$row['task_dir'].'" 
+									is-perm-req="'.$row['is_perm_req'].'">
+									<i class="las la-pencil-alt la-lg"></i>
+								</a>
+								<a href="#" 
+									class="px-1 text-decoration-none lnk-del-task text-danger" 
+									id="btnDeleteUser" 
+									task-id="'.$row['task_id'].'" 
+									title="Delete task">
+									<i class="las la-trash la-lg"></i>
+								</a>
 							</div>
 						</td>
 					</tr>
@@ -160,6 +159,7 @@ class Tasks extends CI_Controller
 	 */
 	public function load_task_cat_options()
 	{	
+		// Query to get task ategory
 		$result = $this->tasks_model->get_task_cat();
 
 		if($result['status'] == true)
@@ -168,9 +168,22 @@ class Tasks extends CI_Controller
 
 			foreach($result['data'] as $row) $html .= '<option value="'.$row['task_cat'].'"></option>';
 
-			echo json_encode(array('success'=>true, 'type'=>'success', 'title'=>'Task Category','data'=>$html));
+			$json_data = array(
+				'status' => 'success', 
+				'title'  => 'Task category', 
+				'data'   => $html
+			);
 		}
-		else echo json_encode(array('success'=>false, 'type'=>'error', 'title'=>'Oops!','data'=>$result['data']));
+		else {
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Oops!', 
+				'data'   => $result['data']
+			);
+		}
+
+		// Send json encoded ajax response
+		echo json_encode($json_data);
 	}
 
 	/**
@@ -215,8 +228,11 @@ class Tasks extends CI_Controller
 					</div>
 				';
 
-				// Send json encoded message in ajax response
-				echo json_encode(array('success'=>true, 'type'=>'success', 'title'=>'Task created!', 'data'=>$html));
+				$json_data = array(
+					'status' => 'success', 
+					'title'  => 'Task created!', 
+					'data'   => $html
+				);
 			}
 			else{
 				// Response error
@@ -229,8 +245,11 @@ class Tasks extends CI_Controller
 					</div>
 				';
 
-				// Send json encoded message in ajax response
-				echo json_encode(array('success'=>false,  'type'=>'error', 'title'=>'Oops!', 'data'=>$html));
+				$json_data = array(
+					'status' => 'error', 
+					'title'  => 'Oops!', 
+					'data'   => $html
+				);
 			}
 		}
 		else{
@@ -240,13 +259,19 @@ class Tasks extends CI_Controller
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					    <span aria-hidden="true">&times;</span>
 					 </button>
-				  	<strong>Oops!</strong> '.validation_errors().'
+				  	<strong>Missing or invalid inputs!</strong> '.validation_errors().'
 				</div>
 			';
 
-			// Send json encoded message in ajax response
-			echo json_encode(array('success'=>false,  'type'=>'error', 'title'=>'Missing or invalid inputs!', 'data'=>$html));
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Missing or invalid inputs!', 
+				'data'   => $html
+			);
 		}
+
+		// Send json encoded message as ajax response 
+		echo json_encode($json_data); 
 	}
 
 	/**
@@ -294,8 +319,11 @@ class Tasks extends CI_Controller
 					</div>
 				';
 
-				// Send json encoded message in ajax response
-				echo json_encode(array('success'=>true,  'type'=>'success', 'title'=>'Task uodated!', 'data'=>$html));
+				$json_data = array(
+					'status' => 'success', 
+					'title'  => 'Task updated!', 
+					'data'   => $html
+				);
 			}
 			else{
 				// Response error
@@ -308,8 +336,11 @@ class Tasks extends CI_Controller
 					</div>
 				';
 
-				// Send json encoded message in ajax response
-				echo json_encode(array('success'=>false,  'type'=>'error', 'title'=>'Oops!', 'data'=>$html));
+				$json_data = array(
+					'status' => 'error', 
+					'title'  => 'Oops!', 
+					'data'   => $html
+				);
 			}
 		}
 		else{
@@ -319,13 +350,19 @@ class Tasks extends CI_Controller
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					    <span aria-hidden="true">&times;</span>
 					 </button>
-				  	<strong>Oops!</strong> '.validation_errors().'
+				  	<strong>Missing or invalid inputs!</strong> '.validation_errors().'
 				</div>
 			';
 
-			// Send json encoded message in ajax response
-			echo json_encode(array('success'=>false,  'type'=>'error', 'title'=>'Missing or invalid inputs!', 'data'=>$html));
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Missing or invalid inputs!', 
+				'data'   => $html
+			);
 		}
+
+		// Send json encoded response
+		echo json_encode($json_data); 
 	}
 
 	/**
@@ -340,10 +377,23 @@ class Tasks extends CI_Controller
 		$result = $this->tasks_model->del_task($task_id);
 
 		if($result['status'] == true) 
-		{
-			echo json_encode(array('success'=>true, 'type'=>'success', 'title'=>"Deleted!",  'data'=>$result['data']));
+		{	
+			$json_data = array(
+				'status' => 'success', 
+				'title'  => 'Task deleted!', 
+				'data'   => $result['data']
+			);
 		}
-		else echo json_encode(array('success'=>false, 'type'=>'error', 'title'=>'Oops!', 'data'=>$result['data']));
+		else {
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Oops!', 
+				'data'   => $result['data']
+			);
+		}
+
+		// Send json encoded message as ajax response
+		echo json_encode($json_data); 
 	}
 }
 ?>
