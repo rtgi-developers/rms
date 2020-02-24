@@ -68,7 +68,9 @@
         		</a>
                 <ul class="collapse flex-column list-unstyled pl-4 pb3" id="submenuItems">
                     <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Products</a></li>
-                    <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Materials</a></li>
+                    <li class="nav-item side-nav-item">
+                        <a href="<?php echo base_url('items/materials'); ?>" class="nav-link text-muted side-nav-link">Materials</a>
+                    </li>
                     <li class="nav-item side-nav-item">
                         <a href="<?php echo base_url('items/categories'); ?>" class="nav-link text-muted side-nav-link">Categories</a>
                     </li>

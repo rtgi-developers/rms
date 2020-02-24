@@ -213,7 +213,7 @@ class Categories extends CI_Controller
 
 			foreach($result['data'] as $row) 
 			{
-				$html .= '<option value="'.$row['cat_name'].'"></option>';
+				$html .= '<option value="'.$row['cat_name'].'">'.$row['cat_name'].'</option>';
 			}
 
 			$json_data = array(
@@ -254,7 +254,7 @@ class Categories extends CI_Controller
 
 			foreach($result['data'] as $row) 
 			{
-				$html .= '<option value="'.$row['subcat_name'].'"></option>';
+				$html .= '<option value="'.$row['subcat_name'].'">'.$row['subcat_name'].'</option>';
 			}
 
 			$json_data = array(

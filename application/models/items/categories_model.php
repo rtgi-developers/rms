@@ -143,7 +143,7 @@ class Categories_model extends CI_model
 	public function get_subcat_by_catname($catname)
 	{	
 		// Query 
-		$this->db->select('subcat_name'); 
+		$this->db->select('*'); 
 		$this->db->from('categories'); 
 		$this->db->where('cat_name', $catname);
 		$query = $this->db->get();
