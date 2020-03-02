@@ -53,6 +53,29 @@ class Uom extends CI_Controller
         // Send json encoded response 
         echo json_encode($json_data); 
     }
+
+    public function get_uom_options()
+    {   
+        $uom_options = '';
+
+        /* if(isset($unittype)) $result = $this->uom_model->get_uom($this->input->get('unittype'));
+        else $result = $this->uom_model->get_uom(); */
+
+        $result = $this->uom_model->get_uom($this->input->get('unittype'));
+
+        if($result['status'] == true)
+        {
+            foreach($result['data'] as $row) 
+			{   
+                $uom_options .= '<option value="'.$row['unit_id'].'">'.$row['unit_abbr'].'</option>';
+			}
+        }
+        else $uom_options .=  '<option value>'.$result['data'].'</option>';
+
+        echo $uom_options; 
+        /* if(isset($print)) echo $uom_options; 
+        else return $uom_options; */ 
+    }
 }
 
 ?>

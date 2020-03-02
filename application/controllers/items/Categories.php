@@ -275,6 +275,11 @@ class Categories extends CI_Controller
 		echo json_encode($json_data);
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @return void
+	 */
 	public function create_cat()
 	{
 		// Validate form input

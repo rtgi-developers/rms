@@ -1,6 +1,6 @@
 <?php  
 /**
- * Unit of measurements model
+ * Currencies model
  *
  * @package 	Codeigniter
  * @subpackage  Model
@@ -9,17 +9,21 @@
  */ 
 defined('BASEPATH') or exit('No direct script access allowed.');
 
-class Uom_model extends CI_model
+class Currencies_model extends CI_model
 {
-	public function __construct()
-	{
-		parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-		$this->load->database();
-
+        $this->load->database();
     }
 
-    public function get_db_error()
+    /**
+     * Get errors in query 
+     *
+     * @return array
+     */
+	public function get_db_error()
 	{
 		$db_error = $this->db->error();
 
@@ -28,22 +32,18 @@ class Uom_model extends CI_model
 
 		return $result;
     }
-    
+
     /**
-     * Get all unit of measurements
+     * Get list of currencies
      *
-     * @return void
+     * @param   string    $curr_status Enabled or disabled | optional
+     * @return  array
      */
-    public function get_uom($type = null)
+    public function get_curr($curr_status = null)
     {
-        if(isset($type)) 
-        {
-            $query = $this->db
-                            ->where('unit_type', $type)
-                            ->get('uom'); 
-        }
-        else $query = $this->db->get('uom');
-        
+        if(isset($curr_status)) $query = $this->db->get_where('currencies', array('curr_status' => $curr_status));
+        else $query = $this->db->get('currencies');
+
         if($query)
         {
             if($query->num_rows() > 0)
@@ -53,12 +53,11 @@ class Uom_model extends CI_model
             }
             else {
                 $result['status'] = false; 
-                $result['data']   = "No UOM";
+                $result['data']   = "Currencies not found.";
             }
 
             return $result; 
         }
-        else return $this->get_db_error(); 
+        else return $this->get_db_error();
     }
 }
-?>
