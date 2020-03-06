@@ -25,6 +25,7 @@ $this->load->view('templates/loader');
                     </label>
                     <select name="txtProdCat" id="txtProdCat" class="custom-select custom-select-sm" required>
                         <option value>Select category</option>
+						<?php echo get_cat_options('Product'); ?>
 					</select>
                 </div>
                 <div class="col-md-9">
@@ -36,7 +37,10 @@ $this->load->view('templates/loader');
 						<select name="txtProdSubCat" id="txtProdSubCat" class="custom-select custom-select-sm col-md-3 mr-2" required>
 							<option value>Select sub category</option>
 						</select>
-						<span>Category or sub category not found? <a href="" class="text-decoration-none">Create Category</a></span>
+						<span>
+							Category or sub category not found? 
+							<a href="<?php echo base_url('items/categories'); ?>" class="text-decoration-none">Create Category</a>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -75,6 +79,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtProdHt" id="txtProdHt" class="form-control form-control-sm text-center mx-1" placeholder="H">
 						<select name="txtProdDimUom" id="txtProdDimUom" class="custom-select custom-select-sm mr-2 txt-uom-length" required>
 							<option value>UOM</option>
+							<?php echo get_uom_options('Length'); ?>
 						</select>
 					</div>
 				</div>
@@ -87,6 +92,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtProdWt" id="txtProdWt" class="form-control form-control-sm mr-2 text-center" placeholder="Net Wt" required>
 						<select name="txtProdWtUom" id="txtProdWtUom" class="custom-select custom-select-sm mr-2 txt-uom-weight" required>
 							<option value>UOM</option>
+							<?php echo get_uom_options('Weight'); ?>
 						</select>
 					</div>
 				</div>
@@ -101,6 +107,7 @@ $this->load->view('templates/loader');
                         <input type="number" step="any" name="txtProdMoq" id="txtProdMoq" class="form-control form-control-sm mr-2 text-center" placeholder="Qty" required>
                         <select name="txtProdMoqUom" id="txtProdMoqUom" class="custom-select custom-select-sm mr-2 txt-uom-count" required>
                             <option value>UOM</option>
+							<?php echo get_uom_options('Count'); ?>
                         </select>
                     </div>
                 </div>
@@ -113,6 +120,7 @@ $this->load->view('templates/loader');
                         <input type="number" step="any" name="txtProdMfgTime" id="txtProdMfgTime" class="form-control form-control-sm mr-2 text-center" placeholder="Qty">
                         <select name="txtProdMfgTimeUom" id="txtProdMfgTimeUom" class="custom-select custom-select-sm mr-2 txt-uom-time">
                             <option value>UOM</option>
+							<?php echo get_uom_options('Time'); ?>
                         </select>
                     </div>
                 </div>
@@ -124,7 +132,8 @@ $this->load->view('templates/loader');
                     <div class="d-flex flex-row">
                         <input type="number" step="any" name="txtProdCost" id="txtProdCost" class="form-control form-control-sm mr-2 text-center" placeholder="Cost">
                         <select name="txtProdCostCurr" id="txtProdCostCurr" class="custom-select custom-select-sm mr-2 txt-curr-code">
-                            <option value>CURR</option>
+                            <option value>Currency</option>
+							<?php echo get_curr_options(); ?>
                         </select>
                     </div>
                 </div>
@@ -136,7 +145,8 @@ $this->load->view('templates/loader');
                     <div class="d-flex flex-row">
                         <input type="number" step="any" name="txtProdPrice" id="txtProdPrice" class="form-control form-control-sm mr-2 text-center" placeholder="Price">
                         <select name="txtProdPriceCurr" id="txtProdPriceCurr" class="custom-select custom-select-sm mr-2 txt-curr-code">
-                            <option value>CURR</option>
+                            <option value>Currency</option>
+							<?php echo get_curr_options(); ?>
                         </select>
                     </div>
                 </div>
@@ -158,6 +168,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtIpQty" id="txtIpQty" class="form-control form-control-sm text-center mr-2" placeholder="Qty" required>
 						<select name="txtIpQtyUom" id="txtIpQtyUom" class="custom-select custom-select-sm mr-2 txt-uom-count" required>
 							<option value>UOM</option>
+							<?php echo get_uom_options('Count'); ?>
 						</select>
 					</div>
 				</div>
@@ -170,6 +181,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtIpWt" id="txtIpWt" class="form-control form-control-sm text-center mr-2" placeholder="Wt" required>
 						<select name="txtIpWtUom" id="txtIpWtUom" class="custom-select custom-select-sm mr-2 txt-uom-weight" required>
 							<option value>UOM</option>
+							<?php echo get_uom_options('Weight'); ?>
 						</select>
 					</div>
 				</div>
@@ -184,6 +196,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtIpHt" id="txtIpHt" class="form-control form-control-sm text-center mx-1" placeholder="H" required>
 						<select name="txtIpDimUom" id="txtIpDimUom" class="custom-select custom-select-sm mr-2 txt-uom-length" required>
 							<option value>UOM</option>
+							<?php echo get_uom_options('Length'); ?>
 						</select>
 					</div>
 				</div>
@@ -203,6 +216,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtMpQty" id="txtMpQty" class="form-control form-control-sm text-center mr-2" placeholder="Qty" required>
 						<select name="txtMpQtyUom" id="txtMpQtyUom" class="custom-select custom-select-sm mr-2 txt-uom-count" required>
 							<option value>UOM</option>
+							<?php echo get_uom_options('Count'); ?>
 						</select>
 					</div>
 				</div>
@@ -215,6 +229,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtMpWt" id="txtMpWt" class="form-control form-control-sm text-center mr-2" placeholder="Wt" required>
 						<select name="txtMpWtUom" id="txtMpWtUom" class="custom-select custom-select-sm mr-2 txt-uom-weight" required>
 							<option value>UOM</option>
+							<?php echo get_uom_options('Weight'); ?>
 						</select>
 					</div>
 				</div>
@@ -229,6 +244,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtMpHt" id="txtMpHt" class="form-control form-control-sm text-center mx-1" placeholder="H" required>
 						<select name="txtMpDimUom" id="txtMpDimUom" class="custom-select custom-select-sm mr-2 txt-uom-length" required>
 							<option value>UOM</option>
+							<?php echo get_uom_options('Length'); ?>
 						</select>
 					</div>
 				</div>
@@ -237,6 +253,10 @@ $this->load->view('templates/loader');
 	</div>
     <div class="form-group row mt-auto">
 		<div class="col-md-12 text-right">
+			<span class="text-muted small">
+				<i class="las la-info-circle la-lg text-primary"></i>
+				Enter all the required fields in all tabs to enable "Create Product" button.
+			</span>	
 			<button type="submit" name="btnCreateProd" id="btnCreateProd" class="btn btn-sm btn-primary" disabled>Create Product</button>
 			<a href="javascript: history.back();" class="btn btn-sm btn-secondary">Cancel</a>		
 		</div>
@@ -245,161 +265,6 @@ $this->load->view('templates/loader');
 
 <?php 
 /* Footer */
-//$this->load->view('items/material_create_script');
+$this->load->view('items/product_create_script');
 $this->load->view('templates/footer'); 
 ?>
-
-<script>
-$(document).ready(function(){
-	// Highlight all required fields
-	$('[required]').css('border-color', 'red');
-
-	/**
-	 * Enable create product submit button 
-	 * when all required fields have value
-	 */
-	$('[required]').on('keyup change paste', function()
-	{	
-		// Start counter to count number of req inputs with values
-		var reqInputsWithValues = 0;
-
-		// Loop through each required fields
-		$('[required]').each(function(){
-			if($(this).val())
-			{
-				// Remove red border from req inputs
-				$(this).css('border-color', '');
-
-				// Increase the req inputs values as they filled up
-				reqInputsWithValues += 1;
-			}
-			else $(this).css('border-color', 'red');
-		});
-
-		// Enable/Disable submit button
-		if(reqInputsWithValues == $('[required]').length) 
-		{
-			$('#btnCreateProd').prop("disabled", false); 
-		}
-		else {
-			$('#btnCreateProd').prop("disabled", true); 
-		}
-	});
-
-	/**
-	 * Get product categories on page load
-	 */
-	$.ajax({
-		type: "get", 
-		url: "<?php echo base_url('items/products/get_prod_cat_options/print') ?>",  
-		success: function(res)
-		{	
-			$('#txtProdCat').append(res);
-		}, 
-		error: function(xhr)
-		{
-			var xhr_text = xhr.status+" "+xhr.statusText;
-			swal({title: "Request Error!", text: xhr_text, icon: "error"});
-		}
-	});
-
-	/**
-	 * Get unit of measurements
-	 */
-	get_uom('Count', '.txt-uom-count'); 
-	get_uom('Length', '.txt-uom-length'); 
-	get_uom('Weight', '.txt-uom-weight'); 
-	get_uom('Time', '.txt-uom-time'); 
-
-	function get_uom(unit_type, elem_class)
-	{
-		$.ajax({
-			type: "get", 
-			url: "<?php echo base_url('systems/uom/get_uom_options') ?>",  
-			data: "unittype="+unit_type,  
-			success: function(res)
-			{	
-				$(elem_class).append(res);
-			}, 
-			error: function(xhr)
-			{
-				var xhr_text = xhr.status+" "+xhr.statusText;
-				swal({title: "Request Error!", text: xhr_text, icon: "error"});
-			}
-		});
-	}
-
-	/**
-	 * Ajax request to get currency options
-	 */
-	$.ajax({
-		type: "get", 
-		url: "<?php echo base_url('systems/currencies/get_curr_options') ?>",  
-		data: "currtype=Enabled",  
-		success: function(res)
-		{	
-			$('.txt-curr-code').append(res);
-		}, 
-		error: function(xhr)
-		{
-			var xhr_text = xhr.status+" "+xhr.statusText;
-			swal({title: "Request Error!", text: xhr_text, icon: "error"});
-		}
-	});
-	
-	/**
-	 * Get products sub category on changing category
-	 */
-	$('#txtProdCat').on('change', function(){
-		$.ajax({
-			type: "get", 
-			url: "<?php echo base_url('items/products/get_prod_subcat_options/print'); ?>", 
-			data: "catname="+$(this).val(), 
-			success: function(res)
-			{	
-				$('#txtProdSubCat').html(res);
-			}, 
-			error: function(xhr)
-			{
-				var xhr_text = xhr.status+" "+xhr.statusText;
-				swal({title: "Request Error!", text: xhr_text, icon: "error"});
-			}
-		});
-	});
-
-	/**
-	 * Submit create product form
-	 */
-	$('#formCreateProd').submit(function(event){
-		event.preventDefault(); 
-
-		$.ajax({
-			type: "post", 
-			url: "<?php echo base_url('items/products/create_product'); ?>", 
-			data: $(this).serialize(), 
-			dataType: "json", 
-			beforeSend: function()
-			{
-				$('#loader').show(); 
-			}, 
-			complete: function()
-			{
-				$('#loader').hide(); 
-			}, 
-			success: function(res)
-			{
-				if(res.status == 'success')
-				{
-					$('#resCreateProd').html(res.data);
-				}
-				else $('#resCreateProd').html(res.data);
-			}, 
-			error: function(xhr)
-			{
-				var xhr_text = xhr.status+" "+xhr.statusText;
-				swal({title: "Request Error!", text: xhr_text, icon: "error"});
-			}
-		});
-	});
-}); 
-</script>

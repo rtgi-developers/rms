@@ -52,6 +52,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtMatlMOQ" id="txtMatlMOQ" class="form-control form-control-sm mr-2 text-center" placeholder="Qty">
 						<select name="txtMatlMOQUnit" id="txtMatlMOQUnit" class="form-control form-control-sm mr-2 txt-uom">
 							<option value>UOM</option>
+							<?php echo get_uom_options('Count'); ?>
 						</select>
 					</div>
 				</div>
@@ -64,6 +65,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtMatlWt" id="txtMatlWt" class="form-control form-control-sm text-center mr-2" placeholder="Wt">
 						<select name="txtMatlWtUnit" id="txtMatlWtUnit" class="form-control form-control-sm mr-2 txt-uom">
 							<option value>UOM</option>
+							<?php echo get_uom_options('Weight'); ?>
 						</select>
 					</div>
 				</div>
@@ -78,6 +80,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtMatlHt" id="txtMatlHt" class="form-control form-control-sm text-center mx-1" placeholder="H">
 						<select name="txtMatlDimUnit" id="txtMatlDimUnit" class="form-control form-control-sm mr-2 txt-uom">
 							<option value>UOM</option>
+							<?php echo get_uom_options('Length'); ?>
 						</select>
 					</div>
 				</div>

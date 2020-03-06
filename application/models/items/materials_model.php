@@ -41,13 +41,10 @@ class Materials_model extends CI_model
 	public function get_all_matl($limit, $start, $col, $dir)
 	{	
 		$query = $this->db
-						->select('materials.*, categories.*, count.unit_id AS count_unit_id, count.unit_abbr AS count_unit, weight.unit_id AS wt_unit_id, weight.unit_abbr AS wt_unit, dimension.unit_id AS dim_unit_id, dimension.unit_abbr as dim_unit')
+						->select('materials.*, categories.*')
 						->limit($limit, $start)
 						->order_by($col, $dir)
 						->join('categories', 'materials.matl_cat_id = categories.cat_id', 'left')
-						->join('uom count', 'materials.matl_count_uom = count.unit_id', 'left')
-						->join('uom weight', 'materials.matl_weight_uom = weight.unit_id', 'left')
-						->join('uom dimension', 'materials.matl_dim_uom = dimension.unit_id', 'left')
 						->get('materials');
 
 		if($query->num_rows() > 0) return $query->result();
@@ -79,15 +76,12 @@ class Materials_model extends CI_model
 	public function get_search_matl($limit,$start,$search,$col,$dir)
 	{	
 		$query = $this->db
-						->select('materials.*, categories.*, count.unit_id AS count_unit_id, count.unit_abbr AS count_unit, weight.unit_id AS wt_unit_id, weight.unit_abbr AS wt_unit, dimension.unit_id AS dim_unit_id, dimension.unit_abbr as dim_unit')
+						->select('materials.*, categories.*')
 						->like('matl_name', $search)
 						->or_like('matl_color', $search)
 						->limit($limit, $start)
 						->order_by($col, $dir)
 						->join('categories', 'materials.matl_cat_id = categories.cat_id', 'left')
-						->join('uom count', 'materials.matl_count_uom = count.unit_id', 'left')
-						->join('uom weight', 'materials.matl_weight_uom = weight.unit_id', 'left')
-						->join('uom dimension', 'materials.matl_dim_uom = dimension.unit_id', 'left')
 						->get('materials');
 
 		if($query->num_rows() > 0) return $query->result();
@@ -184,11 +178,8 @@ class Materials_model extends CI_model
 	public function get_matl_by_id($matlid)
 	{
 		$query = $this->db
-						->select('materials.*, categories.*, count.unit_id AS count_unit_id, count.unit_abbr AS count_unit, weight.unit_id AS wt_unit_id, weight.unit_abbr AS wt_unit, dimension.unit_id AS dim_unit_id, dimension.unit_abbr as dim_unit')
+						->select('materials.*, categories.*')
 						->join('categories', 'materials.matl_cat_id = categories.cat_id', 'left')
-						->join('uom count', 'materials.matl_count_uom = count.unit_id', 'left')
-						->join('uom weight', 'materials.matl_weight_uom = weight.unit_id', 'left')
-						->join('uom dimension', 'materials.matl_dim_uom = dimension.unit_id', 'left')
 						->where('matl_id', $matlid)
 						->get('materials');
 

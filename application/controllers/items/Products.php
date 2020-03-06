@@ -46,6 +46,39 @@ class Products extends CI_Controller
 	}
 
 	/**
+	 * Get category options
+	 *
+	 * @param integer 	$cat_num
+	 * @param boolean 	$output
+	 * @param string  	$sel_cat
+	 * @return void
+	 */
+	/* public function get_cat_options($cat_num, $output = false, $sel_cat = null)
+	{	
+		// 
+		$cat_options = '';
+
+		// Query
+		$result = $this->products_model->get_cat($cat_num); 
+
+		if(!empty($result))
+		{	
+			foreach($result as $row)
+			{
+				if(isset($sel_cat) && $row[0] == $sel_cat)
+				{
+					$cat_options .= '<option value="'.$row['prod_cat_'.$cat_num].'" selected>'.$row['prod_cat_'.$cat_num].'</option>'; 
+				}
+				else $cat_options .= '<option value="'.$row['prod_cat_'.$cat_num].'">'.$row['prod_cat_'.$cat_num].'</option>'; 
+			}
+		}
+
+		if($output) echo $cat_options; 
+		else return $cat_options; 	
+	} */
+
+
+	/**
 	 * Get category options for products
 	 *
 	 * @param string 	$print 	Whether to print the output or just return it

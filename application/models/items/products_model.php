@@ -53,4 +53,23 @@ class Products_model extends CI_model
         }
         else return $this->get_db_error(); 
     }
+
+    /* function get_cat($cat_num, $prev_cat = null)
+    {   
+        $prev_cat_num = $cat_num-1; 
+
+        $this->db->distinct(); 
+        $this->db->select('prod_cat_'.$cat_num); 
+        $this->db->from('products'); 
+        
+        if(isset($prev_cat)) $this->db->where('prod_cat_'.$prev_cat_num, $prev_cat);
+
+        $query = $this->db->get(); 
+
+        if($query->num_rows() > 0) 
+        {
+            return $query->result_array();
+        }
+        else return null;
+    } */
 }

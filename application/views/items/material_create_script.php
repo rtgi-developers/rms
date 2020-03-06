@@ -20,25 +20,6 @@ $(document).ready(function(){
 	});
 
 	/**
-	 * Get unit of measurements
-	 */
-	$.ajax({
-		type: "get", 
-		url: "<?php echo base_url('systems/uom/load_uom_options'); ?>", 
-		dataType: "json", 
-		success: function(resp)
-		{
-			if(resp.status == 'success') $('.txt-uom').append(resp.data);
-			else $('.txt-uom').empty(); 
-		}, 
-		error: function(xhr)
-		{
-			var xhr_text = xhr.status+" "+xhr.statusText;
-			swal({title: "Request Error!", text: xhr_text, icon: "error"});
-		}
-	});
-
-	/**
 	 * Get subcategories on categories change
 	 */
 	$('#txtMatlCat').on('change', function(){

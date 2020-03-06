@@ -17,7 +17,7 @@ class Materials extends CI_Controller
 
 		$this->load->helper('auth_helper'); 
 
-		$this->load->model(array('items/categories_model', 'items/materials_model', 'systems/uom_model'));
+		$this->load->model(array('items/categories_model', 'items/materials_model'));
 	}
 
 	public function index()
@@ -121,7 +121,8 @@ class Materials extends CI_Controller
 									<div class="d-flex flex-row">
 										<input type="number" step="any" name="txtEditMatlMOQ" id="txtEditMatlMOQ" class="form-control form-control-sm mr-2 text-center" placeholder="Qty" value="'.$result['data'][0]['matl_moq'].'">
 										<select name="txtEditMatlMOQUnit" id="txtEditMatlMOQUnit" class="form-control form-control-sm mr-2 txt-uom">
-											'.$this->edit_uom_options($result['data'][0]['count_unit_id'], $result['data'][0]['count_unit']).'
+											'.get_uom_options('Count', $result['data'][0]['matl_moq_uom']).'
+											'.get_uom_options('Length', $result['data'][0]['matl_moq_uom']).'
 										</select>
 									</div>
 								</div>
@@ -133,7 +134,7 @@ class Materials extends CI_Controller
 									<div class="d-flex flex-row">
 										<input type="number" step="any" name="txtEditMatlWt" id="txtEditMatlWt" class="form-control form-control-sm text-center mr-2" placeholder="Wt" value="'.$result['data'][0]['matl_weight'].'">
 										<select name="txtEditMatlWtUnit" id="txtEditMatlWtUnit" class="form-control form-control-sm mr-2 txt-uom">
-										'.$this->edit_uom_options($result['data'][0]['wt_unit_id'], $result['data'][0]['wt_unit']).'
+										'.get_uom_options('Weight', $result['data'][0]['matl_weight_uom']).'
 										</select>
 									</div>
 								</div>
@@ -147,7 +148,7 @@ class Materials extends CI_Controller
 										<input type="number" step="any" name="txtEditMatlWd" id="txtEditMatlWd" class="form-control form-control-sm text-center mx-1" placeholder="W" value="'.$result['data'][0]['matl_width'].'">x
 										<input type="number" step="any" name="txtEditMatlHt" id="txtEditMatlHt" class="form-control form-control-sm text-center mx-1" placeholder="H" value="'.$result['data'][0]['matl_height'].'">
 										<select name="txtEditMatlDimUnit" id="txtEditMatlDimUnit" class="form-control form-control-sm mr-2 txt-uom">
-										'.$this->edit_uom_options($result['data'][0]['dim_unit_id'], $result['data'][0]['dim_unit']).'
+										'.get_uom_options('Length', $result['data'][0]['matl_dim_uom']).'
 										</select>
 									</div>
 								</div>
@@ -246,39 +247,6 @@ class Materials extends CI_Controller
 	}
 
 	/**
-	 * Get unit of measurement select options for edit materia, form 
-	 *
-	 * @param 	int 		$unitid 		Unit id
-	 * @param 	string 		$unitabbr		Unit abbreviation
-	 * @return 	html
-	 */
-	public function edit_uom_options($unitid, $unitabbr)
-	{
-		// Query 
-		$result = $this->uom_model->get_uom(); 
-		
-		$uom_options = '';
-
-        if($result['status'] == true)
-        {
-			foreach($result['data'] as $row)
-			{
-				($row['unit_id'] == $unitid) ? $sel_status = 'selected' : $sel_status = '';
-
-				$uom_options .= '
-					<option value="'.$row['unit_id'].'" '.$sel_status.'>
-						'.$row['unit_abbr'].'
-					</option>
-				';
-			}
-		}
-		else $uom_options .= '<option value="'.$unitid.'">'.$unitabbr.'</option>'; 
-
-		// Return uom options
-		return $uom_options; 
-	}
-
-	/**
 	 * Save material changes
 	 *
 	 * @return json
@@ -307,7 +275,7 @@ class Materials extends CI_Controller
 			$matl_data['matl_weight']     = $this->input->post('txtEditMatlWt');  
 			$matl_data['matl_weight_uom'] = $this->input->post('txtEditMatlWtUnit');  
 			$matl_data['matl_moq']        = $this->input->post('txtEditMatlMOQ');  
-			$matl_data['matl_count_uom']  = $this->input->post('txtEditMatlMOQUnit');  
+			$matl_data['matl_moq_uom']    = $this->input->post('txtEditMatlMOQUnit');  
 			$matl_data['matl_modified_on'] = date('Y-m-d H:i:s');  
 
 			// Query to update changes
@@ -412,9 +380,9 @@ class Materials extends CI_Controller
 			// Loop through query result
 			foreach($result as $row)
 			{	
-				$matl_size = $row->matl_length.'x'.$row->matl_width.'x'.$row->matl_height.' '.$row->dim_unit; 
+				$matl_size = $row->matl_length.'x'.$row->matl_width.'x'.$row->matl_height.' '.$row->matl_dim_uom; 
 				$matl_cat  = $row->cat_type.'>'.$row->cat_name.'>'.$row->subcat_name; 
-				$matl_weight = $row->matl_weight.' '.$row->wt_unit;
+				$matl_weight = $row->matl_weight.' '.$row->matl_weight_uom;
 				
 				$nestedData[0] = $row->matl_name;
                 $nestedData[1] = $matl_size;
@@ -558,7 +526,7 @@ class Materials extends CI_Controller
 			$matl_data['matl_weight']      = $this->input->post('txtMatlWt');  
 			$matl_data['matl_weight_uom']  = $this->input->post('txtMatlWtUnit');  
 			$matl_data['matl_moq']         = $this->input->post('txtMatlMOQ');  
-			$matl_data['matl_count_uom']   = $this->input->post('txtMatlMOQUnit');  
+			$matl_data['matl_moq_uom']     = $this->input->post('txtMatlMOQUnit');  
 			$matl_data['matl_created_on']  = date('Y-m-d H: i: s');  
 			$matl_data['matl_modified_on'] = date('Y-m-d H: i: s'); 
 
