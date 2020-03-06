@@ -45,37 +45,10 @@ class Products extends CI_Controller
 		$this->load->view('items/product_create_view', $page); 
 	}
 
-	/**
-	 * Get category options
-	 *
-	 * @param integer 	$cat_num
-	 * @param boolean 	$output
-	 * @param string  	$sel_cat
-	 * @return void
-	 */
-	/* public function get_cat_options($cat_num, $output = false, $sel_cat = null)
-	{	
-		// 
-		$cat_options = '';
-
-		// Query
-		$result = $this->products_model->get_cat($cat_num); 
-
-		if(!empty($result))
-		{	
-			foreach($result as $row)
-			{
-				if(isset($sel_cat) && $row[0] == $sel_cat)
-				{
-					$cat_options .= '<option value="'.$row['prod_cat_'.$cat_num].'" selected>'.$row['prod_cat_'.$cat_num].'</option>'; 
-				}
-				else $cat_options .= '<option value="'.$row['prod_cat_'.$cat_num].'">'.$row['prod_cat_'.$cat_num].'</option>'; 
-			}
-		}
-
-		if($output) echo $cat_options; 
-		else return $cat_options; 	
-	} */
+	public function get_prod_cat()
+	{
+		
+	}
 
 
 	/**
