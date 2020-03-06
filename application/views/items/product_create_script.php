@@ -54,7 +54,7 @@ $(document).ready(function(){
 	});
 
 	/**
-	 * Get product sub categories on page load
+	 * Get product sub categories on parent category change
 	 */
 	$('#txtProdCat').change(function(){
 		$.ajax({
@@ -77,6 +77,8 @@ $(document).ready(function(){
 	 * Submit create product form
 	 */
 	$('#formCreateProd').submit(function(event){
+		
+		// Prevent form's default behaviour
 		event.preventDefault(); 
 
 		$.ajax({

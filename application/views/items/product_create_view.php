@@ -76,7 +76,7 @@ $this->load->view('templates/loader');
 						<input type="number" step="any" name="txtProdLn" id="txtProdLn" class="form-control form-control-sm text-center mx-1" placeholder="L" required>x
 						<input type="number" step="any" name="txtProdWd" id="txtProdWd" class="form-control form-control-sm text-center mx-1" placeholder="W" required>x
 						<input type="number" step="any" name="txtProdHt" id="txtProdHt" class="form-control form-control-sm text-center mx-1" placeholder="H">
-						<select name="txtProdDimUom" id="txtProdDimUom" class="custom-select custom-select-sm mr-2 txt-uom-length" required>
+						<select name="txtProdSizeUom" id="txtProdSizeUom" class="custom-select custom-select-sm mr-2 txt-uom-length" required>
 							<option value>UOM</option>
 							<?php echo get_uom_options('Length'); ?>
 						</select>
