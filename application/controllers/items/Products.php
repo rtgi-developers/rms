@@ -45,66 +45,16 @@ class Products extends CI_Controller
 		$this->load->view('items/product_create_view', $page); 
 	}
 
-	public function get_prod_cat()
-	{
-		
-	}
-
-
 	/**
-	 * Get category options for products
+	 * Get product categories 
 	 *
-	 * @param string 	$print 	Whether to print the output or just return it
 	 * @return void
 	 */
-	public function get_prod_cat_options($print = null)
-	{	
-		// Declare variable to hold category options
-		$cat_options = '';
-
-		// Query to get categories
-		$result = $this->categories_model->get_cat_by_type('Product'); 
-
-		if($result['status'] == true)
-		{
-			foreach($result['data'] as $row)
-			{
-				$cat_options .=  '<option value="'.$row['cat_name'].'">'.$row['cat_name'].'</option>';
-			}	
-		}
-		else $cat_options .=  '<option value>'.$result['data'].'</option>';
-
-		// Return based on return type
-		if(isset($print)) echo $cat_options; 
-		else return $cat_options;  
-	}
-
-	/**
-	 * Get product sub category based on category name
-	 *
-	 * @param [type] $print
-	 * @return void
-	 */
-	public function get_prod_subcat_options($print = null)
+	public function get_prod_cat_options()
 	{
-		// Declare variable to hold category options
-		$subcat_options = '';
+		$cat_id = $this->input->get('cat-id'); 
 
-		// Query to get categories
-		$result = $this->categories_model->get_subcat_by_catname($this->input->get('catname')); 
-
-		if($result['status'] == true)
-		{
-			foreach($result['data'] as $row)
-			{
-				$subcat_options .=  '<option value="'.$row['cat_id'].'">'.$row['subcat_name'].'</option>';
-			}	
-		}
-		else $subcat_options .=  '<option value>'.$result['data'].'</option>';
-
-		// Return based on return type
-		if(isset($print)) echo $subcat_options; 
-		else return $subcat_options;
+		echo get_cat_options($cat_id);
 	}
 
 	/**

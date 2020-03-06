@@ -25,7 +25,6 @@ $this->load->view('templates/loader');
                     </label>
                     <select name="txtProdCat" id="txtProdCat" class="custom-select custom-select-sm" required>
                         <option value>Select category</option>
-						<?php echo get_cat_options('Product'); ?>
 					</select>
                 </div>
                 <div class="col-md-9">

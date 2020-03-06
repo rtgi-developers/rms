@@ -103,6 +103,20 @@ class Categories_model extends CI_model
 	}
 
 	/**
+	 * Get categories by its parent category id
+	 *
+	 * @param 	integer 	$parent_cat_id 		Categories parent category id
+	 * @return 	void
+	 */
+	public function get_cat_by_parent_id($parent_cat_id)
+	{
+		$query = $this->db->get_where('categories', array('parent_cat_id' => $parent_cat_id)); 
+
+		if($query->num_rows() > 0) return $query->result_array();
+		else return null;
+	}
+
+	/**
 	 * Query to get categories
 	 * 
 	 * @param  string $cattype Category or item type i.e. product or material

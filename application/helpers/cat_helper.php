@@ -23,13 +23,13 @@ $CI->load->config('config_uom');
 $CI->load->model('items/categories_model'); 
 
 /**
- * Get category in HTMl select options
+ * Get cat options by category id 
  *
- * @param [type] $curr_status
+ * @param  integer  $cat_id    Category id
  * @return void
  */
-function get_cat_options($cat_type, $sel_cat_name = null)
-{   
+function get_cat_options($cat_id)
+{
     // Get instance, access CI superobject
     $CI = & get_instance();
 
@@ -37,59 +37,18 @@ function get_cat_options($cat_type, $sel_cat_name = null)
     $cat_options = '';
 
     // Query to get categories
-    $result = $CI->categories_model->get_cat_by_type($cat_type); 
+    $result = $CI->categories_model->get_cat_by_parent_id($cat_id);
 
-    if($result['status'] == true)
-    {  
-        foreach($result['data'] as $row)
-        {   
-            if(isset($sel_cat_name) && $row == $sel_cat_name)
-            {
-                $cat_options .=  '<option value="'.$row['cat_name'].'" selected>'.$row['cat_name'].'</option>';
-            }
-            else {
-                $cat_options .=  '<option value="'.$row['cat_name'].'">'.$row['cat_name'].'</option>';
-            }
-        }
+    if(!empty($result))
+    {
+        foreach($result as $row)
+        {
+            $cat_options .=  '<option value="'.$row['cat_id'].'">'.$row['cat_name'].'</option>';
+        }	
     }
-    else $cat_options .=  '<option value>'.$result['data'].'</option>';
- 
-    return $cat_options; 
-}
+    else $cat_options .=  '<option value>Not available</option>';
 
-/**
- * Get sub category in HTMl select options
- *
- * @param [type] $curr_status
- * @return void
- */
-function get_subcat_options($cat_name, $sel_cat_id = null)
-{   
-    // Get instance, access CI superobject
-    $CI = & get_instance();
-
-    // Declare variable to hold category options
-    $subcat_options = '';
-
-    // Query to get categories
-    $result = $CI->categories_model->get_subcat_by_catname($cat_name);
-
-    if($result['status'] == true)
-    {  
-        foreach($result['data'] as $row)
-        {   
-            if(isset($sel_cat_id) && $row == $sel_cat_id)
-            {
-                $subcat_options .=  '<option value="'.$row['cat_id'].'" selected>'.$row['subcat_name'].'</option>';
-            }
-            else {
-                $subcat_options .=  '<option value="'.$row['cat_id'].'">'.$row['subcat_name'].'</option>';
-            }
-        }
-    }
-    else $subcat_options .=  '<option value>'.$result['data'].'</option>';
- 
-    return $subcat_options; 
+    return $cat_options;    
 }
 
 ?>

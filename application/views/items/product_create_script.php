@@ -38,9 +38,10 @@ $(document).ready(function(){
 	/**
 	 * Get product categories on page load
 	 */
-	/* $.ajax({
+	$.ajax({
 		type: "get", 
-		url: "<?php echo base_url('items/products/get_prod_cat_options/print') ?>",  
+		url: "<?php echo base_url('items/products/get_prod_cat_options') ?>", 
+		data: "cat-id=1", 
 		success: function(res)
 		{	
 			$('#txtProdCat').append(res);
@@ -50,22 +51,16 @@ $(document).ready(function(){
 			var xhr_text = xhr.status+" "+xhr.statusText;
 			swal({title: "Request Error!", text: xhr_text, icon: "error"});
 		}
-	}); */
+	});
 
-	
 	/**
-	 * Get products sub category on changing category
+	 * Get product sub categories on page load
 	 */
-	$('#txtProdCat').on('change', function(){
-		var cat_name = $(this).val();
-
-		console.log("<?php get_subcat_options(".'+cat_name+'."); ?>");
-
-		$('#txtProdSubCat').html("<?php echo get_subcat_options(".'+cat_name+'."); ?>");
-		/*$.ajax({
+	$('#txtProdCat').change(function(){
+		$.ajax({
 			type: "get", 
-			url: "<?php echo base_url('items/products/get_prod_subcat_options/print'); ?>", 
-			data: "catname="+$(this).val(), 
+			url: "<?php echo base_url('items/products/get_prod_cat_options') ?>",  
+			data: "cat-id="+$(this).val(), 
 			success: function(res)
 			{	
 				$('#txtProdSubCat').html(res);
@@ -75,7 +70,7 @@ $(document).ready(function(){
 				var xhr_text = xhr.status+" "+xhr.statusText;
 				swal({title: "Request Error!", text: xhr_text, icon: "error"});
 			}
-		}); */
+		});
 	});
 
 	/**
