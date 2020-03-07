@@ -63,7 +63,7 @@
 	    });
 	</script>
 </head>
-<body class="d-flex flex-column bg-whtesmoke" style="min-height: 100vh">
+<body class="d-flex flex-column bg-whtesmoke min-vh-100">
 	
 	
 

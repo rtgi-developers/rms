@@ -2,7 +2,6 @@
 /*
  * leftnav
  */
-
 .leftnav {
   position: fixed;
   top: 0;
@@ -21,6 +20,7 @@
   padding-top: .5rem;
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  /*z-index: 1;*/
 }
 
 .leftnav .nav-link {
@@ -63,7 +63,6 @@
         			<span class="float-left"><i class="las la-box la-lg"></i> Items</span>
                     <span class="float-right">
                         <i class="las la-angle-right"></i>
-                        <!-- <i class="las la-angle-down content-hide"></i> -->
                     </span>
         		</a>
                 <ul class="collapse flex-column list-unstyled pl-4 pb3" id="submenuItems">
