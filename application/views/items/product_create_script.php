@@ -93,26 +93,6 @@ $(document).ready(function(){
 		});
 	});
 
-	$('#lnkCreateCat-dead').click(function(){
-		var parent_cat_id = $(this).attr('parent-cat-id');
-
-		$.ajax({
-			type: "get", 
-			url: "<?php echo base_url('items/products/get_prod_cat_options_2') ?>",  
-			//data: "cat-id="+$(this).val(), 
-			success: function(res)
-			{	
-				$('#txtParentCat').html(res);
-			}, 
-			error: function(xhr)
-			{
-				var xhr_text = xhr.status+" "+xhr.statusText;
-				swal({title: "Request Error!", text: xhr_text, icon: "error"});
-			}
-		});
-	});
-
-
 	/**
 	 * Submit create product form
 	 */
