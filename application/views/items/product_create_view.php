@@ -18,28 +18,22 @@ $this->load->view('templates/loader');
 	<div class="tab-content d-flex flex-column" id="nav-tabContent" style="min-height: 50vh">
         <div class="tab-pane fade show active" id="navBasicInfo" role="tabpanel" aria-labelledby="navTabBasicInfo">
 			<div class="form-group row">
-				<div class="col-md-3">
-                    <label for="txtProdCat">
-                        Category <br>
-                        <small class="text-muted">Select category to load sub category</small>
-                    </label>
-                    <select name="txtProdCat" id="txtProdCat" class="custom-select custom-select-sm" required>
-                        <option value>Select category</option>
-					</select>
-                </div>
-                <div class="col-md-9">
-                    <label for="txtProdSubCat">
-                        Sub Category <br>
-                        <small class="text-muted">Select product sub category</small>
+				<div class="col-md-12">
+                    <label for="txtProdCatParent">
+                        Product Categories <br>
+                        <small class="text-muted">Select product category and sub categories</small>
 					</label>
 					<div class="d-flex flex-row">
-						<select name="txtProdSubCat" id="txtProdSubCat" class="custom-select custom-select-sm col-md-3 mr-2" required>
-							<option value>Select sub category</option>
+						<select name="txtProdCatParent" id="txtProdCatParent" class="custom-select custom-select-sm mr-2" required>
+							<option value>Select parent category</option>
 						</select>
-						<span>
-							Category or sub category not found? 
-							<a href="<?php echo base_url('items/categories'); ?>" class="text-decoration-none">Create Category</a>
-						</span>
+						<select name="txtProdCatChild1" id="txtProdCatChild1" class="custom-select custom-select-sm mr-2" required>
+								<option value>Select child category 1</option>
+						</select>
+						<select name="txtProdCatChild2" id="txtProdCatChild2" class="custom-select custom-select-sm mr-2">
+								<option value>Select child category 2 (Optional)</option>
+						</select>
+						<a href="" id="lnkCreateCat" class="text-nowrap text-decoration-none" data-toggle="modal" data-target="#mdlCreateCat" data-backdrop="static" data-keyboard="false"><i class="las la-plus-square la-lg"></i> Create new category</a>
 					</div>
 				</div>
 			</div>
@@ -54,7 +48,7 @@ $this->load->view('templates/loader');
 				<div class="col-md-9">
 					<label for="txtProdName">
                         Product Name<br>
-                        <small class="text-muted">Enter product descriptive name avoid special characters as much as possible</small>
+                        <small class="text-muted">Enter product descriptive name and avoid special characters as much as possible</small>
 					</label>
 					<input type="text" name="txtProdName" id="txtProdName" class="form-control form-control-sm mr-2 col-md9" placeholder="Name" required>
 				</div>
@@ -264,6 +258,7 @@ $this->load->view('templates/loader');
 
 <?php 
 /* Footer */
+$this->load->view('items/categories_create_view');
 $this->load->view('items/product_create_script');
 $this->load->view('templates/footer'); 
 ?>

@@ -28,27 +28,86 @@ $CI->load->model('items/categories_model');
  * @param  integer  $cat_id    Category id
  * @return void
  */
-function get_cat_options($cat_id)
+function get_subcat_options($parent_cat_id)
 {
     // Get instance, access CI superobject
     $CI = & get_instance();
 
-    // Declare variable to hold category options
-    $cat_options = '';
-
     // Query to get categories
-    $result = $CI->categories_model->get_cat_by_parent_id($cat_id);
+    $result = $CI->categories_model->get_subcat($parent_cat_id);
 
     if(!empty($result))
     {
+        // Declare variable to hold category options
+        $cat_options = '';
+
         foreach($result as $row)
         {
             $cat_options .=  '<option value="'.$row['cat_id'].'">'.$row['cat_name'].'</option>';
         }	
     }
-    else $cat_options .=  '<option value>Not available</option>';
+    else $cat_options =  '<option value>Not available</option>';
 
     return $cat_options;    
 }
 
+/**
+ * Get categories and their sub-caegories full leneage
+ *
+ * @param   interger    $parent_cat_id      Parent category id
+ * @return  void
+ */
+function get_all_subcat_options($parent_cat_id)
+{
+    // Get instance, access CI superobject
+    $CI = & get_instance();
+
+    // Query to get categories
+    $result = $CI->categories_model->get_all_subcat($parent_cat_id);
+
+    // Validate query result
+    if(!empty($result))
+    {
+        // Declare variable to hold category options
+        $cat_options = '';
+
+        foreach($result as $row)
+        {   
+            $cat_options .=  '<option value="'.$row['cat_id'].'">'.get_cat_path($row['cat_id']).'</option>';
+        }	
+    }
+    else $cat_options =  '<option value>Not available</option>';
+
+    return $cat_options;    
+}
+
+/**
+ * Get category path by category id
+ *
+ * @param   integer     $cat_id     Category id
+ * @return  void
+ */
+function get_cat_path($cat_id)
+{
+    // Get instance, access CI superobject
+    $CI = & get_instance();
+
+    // Query to get categories
+    $result = $CI->categories_model->get_cat_by_id($cat_id);
+
+    // Validate non empty query result
+    if(!empty($result))
+    {   
+        if($result[0]['parent_cat_id'] != '')
+        {
+            $cat_path = get_cat_path($result[0]['parent_cat_id']).' > '.$result[0]['cat_name'];
+        }
+        else {
+            $cat_path = $result[0]['cat_name']; 
+        }
+
+        return $cat_path; 
+    }
+    else return null; 
+}
 ?>

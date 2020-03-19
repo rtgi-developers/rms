@@ -44,7 +44,7 @@ $(document).ready(function(){
 		data: "cat-id=1", 
 		success: function(res)
 		{	
-			$('#txtProdCat').append(res);
+			$('#txtProdCatParent').append(res);
 		}, 
 		error: function(xhr)
 		{
@@ -56,14 +56,14 @@ $(document).ready(function(){
 	/**
 	 * Get product sub categories on parent category change
 	 */
-	$('#txtProdCat').change(function(){
+	$('#txtProdCatParent').change(function(){
 		$.ajax({
 			type: "get", 
 			url: "<?php echo base_url('items/products/get_prod_cat_options') ?>",  
 			data: "cat-id="+$(this).val(), 
 			success: function(res)
 			{	
-				$('#txtProdSubCat').html(res);
+				$('#txtProdCatChild1').html(res);
 			}, 
 			error: function(xhr)
 			{
@@ -72,6 +72,46 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	/**
+	 * Get product sub categories on parent category change
+	 */
+	$('#txtProdCatChild1').change(function(){
+		$.ajax({
+			type: "get", 
+			url: "<?php echo base_url('items/products/get_prod_cat_options') ?>",  
+			data: "cat-id="+$(this).val(), 
+			success: function(res)
+			{	
+				$('#txtProdCatChild2').html(res);
+			}, 
+			error: function(xhr)
+			{
+				var xhr_text = xhr.status+" "+xhr.statusText;
+				swal({title: "Request Error!", text: xhr_text, icon: "error"});
+			}
+		});
+	});
+
+	$('#lnkCreateCat-dead').click(function(){
+		var parent_cat_id = $(this).attr('parent-cat-id');
+
+		$.ajax({
+			type: "get", 
+			url: "<?php echo base_url('items/products/get_prod_cat_options_2') ?>",  
+			//data: "cat-id="+$(this).val(), 
+			success: function(res)
+			{	
+				$('#txtParentCat').html(res);
+			}, 
+			error: function(xhr)
+			{
+				var xhr_text = xhr.status+" "+xhr.statusText;
+				swal({title: "Request Error!", text: xhr_text, icon: "error"});
+			}
+		});
+	});
+
 
 	/**
 	 * Submit create product form

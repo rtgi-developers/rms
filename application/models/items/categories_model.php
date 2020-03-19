@@ -105,10 +105,10 @@ class Categories_model extends CI_model
 	/**
 	 * Get categories by its parent category id
 	 *
-	 * @param 	integer 	$parent_cat_id 		Categories parent category id
+	 * @param 	integer 	$parent_cat_id 		Categorie's parent category id
 	 * @return 	void
 	 */
-	public function get_cat_by_parent_id($parent_cat_id)
+	public function get_subcat($parent_cat_id)
 	{
 		$query = $this->db->get_where('categories', array('parent_cat_id' => $parent_cat_id)); 
 
@@ -117,94 +117,36 @@ class Categories_model extends CI_model
 	}
 
 	/**
-	 * Query to get categories
-	 * 
-	 * @param  string $cattype Category or item type i.e. product or material
-	 * @return array
+	 * Get sub categories of sub categories by its parent category id
+	 *
+	 * @param  	integer  	$parent_cat_id		Categorie's parent category id
+	 * @return 	void
 	 */
-	public function get_cat_by_type($cattype)
+	public function get_all_subcat($parent_cat_id)
 	{	
-		// Query 
-		$this->db->distinct();
-		$this->db->select('cat_name'); 
-		$this->db->from('categories'); 
-		$this->db->where('cat_type', $cattype);
-		$query = $this->db->get();
+		// Query string 
+		$query_string = "SELECT cat_id, cat_name FROM (SELECT * FROM categories ORDER BY cat_id) products_sorted, (SELECT @pv := '$parent_cat_id') initialisation WHERE FIND_IN_SET(parent_cat_id, @pv) > 0 AND @pv := CONCAT(@pv, ',', cat_id)";
 
-		if($query)
-		{
-			if($query->num_rows() > 0)
-			{
-				$result['status'] = true;
-				$result['data']   = $query->result_array();
-			}
-			else {
-				$result['status'] = false;
-				$result['data']   = 'No categories found.';	
-			}
+		// Query
+		$query = $this->db->query($query_string); 
 
-			return $result;
-		}
-		else return $this->get_db_error();
+		// Validate query
+		if($query->num_rows() > 0) return $query->result_array();
+		else return null;
 	}
 
 	/**
-	 * Query to get sub categories
-	 * 
-	 * @param  string $cattype Category or item type i.e. product or material
-	 * @return array
+	 * Get category by it's id
+	 *
+	 * @param 	integer 	$cat_id		Category id
+	 * @return 	void
 	 */
-	public function get_subcat_by_catname($catname)
-	{	
-		// Query 
-		$this->db->select('*'); 
-		$this->db->from('categories'); 
-		$this->db->where('cat_name', $catname);
-		$query = $this->db->get();
-
-		if($query)
-		{
-			if($query->num_rows() > 0)
-			{
-				$result['status'] = true;
-				$result['data']   = $query->result_array();
-			}
-			else {
-				$result['status'] = false;
-				$result['data']   = 'No sub categories found.';	
-			}
-
-			return $result;
-		}
-		else return $this->get_db_error();
-	}
-
-	/**
-	 * Query to get category details
-	 * 
-	 * @param  array 	$catdata 	Category type, category name, sub category
-	 * @return array
-	 */
-	public function get_cat_by_details($catdata)
+	public function get_cat_by_id($cat_id)
 	{
-		// Query 
-		$query = $this->db->get_where('categories', $catdata); 
+		$query = $this->db->get_where('categories', array('cat_id' => $cat_id)); 
 
-		if($query)
-		{
-			if($query->num_rows() > 0)
-			{
-				$result['status'] = true; 
-				$result['data']   = $query->result_array(); 
-			}
-			else {
-				$result['status'] = false; 
-				$result['data']   = 'No records found.'; 	
-			}
-
-			return $result; 
-		}
-		else return $this->get_db_error(); 
+		if($query->num_rows() > 0) return $query->result_array();
+		else return null;
 	}
 
 	/**

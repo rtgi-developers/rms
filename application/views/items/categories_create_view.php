@@ -10,7 +10,7 @@
 			</div>
 			<form id="formCreateCat">
 				<div class="modal-body px-4">
-                    <div class="form-group row content-hide">
+                    <div class="form-group row contenthide">
                         <div class="col-md-12">
                             <label for="txtProdStyleNum">
                                 Category type<br>
@@ -36,6 +36,7 @@
                             </label>
                             <select name="txtParentCat" id="txtParentCat" class="custom-select custom-select-sm" required>
 							<option value>-- Parent Category --</option>
+                            <?php echo get_all_subcat_options(1); ?>
 						</select>
                         </div>
                     </div>

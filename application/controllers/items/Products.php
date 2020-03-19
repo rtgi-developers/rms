@@ -54,7 +54,7 @@ class Products extends CI_Controller
 	{
 		$cat_id = $this->input->get('cat-id'); 
 
-		echo get_cat_options($cat_id);
+		echo get_subcat_options($cat_id);
 	}
 
 	/**
@@ -65,8 +65,8 @@ class Products extends CI_Controller
 	public function create_product()
 	{
 		// Set validation rules
-		$this->form_validation->set_rules('txtProdCat', 'Product category', 'required');
-		$this->form_validation->set_rules('txtProdSubCat', 'Product sub category', 'required'); 
+		$this->form_validation->set_rules('txtProdCatParent', 'Product parent category', 'required');
+		$this->form_validation->set_rules('txtProdCatChild1', 'Product child-1 category', 'required'); 
 		$this->form_validation->set_rules('txtProdStyleNum', 'Style number', 'required'); 
 		$this->form_validation->set_rules('txtProdName', 'Product name', 'required'); 
 		$this->form_validation->set_rules('txtProdColor', 'Product color', 'required'); 
@@ -94,7 +94,15 @@ class Products extends CI_Controller
 		if($this->form_validation->run() == true)
 		{
 			// Array of user inputs
-			$prod_data['prod_cat_id']       = $this->input->post('txtProdSubCat'); 
+			
+			if($this->input->post('txtProdCatChild2') != '')
+			{
+				$prod_data['prod_cat_id']   = $this->input->post('txtProdCatChild2'); 
+			}
+			else {
+				$prod_data['prod_cat_id']   = $this->input->post('txtProdCatChild1'); 
+			}
+
 			$prod_data['prod_style_num']    = $this->input->post('txtProdStyleNum');
 			$prod_data['prod_name']         = $this->input->post('txtProdName');
 			$prod_data['prod_color']        = $this->input->post('txtProdColor');
