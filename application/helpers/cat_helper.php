@@ -63,15 +63,17 @@ function get_all_subcat_options($parent_cat_id)
     $CI = & get_instance();
 
     // Query to get categories
-    $result = $CI->categories_model->get_all_subcat($parent_cat_id);
+    $result_1 = $CI->categories_model->get_cat_by_id($parent_cat_id); 
+    $result_2 = $CI->categories_model->get_all_subcat($parent_cat_id);
+
 
     // Validate query result
-    if(!empty($result))
+    if(!empty($result_1) && !empty($result_2))
     {
         // Declare variable to hold category options
-        $cat_options = '';
+        $cat_options = '<option value="'.$result_1[0]['cat_id'].'">'.get_cat_path($result_1[0]['cat_id']).'</option>';
 
-        foreach($result as $row)
+        foreach($result_2 as $row)
         {   
             $cat_options .=  '<option value="'.$row['cat_id'].'">'.get_cat_path($row['cat_id']).'</option>';
         }	

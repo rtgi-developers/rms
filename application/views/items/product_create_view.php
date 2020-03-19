@@ -256,9 +256,16 @@ $this->load->view('templates/loader');
 	</div>
 </form>
 
+
 <?php 
 /* Footer */
-$this->load->view('items/categories_create_view');
+$this->load->view('items/categories_create_view', [ 'cat_id' => 1]);
 $this->load->view('items/product_create_script');
 $this->load->view('templates/footer'); 
 ?>
+
+<script>
+	$('#mdlCreateCat').on('hidden.bs.modal', function(){
+		window.location.reload();
+    }); 
+</script>

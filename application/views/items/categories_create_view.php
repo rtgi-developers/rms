@@ -10,33 +10,24 @@
 			</div>
 			<form id="formCreateCat">
 				<div class="modal-body px-4">
-                    <div class="form-group row contenthide">
-                        <div class="col-md-12">
-                            <label for="txtProdStyleNum">
-                                Category type<br>
-                                <small class="text-muted">Category type materials or products.</small>
-                            </label>
-                            <input type="text" name="txtCatType" id="txtCatType" class="form-control form-control-sm" required>
-                        </div>
-                    </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <label for="txtCat">
+                            <label for="txtNewCat">
                                 Category<br>
                                 <small class="text-muted">Enter new category name</small>
                             </label>
-                            <input type="text" name="txtCat" id="txtCat" class="form-control form-control-sm" required>
+                            <input type="text" name="txtNewCat" id="txtNewCat" class="form-control form-control-sm" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="txtParentCat">
-                                Parent category <span class="text-muted">(optional)</span><br>
+                                Parent category <br>
                                 <small class="text-muted">Select none if is itself a parent category</small>
                             </label>
                             <select name="txtParentCat" id="txtParentCat" class="custom-select custom-select-sm" required>
 							<option value>-- Parent Category --</option>
-                            <?php echo get_all_subcat_options(1); ?>
+                            <?php echo get_all_subcat_options($cat_id); ?>
 						</select>
                         </div>
                     </div>
@@ -53,3 +44,51 @@
 		</div>
 	</div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        /**
+         * Submit create category form 
+         */
+        $('#formCreateCat').submit(function(event){
+            event.preventDefault(); 
+
+            $.ajax({
+                type: "post", 
+                url: "<?php echo base_url('items/categories/create_cat'); ?>", 
+                data: $(this).serialize(), 
+                dataType: "json", 
+                beforeSend: function()
+                {   
+                    $('#loader').show(); 
+                }, 
+                complete: function()
+                {
+                    $('#loader').hide(); 
+                }, 
+                success: function(res)
+                {
+                    if(res.status == true)
+                    {
+                        swal({title: res.title, text: res.data, icon: res.status});
+                    }
+                    else swal({title: res.title, text: res.data, icon: res.status});
+                }, 
+                error: function(xhr)
+                {
+                    var xhr_text = xhr.status+" "+xhr.statusText;
+			        swal({title: "Request Error!", text: xhr_text, icon: "error"});
+                }
+            });
+        });
+
+        /**
+         * Modal create category on close
+         */
+        $('#mdlCreateCat').on('hidden.bs.modal', function(){
+            window.location.reload();
+        }); 
+    }); 
+
+    
+</script>

@@ -149,6 +149,20 @@ class Categories_model extends CI_model
 		else return null;
 	}
 
+	public function insert_cat($catdata)
+	{
+		$query = $this->db->insert('categories', $catdata); 
+
+		if($query)
+		{
+			$result['status'] = true; 
+			$result['data']   = 'Category created!'; 
+
+			return $result; 
+		}
+		else return $this->get_db_error();
+	}
+
 	/**
 	 * Query to insert new category 
 	 * 

@@ -30,6 +30,50 @@ class Categories extends CI_Controller
 	}
 
 	/**
+	 * Create new category
+	 *
+	 * @return void
+	 */
+	public function create_cat()
+	{	
+		// Set validation rules
+		$this->form_validation->set_rules('txtNewCat', 'New category name', 'required'); 
+		$this->form_validation->set_rules('txtParentCat', 'Parent category', 'required'); 
+
+		// Validate user inputs
+		if($this->form_validation->run() == true)
+		{	
+			// User inputs
+			$cat_data['cat_name']      = $this->input->post('txtNewCat'); 
+			$cat_data['parent_cat_id'] = $this->input->post('txtParentCat');
+			
+			// Query to insert new category
+			$result = $this->categories_model->insert_cat($cat_data); 
+
+			if($result['status'] == true)
+			{
+				$json_data = array(
+					'status' => 'success', 
+					'title'  => 'Category created!', 
+					'data'   => 'You have successfully created a new category.'
+				);
+			}
+			else $json_data = array('status'=>'error', 'title'=>'Oops!', 'data'=>$result['data']);
+
+		}
+		else {
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Missing or invalid inputs!', 
+				'data'   => validation_errors()
+			);
+		}
+
+		// Send json encoded response
+		echo json_encode($json_data); 
+	}
+
+	/**
 	 * Show category table 
 	 * 
 	 * @return html
@@ -280,7 +324,7 @@ class Categories extends CI_Controller
 	 *
 	 * @return void
 	 */
-	public function create_cat()
+	public function create_cats()
 	{
 		// Validate form input
 		$this->form_validation->set_rules('txtCatType', 'Category type', 'required');
