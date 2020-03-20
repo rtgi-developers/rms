@@ -6,35 +6,65 @@ $this->load->view('templates/wrapper');
 $this->load->view('templates/heading');
 $this->load->view('templates/loader'); 
 ?>
+<style>
 
+/* We will use this style with list based category selection */
+.list-group{
+	min-height: 350px;
+    max-height: 300px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+</style>
 <div id="resCreateProd"></div>
 
 <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
-	<a class="nav-item nav-link active" id="navTabBasicInfo" data-toggle="tab" href="#navBasicInfo" role="tab" aria-controls="navBasicInfo" aria-selected="true">Basic Info</a>
-	<a class="nav-item nav-link" id="navTabPackaging" data-toggle="tab" href="#navPackaging" role="tab" aria-controls="navPackaging" aria-selected="false">Packaging</a>
+	<a class="nav-item nav-link active" id="navTabProdCat" data-toggle="tab" href="#navProdCat" role="tab" aria-controls="navProdCat" aria-selected="true">Categories</a>
+	<a class="nav-item nav-link nav-link-next content-hide" id="navTabBasicInfo" data-toggle="tab" href="#navBasicInfo" role="tab" aria-controls="navBasicInfo" aria-selected="true">Basic Info</a>
+	<a class="nav-item nav-link nav-link-next content-hide" id="navTabPackaging" data-toggle="tab" href="#navPackaging" role="tab" aria-controls="navPackaging" aria-selected="false">Packaging</a>
 </div>
 
-<form action="" id="formCreateProd">
+<form id="formCreateProd">
 	<div class="tab-content d-flex flex-column" id="nav-tabContent" style="min-height: 50vh">
-        <div class="tab-pane fade show active" id="navBasicInfo" role="tabpanel" aria-labelledby="navTabBasicInfo">
+		<div class="tab-pane fade show active" id="navProdCat" role="tabpanel" aria-labelledby="navTabProdCat">
+			<div class="form-group row">
+				<div class="col-md-4">
+					<h4>Select Product Categories</h4>	
+				</div>
+			</div>
 			<div class="form-group row">
 				<div class="col-md-12">
-                    <label for="txtProdCatParent">
-                        Product Categories <br>
-                        <small class="text-muted">Select product category and sub categories</small>
+					<label for="txtProdCatParent">
+						Product Categories <br>
+						<small class="text-muted">Select required product category and sub categories to enable other tabs</small>
 					</label>
 					<div class="d-flex flex-row">
 						<select name="txtProdCatParent" id="txtProdCatParent" class="custom-select custom-select-sm mr-2" required>
-							<option value>Select parent category</option>
+							<option value>-- Select Category --</option>
 						</select>
 						<select name="txtProdCatChild1" id="txtProdCatChild1" class="custom-select custom-select-sm mr-2" required>
-								<option value>Select child category 1</option>
+							<option value>-- Select Category --</option>
 						</select>
 						<select name="txtProdCatChild2" id="txtProdCatChild2" class="custom-select custom-select-sm mr-2">
-								<option value>Select child category 2 (Optional)</option>
+							<option value>-- Select Category --</option>
 						</select>
-						<a href="" id="lnkCreateCat" class="text-nowrap text-decoration-none" data-toggle="modal" data-target="#mdlCreateCat" data-backdrop="static" data-keyboard="false"><i class="las la-plus-square la-lg"></i> Create new category</a>
 					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-12">
+					<div class="alert alert-secondary rounded-0" role="alert">
+						Can't find your category? <a href="" id="lnkCreateCat" class="text-nowrap text-decoration-none" data-toggle="modal" data-target="#mdlCreateCat" data-backdrop="static" data-keyboard="false"><!--<i class="las la-plus-square la-lg"></i>--> Create new category</a>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+        <div class="tab-pane fade show" id="navBasicInfo" role="tabpanel" aria-labelledby="navTabBasicInfo">
+			<div class="form-group row">
+				<div class="col-md-4">
+					<h4>Product Basic Information</h4>	
 				</div>
 			</div>
             <div class="form-group row">
@@ -246,12 +276,16 @@ $this->load->view('templates/loader');
 	</div>
     <div class="form-group row mt-auto">
 		<div class="col-md-12 text-right">
-			<span class="text-muted small">
-				<i class="las la-info-circle la-lg text-primary"></i>
-				Enter all the required fields in all tabs to enable "Create Product" button.
-			</span>	
-			<button type="submit" name="btnCreateProd" id="btnCreateProd" class="btn btn-sm btn-primary" disabled>Create Product</button>
 			<a href="javascript: history.back();" class="btn btn-sm btn-secondary">Cancel</a>		
+			<button type="submit" name="btnCreateProd" id="btnCreateProd" class="btn btn-sm btn-primary" disabled>Create Product</button>	
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-md-12 text-right">
+			<p class="text-danger">
+				<i class="las la-exclamation-triangle la-lg"></i>
+				Enter all the required fields in all tabs to enable "Create Product" button.
+			</p>
 		</div>
 	</div>
 </form>

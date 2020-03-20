@@ -39,7 +39,7 @@ function get_subcat_options($parent_cat_id)
     if(!empty($result))
     {
         // Declare variable to hold category options
-        $cat_options = '';
+        $cat_options = '<option value>-- Select Category --</option>';
 
         foreach($result as $row)
         {
@@ -49,6 +49,51 @@ function get_subcat_options($parent_cat_id)
     else $cat_options =  '<option value>Not available</option>';
 
     return $cat_options;    
+}
+
+
+function get_subcat_lists($parent_cat_id)
+{
+    // Get instance, access CI superobject
+    $CI = & get_instance();
+
+    // Query to get categories
+    $result = $CI->categories_model->get_subcat($parent_cat_id);
+
+    $cat_lists = '<!--<div class="col-md-4 pr-0">--><ul class="list-group border border-gainsboro-2 mall">'; 
+
+    if(!empty($result))
+    {
+        // Declare variable to hold category options
+        /* $cat_lists = ''; */
+
+        foreach($result as $row)
+        {
+            $cat_lists .=  '
+                <a href="#" class="list-group-item d-flex justify-content-between align-items-center text-decoration-none lnk-cat-item border-0" cat-id="'.$row['cat_id'].'">
+                    '.$row['cat_name'].'
+                    <i class="las la-angle-right"></i>
+                </a>
+            ';
+        }	
+    }
+    else {
+        $cat_lists .=  '
+            <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                Not Available
+            </li>
+        ';
+    }
+
+    $cat_lists .= '
+        <a href="#" class="list-group-item d-flex justify-content-between align-items-center text-decoration-none border-0">
+            Add Category
+            <i class="las la-plus la-lg"></i>
+        </a>
+        </ul><!--</div>-->
+    '; 
+
+    return $cat_lists;    
 }
 
 /**

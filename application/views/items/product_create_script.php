@@ -1,19 +1,51 @@
 <script>
 $(document).ready(function(){
 	// Highlight all required fields
-	$('[required]').css('border-color', 'red');
+	$('#formCreateProd [required]').css('border-color', 'red');
+
+	/**
+	 * Keep all other tabs hidden exept categories
+	 * And enable them only categories are filled
+	 */
+	$('#navProdCat [required]').on('change', function()
+	{	
+		// Start counter to count number of req inputs with values
+		var reqInputsWithValues = 0;
+		
+		// Loop through each required fields
+		$('#navProdCat [required]').each(function(){
+			if($(this).val())
+			{
+				// Remove red border from req inputs
+				$(this).css('border-color', '');
+
+				// Increase the req inputs values as they filled up
+				reqInputsWithValues += 1;
+			}
+			else $(this).css('border-color', 'red');
+		});
+
+		// Show/Hide other hidden tabs
+		if(reqInputsWithValues == $('#navProdCat [required]').length) 
+		{
+			$('.nav-link-next').show();  
+		}
+		else {
+			$('.nav-link-next').hide(); 
+		}
+	});
 
 	/**
 	 * Enable create product submit button 
 	 * when all required fields have value
 	 */
-	$('[required]').on('keyup change paste', function()
+	$('#formCreateProd [required]').on('keyup change paste', function()
 	{	
 		// Start counter to count number of req inputs with values
 		var reqInputsWithValues = 0;
-
+		
 		// Loop through each required fields
-		$('[required]').each(function(){
+		$('#formCreateProd [required]').each(function(){
 			if($(this).val())
 			{
 				// Remove red border from req inputs
@@ -26,7 +58,7 @@ $(document).ready(function(){
 		});
 
 		// Enable/Disable submit button
-		if(reqInputsWithValues == $('[required]').length) 
+		if(reqInputsWithValues == $('#formCreateProd [required]').length) 
 		{
 			$('#btnCreateProd').prop("disabled", false); 
 		}
@@ -34,7 +66,7 @@ $(document).ready(function(){
 			$('#btnCreateProd').prop("disabled", true); 
 		}
 	});
-
+	
 	/**
 	 * Get product categories on page load
 	 */
@@ -42,9 +74,17 @@ $(document).ready(function(){
 		type: "get", 
 		url: "<?php echo base_url('items/products/get_prod_cat_options') ?>", 
 		data: "cat-id=1", 
+		beforeSend: function()
+		{
+			$('#loader').show();
+		}, 
+		complete: function()
+		{
+			$('#loader').hide(); 
+		}, 		
 		success: function(res)
 		{	
-			$('#txtProdCatParent').append(res);
+			$('#txtProdCatParent').html(res);
 		}, 
 		error: function(xhr)
 		{
@@ -61,6 +101,14 @@ $(document).ready(function(){
 			type: "get", 
 			url: "<?php echo base_url('items/products/get_prod_cat_options') ?>",  
 			data: "cat-id="+$(this).val(), 
+			beforeSend: function()
+			{
+				$('#loader').show();
+			}, 
+			complete: function()
+			{
+				$('#loader').hide(); 
+			}, 	
 			success: function(res)
 			{	
 				$('#txtProdCatChild1').html(res);
@@ -72,6 +120,7 @@ $(document).ready(function(){
 			}
 		});
 	});
+	
 
 	/**
 	 * Get product sub categories on parent category change
@@ -81,6 +130,14 @@ $(document).ready(function(){
 			type: "get", 
 			url: "<?php echo base_url('items/products/get_prod_cat_options') ?>",  
 			data: "cat-id="+$(this).val(), 
+			beforeSend: function()
+			{
+				$('#loader').show();
+			}, 
+			complete: function()
+			{
+				$('#loader').hide(); 
+			}, 	
 			success: function(res)
 			{	
 				$('#txtProdCatChild2').html(res);

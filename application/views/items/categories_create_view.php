@@ -13,7 +13,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="txtNewCat">
-                                Category<br>
+                                <span class="req-after">Category</span><br>
                                 <small class="text-muted">Enter new category name</small>
                             </label>
                             <input type="text" name="txtNewCat" id="txtNewCat" class="form-control form-control-sm" required>
@@ -22,7 +22,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="txtParentCat">
-                                Parent category <br>
+                                <span class="req-after">Parent category</span> <br>
                                 <small class="text-muted">Select none if is itself a parent category</small>
                             </label>
                             <select name="txtParentCat" id="txtParentCat" class="custom-select custom-select-sm" required>
