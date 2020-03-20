@@ -55,7 +55,7 @@ class Categories extends CI_Controller
 				$json_data = array(
 					'status' => 'success', 
 					'title'  => 'Category created!', 
-					'data'   => 'You have successfully created a new category.'
+					'data'   => 'You have successfully created a new category. Reload the parent page to get the newly created category.'
 				);
 			}
 			else $json_data = array('status'=>'error', 'title'=>'Oops!', 'data'=>$result['data']);

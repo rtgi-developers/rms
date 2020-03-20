@@ -84,10 +84,19 @@
 
         /**
          * Modal create category on close
+         *
+         * Blocked because its not a good option and will cause huge problem for the user
+         * if he/she has entered a lot of product details.
+         * 
+         * Better replaced with a custom message upon successfull category creation
+         * that reload the parent page to get the newly created category.
+         *
          */
+        /********************************************************
         $('#mdlCreateCat').on('hidden.bs.modal', function(){
             window.location.reload();
-        }); 
+        });  
+        ********************************************************/
     }); 
 
     
