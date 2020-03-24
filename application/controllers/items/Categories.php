@@ -20,11 +20,16 @@ class Categories extends CI_Controller
 		$this->load->model('items/categories_model');
 	}
 
+	/**
+	 * Default method to load categories view page
+	 *
+	 * @return void
+	 */
 	public function index()
 	{
-		$page['title'] = "Categories";
+		$page['title']       = "Categories";
 		$page['description'] = "Manage categories of products and materials.";
-		$page['table_cat'] = $this->show_cat_table();
+		$page['table_cat']   = $this->show_cat_table();
 
 		$this->load->view('items/categories_view', $page);		
 	}

@@ -13,6 +13,7 @@ $this->load->view('templates/loader');
 
 <?php 
 /* Footer */
+$this->load->view('items/categories_create_view', [ 'cat_name' => 'Materials']);
 $this->load->view('items/material_edit_script');
 $this->load->view('templates/footer'); 
 ?>

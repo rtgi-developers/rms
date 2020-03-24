@@ -41,10 +41,9 @@ class Materials_model extends CI_model
 	public function get_all_matl($limit, $start, $col, $dir)
 	{	
 		$query = $this->db
-						->select('materials.*, categories.*')
+						->select('*')
 						->limit($limit, $start)
 						->order_by($col, $dir)
-						->join('categories', 'materials.matl_cat_id = categories.cat_id', 'left')
 						->get('materials');
 
 		if($query->num_rows() > 0) return $query->result();
@@ -76,12 +75,11 @@ class Materials_model extends CI_model
 	public function get_search_matl($limit,$start,$search,$col,$dir)
 	{	
 		$query = $this->db
-						->select('materials.*, categories.*')
+						->select('*')
 						->like('matl_name', $search)
 						->or_like('matl_color', $search)
 						->limit($limit, $start)
 						->order_by($col, $dir)
-						->join('categories', 'materials.matl_cat_id = categories.cat_id', 'left')
 						->get('materials');
 
 		if($query->num_rows() > 0) return $query->result();

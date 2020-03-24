@@ -27,7 +27,7 @@
                             </label>
                             <select name="txtParentCat" id="txtParentCat" class="custom-select custom-select-sm" required>
 							<option value>-- Parent Category --</option>
-                            <?php echo get_all_subcat_options($cat_id); ?>
+                            <?php echo get_all_subcat_options(get_cat_id_by_name($cat_name)); ?>
 						</select>
                         </div>
                     </div>

@@ -19,6 +19,11 @@ class Categories_model extends CI_model
 
 	}
 
+	/**
+	 * Get query errors
+	 *
+	 * @return void
+	 */
 	public function get_db_error()
 	{
 		$db_error = $this->db->error();
@@ -149,29 +154,29 @@ class Categories_model extends CI_model
 		else return null;
 	}
 
-	public function insert_cat($catdata)
+	/**
+	 * Get category by it's name
+	 *
+	 * @param 	string  $cat_name 	Category name
+	 * @return 	void
+	 */
+	public function get_cat_by_name($cat_name)
 	{
-		$query = $this->db->insert('categories', $catdata); 
+		$query = $this->db->get_where('categories', array('cat_name' => $cat_name)); 
 
-		if($query)
-		{
-			$result['status'] = true; 
-			$result['data']   = 'Category created!'; 
-
-			return $result; 
-		}
-		else return $this->get_db_error();
+		if($query->num_rows() > 0) return $query->result_array();
+		else return null;
 	}
 
 	/**
-	 * Query to insert new category 
-	 * 
-	 * @param 	array 	$catdat 	Cat type, cat name and sub cat name
-	 * @return 	array
+	 * Insret new category 
+	 *
+	 * @param 	array 	$catdata 	Category data array to be inserted
+	 * @return 	void
 	 */
-	public function add_cat($catdat)
+	public function insert_cat($catdata)
 	{
-		$query = $this->db->insert('categories', $catdat); 
+		$query = $this->db->insert('categories', $catdata); 
 
 		if($query)
 		{

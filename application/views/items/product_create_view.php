@@ -35,18 +35,18 @@ $this->load->view('templates/loader');
 			</div>
 			<div class="form-group row">
 				<div class="col-md-12">
-					<label for="txtProdCatParent">
+					<label for="txtProdCat">
 						Product Categories <br>
 						<small class="text-muted">Select required product category and sub categories to enable other tabs</small>
 					</label>
 					<div class="d-flex flex-row">
-						<select name="txtProdCatParent" id="txtProdCatParent" class="custom-select custom-select-sm mr-2" required>
+						<select name="txtProdCat" id="txtProdCat" class="custom-select custom-select-sm mr-2" required>
 							<option value>-- Select Category --</option>
 						</select>
-						<select name="txtProdCatChild1" id="txtProdCatChild1" class="custom-select custom-select-sm mr-2" required>
+						<select name="txtProdSubCat1" id="txtProdSubCat1" class="custom-select custom-select-sm mr-2" required>
 							<option value>-- Select Category --</option>
 						</select>
-						<select name="txtProdCatChild2" id="txtProdCatChild2" class="custom-select custom-select-sm mr-2">
+						<select name="txtProdSubCat2" id="txtProdSubCat2" class="custom-select custom-select-sm mr-2">
 							<option value>-- Select Category --</option>
 						</select>
 					</div>
@@ -58,7 +58,6 @@ $this->load->view('templates/loader');
 						Can't find your category? <a href="" id="lnkCreateCat" class="text-nowrap text-decoration-none" data-toggle="modal" data-target="#mdlCreateCat" data-backdrop="static" data-keyboard="false"><!--<i class="las la-plus-square la-lg"></i>--> Create new category</a>
 					</div>
 				</div>
-				
 			</div>
 		</div>
         <div class="tab-pane fade show" id="navBasicInfo" role="tabpanel" aria-labelledby="navTabBasicInfo">
@@ -293,7 +292,7 @@ $this->load->view('templates/loader');
 
 <?php 
 /* Footer */
-$this->load->view('items/categories_create_view', [ 'cat_id' => 1]);
+$this->load->view('items/categories_create_view', [ 'cat_name' => 'Products']);
 $this->load->view('items/product_create_script');
 $this->load->view('templates/footer'); 
 ?>

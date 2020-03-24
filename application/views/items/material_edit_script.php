@@ -1,25 +1,53 @@
 <script>
 $(document).ready(function(){
-	/*
-	|-----------------------------------------------
-	| GET SUBCATEGORIES ON CATEGORY CHANGE
-	|-----------------------------------------------
-	*/
-	$('#txtEditMatlCat').on('change', function(){
+	/**
+	 * Get product sub categories on parent category change
+	 */
+	$('#txtEditMatlCat').change(function(){
 		$.ajax({
 			type: "get", 
-			url: "<?php echo base_url('items/materials/load_subcat_list') ?>", 
-			data: "catname="+$(this).val(), 
-			dataType: "json", 
-			success: function(resp)
+			url: "<?php echo base_url('items/materials/get_matl_cat_options') ?>",  
+			data: "cat-id="+$(this).val(), 
+			beforeSend: function()
+			{
+				$('#loader').show();
+			}, 
+			complete: function()
+			{
+				$('#loader').hide(); 
+			}, 	
+			success: function(res)
 			{	
-				if(resp.status == 'success') 
-				{
-					$('#txtEditMatlSubCat').html(resp.data);
-				}
-				else {
-					$('#txtEditMatlSubCat').empty();
-				}
+				$('#txtEditMatlSubCat1').html(res);
+			}, 
+			error: function(xhr)
+			{
+				var xhr_text = xhr.status+" "+xhr.statusText;
+				swal({title: "Request Error!", text: xhr_text, icon: "error"});
+			}
+		});
+	});
+	
+
+	/**
+	 * Get product sub categories on parent category change
+	 */
+	$('#txtEditMatlSubCat1').change(function(){
+		$.ajax({
+			type: "get", 
+			url: "<?php echo base_url('items/materials/get_matl_cat_options') ?>",  
+			data: "cat-id="+$(this).val(), 
+			beforeSend: function()
+			{
+				$('#loader').show();
+			}, 
+			complete: function()
+			{
+				$('#loader').hide(); 
+			}, 	
+			success: function(res)
+			{	
+				$('#txtEditMatlSubCat2').html(res);
 			}, 
 			error: function(xhr)
 			{

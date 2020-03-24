@@ -1,16 +1,23 @@
 <script>
 $(document).ready(function(){
 	/**
-	 * Get material categories on page load
+	 * Get product categories on page load
 	 */
 	$.ajax({
 		type: "get", 
-		url: "<?php echo base_url('items/materials/load_cat_list') ?>", 
-		dataType: "json", 
-		success: function(resp)
+		url: "<?php echo base_url('items/materials/get_matl_cat_options') ?>", 
+		data: "cat-id=2", 
+		beforeSend: function()
+		{
+			$('#loader').show();
+		}, 
+		complete: function()
+		{
+			$('#loader').hide(); 
+		}, 		
+		success: function(res)
 		{	
-			if(resp.status == 'success') $('#txtMatlCat').append(resp.data);
-			else $('#txtCat').empty(); 
+			$('#txtMatlCat').html(res);
 		}, 
 		error: function(xhr)
 		{
@@ -20,23 +27,24 @@ $(document).ready(function(){
 	});
 
 	/**
-	 * Get subcategories on categories change
+	 * Get product sub categories on parent category change
 	 */
-	$('#txtMatlCat').on('change', function(){
+	$('#txtMatlCat').change(function(){
 		$.ajax({
 			type: "get", 
-			url: "<?php echo base_url('items/materials/load_subcat_list') ?>", 
-			data: "catname="+$(this).val(), 
-			dataType: "json", 
-			success: function(resp)
+			url: "<?php echo base_url('items/materials/get_matl_cat_options') ?>",  
+			data: "cat-id="+$(this).val(), 
+			beforeSend: function()
+			{
+				$('#loader').show();
+			}, 
+			complete: function()
+			{
+				$('#loader').hide(); 
+			}, 	
+			success: function(res)
 			{	
-				if(resp.status == 'success') 
-				{
-					$('#txtMatlSubCat').html(resp.data);
-				}
-				else {
-					$('#txtMatlSubCat').empty();
-				}
+				$('#txtMatlSubCat1').html(res);
 			}, 
 			error: function(xhr)
 			{
@@ -45,7 +53,36 @@ $(document).ready(function(){
 			}
 		});
 	});
+	
 
+	/**
+	 * Get product sub categories on parent category change
+	 */
+	$('#txtMatlSubCat1').change(function(){
+		$.ajax({
+			type: "get", 
+			url: "<?php echo base_url('items/materials/get_matl_cat_options') ?>",  
+			data: "cat-id="+$(this).val(), 
+			beforeSend: function()
+			{
+				$('#loader').show();
+			}, 
+			complete: function()
+			{
+				$('#loader').hide(); 
+			}, 	
+			success: function(res)
+			{	
+				$('#txtMatlSubCat2').html(res);
+			}, 
+			error: function(xhr)
+			{
+				var xhr_text = xhr.status+" "+xhr.statusText;
+				swal({title: "Request Error!", text: xhr_text, icon: "error"});
+			}
+		});
+	});
+	
 	/**
 	 * Submit create material form
 	 */
@@ -67,10 +104,10 @@ $(document).ready(function(){
 			{
 				$('#loader').hide(); 
 			}, 
-			success: function(resp)
+			success: function(res)
 			{
-				if(resp.status == 'success') $('#resCreateMatl').html(resp.data);
-				else $('#resCreateMatl').html(resp.data);
+				if(res.status == 'success') $('#resCreateMatl').html(res.data);
+				else $('#resCreateMatl').html(res.data);
 			}, 	
 			error: function(xhr)
 			{

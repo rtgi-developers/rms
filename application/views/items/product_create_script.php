@@ -84,7 +84,7 @@ $(document).ready(function(){
 		}, 		
 		success: function(res)
 		{	
-			$('#txtProdCatParent').html(res);
+			$('#txtProdCat').html(res);
 		}, 
 		error: function(xhr)
 		{
@@ -96,7 +96,7 @@ $(document).ready(function(){
 	/**
 	 * Get product sub categories on parent category change
 	 */
-	$('#txtProdCatParent').change(function(){
+	$('#txtProdCat').change(function(){
 		$.ajax({
 			type: "get", 
 			url: "<?php echo base_url('items/products/get_prod_cat_options') ?>",  
@@ -111,7 +111,7 @@ $(document).ready(function(){
 			}, 	
 			success: function(res)
 			{	
-				$('#txtProdCatChild1').html(res);
+				$('#txtProdSubCat1').html(res);
 			}, 
 			error: function(xhr)
 			{
@@ -125,7 +125,7 @@ $(document).ready(function(){
 	/**
 	 * Get product sub categories on parent category change
 	 */
-	$('#txtProdCatChild1').change(function(){
+	$('#txtProdSubCat1').change(function(){
 		$.ajax({
 			type: "get", 
 			url: "<?php echo base_url('items/products/get_prod_cat_options') ?>",  
@@ -140,7 +140,7 @@ $(document).ready(function(){
 			}, 	
 			success: function(res)
 			{	
-				$('#txtProdCatChild2').html(res);
+				$('#txtProdSubCat2').html(res);
 			}, 
 			error: function(xhr)
 			{

@@ -15,10 +15,10 @@ $(document).ready(function(){
 			dataType: "json", 
 			beforeSend: function()
 			{
-				$('#loader').show()
+				$('#loader').show();
 			}, 
 			complete: function(){
-				$('#loader').hide()
+				$('#loader').hide();
 			}, 
 			data: {
 				"<?php echo $this->security->get_csrf_token_name(); ?>" : 
@@ -26,7 +26,7 @@ $(document).ready(function(){
 			}, 
 			error: function()
 			{	
-				$("#tblCat").append('<tbody><tr><td class="align-middle text-center" colspan="4">No materials found!</td></tr></tbody>');
+				$("#tblMatl").html('<tbody><tr><td class="align-middle text-center" colspan="4">No materials found!</td></tr></tbody>');
 			}
 		}, 
 		"createdRow": function(row, data, index)
