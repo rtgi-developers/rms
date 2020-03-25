@@ -41,7 +41,7 @@
 	<!-- Chart.js -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js" integrity="sha256-OHkZxrR7EXZQ8MlUC+Ww2+RedaJSP6DEsAukSt023dU=" crossorigin="anonymous"></script>
 	<!-- OMS custom javascript functions -->
-	<script src="<?php  ?>"></script>
+	<script src="<?php  echo base_url('assets/js/custom_script.js');  ?>"></script>
 	<!-- Custom scripts -->
 	<script type="text/javascript">
 	    $(document).ready(function(){

@@ -80,8 +80,6 @@ class Categories_model extends CI_model
 	{	
 		$query = $this->db
 						->like('cat_name', $search)
-						->or_like('subcat_name', $search)
-						->or_like('cat_type', $search)
 						->limit($limit, $start)
 						->order_by($col, $dir)
 						->get('categories');
@@ -100,8 +98,6 @@ class Categories_model extends CI_model
 	{
 		$query = $this->db
 						->like('cat_name', $search)
-						->or_like('subcat_name', $search)
-						->or_like('cat_type', $search)
 						->get('categories');
 
 		return $query->num_rows();
@@ -169,6 +165,20 @@ class Categories_model extends CI_model
 	}
 
 	/**
+	 * Check category if exist by name and parent id
+	 *
+	 * @param 	string 		$cat_name		Category name 
+	 * @param 	integer 	$parent_cat_id	Parent category id
+	 * @return 	boolean						TRUE or FALSE
+	 */
+	public function is_cat_exist($cat_name, $parent_cat_id)
+	{
+		$query = $this->db->get_where('categories', array('cat_name' => $cat_name, 'parent_cat_id' => $parent_cat_id)); 
+
+		return ($query->num_rows() > 0) ? true : false;
+	}
+
+	/**
 	 * Insret new category 
 	 *
 	 * @param 	array 	$catdata 	Category data array to be inserted
@@ -214,10 +224,12 @@ class Categories_model extends CI_model
 	/**
 	 * Query to deleted item category 
 	 * 
+	 * Not in use because don't think we should delete the category
+	 * 
 	 * @param  int 		$catid 		Category id
 	 * @return array
 	 */
-	public function del_cat($catid)
+	public function delete_cat($catid)
 	{
 		$query = $this->db
 						->where('cat_id', $catid)

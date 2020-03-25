@@ -27,7 +27,16 @@
                             </label>
                             <select name="txtParentCat" id="txtParentCat" class="custom-select custom-select-sm" required>
 							<option value>-- Parent Category --</option>
-                            <?php echo get_all_subcat_options(get_cat_id_by_name($cat_name)); ?>
+                            <?php 
+                                if($cat_name == "All")
+                                {
+                                    echo get_all_subcat_options(get_cat_id_by_name('Products'));
+                                    echo get_all_subcat_options(get_cat_id_by_name('Materials'));
+                                }
+                                else {
+                                    echo get_all_subcat_options(get_cat_id_by_name($cat_name));
+                                }
+                             ?>
 						</select>
                         </div>
                     </div>
@@ -85,6 +94,7 @@
         /**
          * Modal create category on close
          *
+         * Reload parent page: 
          * Blocked because its not a good option and will cause huge problem for the user
          * if he/she has entered a lot of product details.
          * 
@@ -92,11 +102,14 @@
          * that reload the parent page to get the newly created category.
          *
          */
-        /********************************************************
+        
         $('#mdlCreateCat').on('hidden.bs.modal', function(){
-            window.location.reload();
+            // Reset form on close 
+            $('#formCreateCat').trigger('reset'); 
+
+            // Reload parent page on close
+            // window.location.reload(); 
         });  
-        ********************************************************/
     }); 
 
     

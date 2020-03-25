@@ -9,140 +9,59 @@ $this->load->view('templates/loader');
 
 <div id="resCat"></div>
 
-<?php echo $table_cat; ?>
+<style>
+.col-wd-200{
+	word-wrap: break-word;
+	min-width: 200px;
+	max-width: 200px;
+}
+.dataTables_filter, .dataTables_length, .dataTables_info{
+	display: none;
+}
+.table-tool-input:focus {
+	outline: 0 !important;
+	border-color: initial;
+	box-shadow: none;
+	background-color: white !important;
+}
+</style>
 
-<!-- CREATE CATEGORY -->
-<div class="modal fade" id="mdlCreateCat" tabindex="-1" role="dialog" aria-labelledby="titleCreateCat" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-top" role="document">
-		<div class="modal-content rounded-0 border-0">
-			<div class="modal-header rounded-0 bg-slategray text-white">
-				<h5 class="modal-title" id="titleCreateCat">Create Category</h5>
-		        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-		        	<span aria-hidden="true"><i class="las la-times"></i></span>
-		        </button>
-			</div>
-			<form id="formCreateCat">
-				<div class="modal-body px-4">
-					<div class="form-group row">
-						<label for="txtCatType" class="font-weight-bold req-after col-md-4">
-							Category type
-						</label>
-						<div class="col-md-8">
-							<select name="txtCatType" id="txtCatType" class="form-control form-control-sm" required>
-								<option value="">Select</option>
-								<option value="Material">Material</option>
-								<option value="Product">Product</option>
-							</select>
-							<small class="text-muted">
-								Category type material or product.
-							</small>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="txtCat" class="font-weight-bold req-after col-md-4">Category</label>
-						<div class="col-md-8">
-							<input list="listCat" name="txtCat" id="txtCat" class="form-control form-control-sm" autocomplete="off" required>
-							<datalist id="listCat"></datalist>
-							<small class="text-muted">Select category or enter for new.</small>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="txtSubCat" class="font-weight-bold req-after col-md-4">
-							Sub category
-						</label>
-						<div class="col-md-8">
-							<input list="listSubCat" name="txtSubCat" id="txtSubCat" class="form-control form-control-sm" autocomplete="off" required>
-							<datalist id="listSubCat"></datalist>
-							<small class="text-muted">Select sub category or enter for new.</small><br>
-							<span><i class="las la-exclamation-triangle la-lg text-danger"></i> <small class="text-muted">If you select an already existing sub category your create request will result in failure.</small></span>
-						</div>
-					</div>
+<div class="row mb-2">
+	<div class="col-md-10 pr-0">
+		<div class="input-group">
+			<span class="input-group-prepend">
+				<div class="input-group-text order-right-0 border bg-whitesmoke">
+					<i class="la la-search"></i>
 				</div>
-				<div class="modal-footer">
-					<button type="submit" name="btnCreateCat" id="btnCreateCat" class="btn btn-primary btn-sm">
-						Create Category
-					</button>
-					<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
-						Close
-					</button>
-				</div>
-			</form>
+			</span>
+			<input class="form-control form-control-sm py-2 border-left-0 border bg-whitesmoke table-tool-input" type="search" id="txtSearchCat" placeholder="Search all categories">
 		</div>
+	</div>
+	<div class="col-md-2 text-right export-buttons">
+		<a href="#" id="lnkCreateCat" class="btn btn-primary btn-sm btn-block text-nowrap border-gainsboro-2" data-toggle="modal" data-target="#mdlCreateCat" data-backdrop="static" data-keyboard="false">
+			<i class="las la-plus-circle la-lg"></i> Create Category
+		</a>
 	</div>
 </div>
 
-<!-- EDIT CATEGORY -->
-<div class="modal fade" id="mdlEditCat" tabindex="-1" role="dialog" aria-labelledby="titleEditCat" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-top" role="document">
-		<div class="modal-content rounded-0 border-0">
-			<div class="modal-header rounded-0 bg-slategray text-white">
-				<h5 class="modal-title" id="titleEditCat">Edit Category</h5>
-		        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-		        	<span aria-hidden="true"><i class="las la-times"></i></span>
-		        </button>
-			</div>
-			<form id="formEditCat">
-				<div class="modal-body px-4">
-					<div class="form-group row content-hide">
-						<label for="txtEditCatId" class="font-weight-bold req-after col-md-4">
-							Category id
-						</label>
-						<div class="col-md-8">
-							<input type="text" id="txtEditCatId" name="txtEditCatId" class="form-control form-control-sm" required>
-							<small class="text-muted">Do not change the category id.</small>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="txtEditCatType" class="font-weight-bold req-after col-md-4">
-							Category type
-						</label>
-						<div class="col-md-8">
-							<select name="txtEditCatType" id="txtEditCatType" class="form-control form-control-sm" required>
-								<option value="">Select</option>
-								<option value="Material">Material</option>
-								<option value="Product">Product</option>
-							</select>
-							<small class="text-muted">
-								Category type material or product.
-							</small>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="txtEditCat" class="font-weight-bold req-after col-md-4">
-							Category
-						</label>
-						<div class="col-md-8">
-							<input list="listEditCat" name="txtEditCat" id="txtEditCat" class="form-control form-control-sm" autocomplete="off" required>
-							<datalist id="listEditCat"></datalist>
-							<small class="text-muted">Select category or enter for new.</small>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="txtEditSubCat" class="font-weight-bold req-after col-md-4">
-							Sub category
-						</label>
-						<div class="col-md-8">
-							<input list="listEditSubCat" name="txtEditSubCat" id="txtEditSubCat" class="form-control form-control-sm" autocomplete="off" required>
-							<datalist id="listEditSubCat"></datalist>
-							<small class="text-muted">Select sub category or enter for new.</small>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="submit" name="btnUpdCat" id="btnUpdCat" class="btn btn-primary btn-sm">
-						Save Changes
-					</button>
-					<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
-						Close
-					</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
+<table class="table table-sm table-hover border border-gainsboro-2" id="tblCat">
+	<thead>
+		<tr class="bg-whitesmoke">
+			<td class="align-middle text-nowrap font-weight-bold small py-2 text-center">
+				Category Id
+			</td>
+			<td class="align-middle text-nowrap font-weight-bold small py-2 text-left">
+				Category
+			</td>
+			<td class="align-middle text-nowrap font-weight-bold small py-2"></td>
+		</tr>
+	</thead>
+</table>
 
 <?php 
 /* Footer */
+$this->load->view('items/categories_create_view', [ 'cat_name' => 'All']);
+$this->load->view('items/categories_edit_view'); 
 $this->load->view('items/categories_script');
 $this->load->view('templates/footer'); 
 ?>
