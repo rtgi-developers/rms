@@ -8,6 +8,7 @@
  * @copyright 	Copyright (c) 2019, Rituraj Textile & General Industries. (https://rituraj.com/)
  */
 defined('BASEPATH') or exit('No direct script access allowed.');
+
 class Products extends CI_Controller
 {
 	public function __construct()
@@ -186,6 +187,126 @@ class Products extends CI_Controller
 			$json_data['status'] = 'error'; 
 			$json_data['title']  = 'Oops!'; 
 			$json_data['data']   = $html; 
+		}
+
+		// Send json encoded response
+		echo json_encode($json_data);
+	}
+
+	/**
+	 * Get all products using serverside
+	 *
+	 * @return void
+	 */
+	public function get_prod_serverside()
+	{
+		// Columns
+		$columns = array(
+			0 => 'prod_style_num', 
+			1 => 'prod_name', 
+			2 => 'prod_size', 
+			3 => 'prod_color', 
+			4 => 'prod_cat_id', 
+			5 => ''
+		);	
+
+		// Post data
+		$limit  = $this->input->post('length');
+		$start  = $this->input->post('start');
+		$order  = $columns[$this->input->post('order')[0]['column']];
+		$dir    = $this->input->post('order')[0]['dir'];
+		$key    = $this->input->post('search')['value'];
+
+		// Get number of total and filtered
+		$total_data = $this->products_model->count_all_prod();
+		$total_filtered = $total_data;
+
+		// Query based on searched and non-searched keyword
+		if(empty($key))
+		{	
+			// Query to get all materials
+			$result = $this->products_model->get_all_prod($limit,$start,$order,$dir);
+		}
+		else {	
+			// Query to get searched materials
+			$result = $this->products_model->get_search_prod($limit,$start,$key,$order,$dir);
+			$total_filtered = $this->products_model->count_search_prod($key);
+		}
+
+		//  Declare an empty array to hold td values
+		$data = array();
+
+		// Non empty query result
+		if(!empty($result))
+		{
+			// Loop through query result
+			foreach($result as $row)
+			{	
+				$prod_size = $row->prod_length.'x'.$row->prod_width.'x'.$row->prod_height.' '.$row->prod_size_uom; 
+				$prod_cat  = get_cat_path($row->prod_cat_id); 
+				//$matl_weight = $row->matl_weight.' '.$row->matl_weight_uom;
+				
+				// Data to be nested inside data array
+				$nestedData[0] = $row->prod_style_num;
+				$nestedData[1] = $row->prod_name;
+				$nestedData[2] = $prod_size;
+				$nestedData[3] = $row->prod_color;
+				$nestedData[4] = '<small>'.$prod_cat.'</small>';
+				$nestedData[5] = '
+					<div class="d-flex flex-row">
+						<a href="'.base_url('items/product/view_edit_prod?prodid='.$row->prod_id).'"
+							class="px-1 text-decoration-none lnk-edit-prod text-primary">
+							<i class="las la-pencil-alt la-lg"></i>
+						</a>	
+						<a href="#" 
+							class="px-1 text-decoration-none lnk-del-prod text-danger" 
+							title="Delete category" 
+							prod-id="'.$row->prod_id.'">
+							<i class="las la-trash la-lg"></i>
+						</a>
+					</div>
+				';
+
+				// Add nested data elements to data array
+				$data[] = $nestedData;
+			}
+		}
+		
+		// Get data into array
+		$json_data = array(
+			"success" 		  => true, 
+			"type"    		  => 'success',
+			"title"   		  => 'Materials List',
+			"draw"            => intval($this->input->post('draw')),  
+			"recordsTotal"    => intval($total_data),  
+			"recordsFiltered" => intval($total_filtered), 
+			"data"            => $data   
+		);
+
+        // Send json encoded response
+        echo json_encode($json_data);
+	}
+
+	/**
+	 * Delete product 
+	 * 
+	 * @return json
+	 */
+	public function delete_prod()
+	{	
+		// Product id
+		$prod_id = $this->input->get('prodid');
+
+		// Query to delete product
+		$result = $this->products_model->delete_prod($prod_id);
+
+		// Validate query result
+		if($result['status'] == true)
+		{
+			$json_data = array('status'=>'success', 'title'=>'Deleted!', 'data'=>$result['data']);
+		}
+		else {
+			$json_data = array('status'=>'error', 'title'=>'Oops!', 'data'=>$result['data']);
 		}
 
 		// Send json encoded response

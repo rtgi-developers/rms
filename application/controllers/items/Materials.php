@@ -495,10 +495,10 @@ class Materials extends CI_Controller
 	 */
 	public function delete_matl()
 	{	
-		// Category id
+		// Material id
 		$matl_id = $this->input->get('matlid');
 
-		// Query to delete category
+		// Query to delete material
 		$result = $this->materials_model->del_matl($matl_id);
 
 		// Validate query result
