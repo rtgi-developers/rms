@@ -95,12 +95,13 @@ class Materials extends CI_Controller
 				$nestedData[5] = '
 					<div class="d-flex flex-row">
 						<a href="'.base_url('items/materials/view_edit_matl?matlid='.$row->matl_id).'"
-							class="px-1 text-decoration-none lnk-edit-matl text-primary">
+							class="px-1 text-decoration-none lnk-edit-matl text-primary"
+							title="Edit Material">
 							<i class="las la-pencil-alt la-lg"></i>
 						</a>	
 						<a href="#" 
 							class="px-1 text-decoration-none lnk-del-matl text-danger" 
-							title="Delete category" 
+							title="Delete Material" 
 							matl-id="'.$row->matl_id.'">
 							<i class="las la-trash la-lg"></i>
 						</a>
