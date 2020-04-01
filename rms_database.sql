@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2020 at 12:51 PM
+-- Generation Time: Apr 01, 2020 at 10:27 AM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -25,35 +25,62 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bom`
+--
+
+CREATE TABLE `bom` (
+  `prod_id` int(11) NOT NULL,
+  `matl_id` int(11) NOT NULL,
+  `matl_qty` double NOT NULL,
+  `matl_qty_uom` varchar(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `bom`
+--
+
+INSERT INTO `bom` (`prod_id`, `matl_id`, `matl_qty`, `matl_qty_uom`) VALUES
+(26, 11, 20, 'pcs');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `categories`
 --
 
 CREATE TABLE `categories` (
   `cat_id` int(11) NOT NULL,
-  `cat_type` varchar(10) NOT NULL,
-  `cat_name` varchar(35) NOT NULL,
-  `subcat_name` varchar(35) NOT NULL
+  `cat_name` varchar(50) NOT NULL,
+  `parent_cat_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`cat_id`, `cat_type`, `cat_name`, `subcat_name`) VALUES
-(1, 'Material', 'Fabric', 'Cotton Fabric'),
-(2, 'Material', 'Fabric', 'Duck Fabric'),
-(4, 'Material', 'Office Equipment', 'Laser Printer'),
-(5, 'Material', 'Fabric', 'Linen Fabric'),
-(6, 'Material', 'Stationary', 'Gel Pen'),
-(8, 'Product', 'Towels', 'Hand Towels'),
-(9, 'Product', 'Towels', 'Bath Towels'),
-(11, 'Material', 'Packing Material', 'Tape'),
-(12, 'Material', 'Packing Material', 'Crrugated Boxes'),
-(13, 'Material', 'Packing Material', 'Polybag'),
-(14, 'Material', 'Stationary', 'Ball Pen'),
-(15, 'Material', 'Stationary', 'Notebook'),
-(16, 'Material', 'Packing Material', 'Labels'),
-(19, 'Product', 'Towels', 'Wash Towels');
+INSERT INTO `categories` (`cat_id`, `cat_name`, `parent_cat_id`) VALUES
+(1, 'Products', NULL),
+(2, 'Materials', NULL),
+(3, 'Towels', 1),
+(4, 'Bath Towels', 3),
+(5, 'Hand Towels', 3),
+(6, 'Wash Towels', 3),
+(7, 'Ultra Soft', 4),
+(8, 'Zero Twist', 4),
+(9, 'Fabric', 2),
+(10, 'Cotton Fabric', 9),
+(11, 'Duck Fabric', 9),
+(12, 'Linen Fabric', 9),
+(13, 'Natural Fabric', 12),
+(14, 'Cartons', 18),
+(15, 'Rugs', 1),
+(16, 'Outdoor Mats', 15),
+(17, 'Area Rugs', 15),
+(18, 'Packing Materials', 2),
+(19, 'Labels', 18),
+(20, 'Tape', 18),
+(21, 'Kitchen & Linen', 1),
+(22, 'Kitchen Towel', 21);
 
 -- --------------------------------------------------------
 
@@ -270,11 +297,11 @@ CREATE TABLE `materials` (
   `matl_length` double NOT NULL,
   `matl_width` double NOT NULL,
   `matl_height` double NOT NULL,
-  `matl_dim_uom` varchar(10) NOT NULL COMMENT 'Dimensional unit of measurement',
+  `matl_size_uom` varchar(6) NOT NULL COMMENT 'Dimensional unit of measurement',
   `matl_weight` double NOT NULL,
-  `matl_weight_uom` varchar(10) NOT NULL COMMENT 'Weight unit of measurement',
+  `matl_weight_uom` varchar(6) NOT NULL COMMENT 'Weight unit of measurement',
   `matl_moq` double NOT NULL COMMENT 'Minimum order quantity',
-  `matl_count_uom` varchar(10) NOT NULL COMMENT 'Count unit of measurement',
+  `matl_moq_uom` varchar(6) NOT NULL COMMENT 'MOQ unit of measurement',
   `matl_created_on` datetime NOT NULL,
   `matl_modified_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Materials';
@@ -283,19 +310,21 @@ CREATE TABLE `materials` (
 -- Dumping data for table `materials`
 --
 
-INSERT INTO `materials` (`matl_id`, `matl_cat_id`, `matl_name`, `matl_color`, `matl_length`, `matl_width`, `matl_height`, `matl_dim_uom`, `matl_weight`, `matl_weight_uom`, `matl_moq`, `matl_count_uom`, `matl_created_on`, `matl_modified_on`) VALUES
-(1, 13, 'My first material', 'Red', 10, 8, 6, '4', 430, '6', 10, '10', '2020-02-19 08:17:03', '0000-00-00 00:00:00'),
-(2, 5, 'My second material', 'Brown', 8, 5, 3, '1', 678, '6', 500, '10', '2020-02-19 09:19:07', '0000-00-00 00:00:00'),
-(3, 1, 'My third material', 'Black', 8, 4, 1, '4', 10, '7', 5, '12', '2020-02-19 11:58:16', '0000-00-00 00:00:00'),
-(4, 4, 'My fourth material - edited', 'White-Gold', 15, 14, 8, '4', 8, '7', 1, '10', '2020-02-19 11:59:19', '2020-02-22 13:16:44'),
-(5, 13, 'My fifth material', 'Grey', 5, 3, 1, '4', 10, '7', 1000, '10', '2020-02-19 12:00:29', '0000-00-00 00:00:00'),
-(6, 13, 'My sixth material', 'Red', 10, 8, 6, '4', 430, '6', 10, '10', '2020-02-19 08:17:03', '0000-00-00 00:00:00'),
-(7, 4, 'My seventh material edited', 'Blue', 8, 5, 3, '4', 67, '6', 500, '10', '2020-02-19 09:19:07', '2020-02-22 13:14:11'),
-(8, 1, 'My eighth material', 'Black', 8, 4, 1, '4', 10, '7', 5, '12', '2020-02-19 11:58:16', '0000-00-00 00:00:00'),
-(9, 4, 'My ninth material', 'White', 15, 14, 8, '4', 8, '7', 1, '10', '2020-02-19 11:59:19', '0000-00-00 00:00:00'),
-(10, 13, 'My tenth material', 'Grey', 5, 3, 1, '4', 10, '7', 1000, '10', '2020-02-19 12:00:29', '0000-00-00 00:00:00'),
-(11, 4, 'My eleventh material', 'White', 15, 14, 8, '4', 8, '7', 1, '10', '2020-02-19 11:59:19', '0000-00-00 00:00:00'),
-(12, 12, 'ABC Material', 'Chocolate', 8, 4, 2, '4', 79, '6', 1000, '10', '2020-02-22 13:23:16', '2020-02-22 13:23:16');
+INSERT INTO `materials` (`matl_id`, `matl_cat_id`, `matl_name`, `matl_color`, `matl_length`, `matl_width`, `matl_height`, `matl_size_uom`, `matl_weight`, `matl_weight_uom`, `matl_moq`, `matl_moq_uom`, `matl_created_on`, `matl_modified_on`) VALUES
+(1, 13, 'My first material', 'Red', 10, 8, 6, 'in', 430, '6', 10, '10', '2020-02-19 08:17:03', '0000-00-00 00:00:00'),
+(2, 5, 'My second material', 'Brown', 8, 5, 3, 'in', 678, '6', 500, '10', '2020-02-19 09:19:07', '0000-00-00 00:00:00'),
+(4, 4, 'My fourth material - edited', 'White-Gold', 15, 14, 8, 'in', 8, '7', 1, '10', '2020-02-19 11:59:19', '2020-02-22 13:16:44'),
+(5, 13, 'My fifth material', 'Grey', 5, 3, 1, 'in', 10, '7', 1000, '10', '2020-02-19 12:00:29', '0000-00-00 00:00:00'),
+(6, 13, 'My sixth material', 'Red', 10, 8, 6, 'in', 430, '6', 10, '10', '2020-02-19 08:17:03', '0000-00-00 00:00:00'),
+(7, 4, 'My seventh material edited', 'Blue', 8, 5, 3, 'in', 67, '6', 500, '10', '2020-02-19 09:19:07', '2020-02-22 13:14:11'),
+(9, 4, 'My ninth material', 'White', 15, 14, 8, 'in', 8, '7', 1, '10', '2020-02-19 11:59:19', '0000-00-00 00:00:00'),
+(10, 13, 'My tenth material', 'Grey', 5, 3, 1, 'in', 10, '7', 1000, '10', '2020-02-19 12:00:29', '0000-00-00 00:00:00'),
+(11, 4, 'My eleventh material', 'White', 15, 14, 8, 'in', 8, '7', 1, '10', '2020-02-19 11:59:19', '0000-00-00 00:00:00'),
+(13, 2, 'My second 2020 material', 'Brown', 18, 16, 8, 'in', 1420, 'g', 500, 'm', '2020-03-04 07:00:00', '2020-03-04 07:53:43'),
+(14, 11, 'My Duck Duck Go Fabric', 'White', 100, 20, 0.1, 'in', 436, 'g', 200, 'm', '2020-03-21 07:00:00', '2020-03-21 07:00:00'),
+(15, 20, 'Cotton Craft label rolls edited', 'White', 3, 3, 0, 'cm', 350, 'g', 100, 'pcs', '2020-03-24 13:00:00', '2020-03-24 13:21:18'),
+(16, 12, 'Linen fabric made in India - Edited', 'Grey', 60, 8, 0, 'm', 150, 'g', 100, 'm', '2020-03-24 14:00:00', '2020-03-24 14:15:01'),
+(17, 20, 'Amazon packing tape', 'Multi', 2, 2, 0, 'cm', 250, 'g', 10, 'pck', '2020-04-01 09:00:00', '2020-04-01 09:58:45');
 
 -- --------------------------------------------------------
 
@@ -329,7 +358,9 @@ INSERT INTO `notif` (`notif_id`, `notif_msg`, `user_posted`, `time_posted`) VALU
 (26, 'Zeeshan please review po.', 1, '2020-01-22 06:24:53'),
 (27, 'See all notifications', 1, '2020-01-22 06:28:00'),
 (28, 'My new thursday notification.', 1, '2020-01-23 10:08:41'),
-(34, 'Creating testing botification', 1, '2020-01-29 10:26:27');
+(34, 'Creating testing botification', 1, '2020-01-29 10:26:27'),
+(35, 'Lockdown due to Coronavirus', 1, '2020-03-25 17:07:18'),
+(36, 'Cool cool collll', 1, '2020-03-31 12:55:41');
 
 -- --------------------------------------------------------
 
@@ -375,7 +406,13 @@ INSERT INTO `notif_rcpts` (`notif_id`, `user_id`, `is_read`) VALUES
 (27, 1, 1),
 (28, 1, 1),
 (28, 2, 0),
-(34, 1, 1);
+(34, 1, 1),
+(35, 1, 0),
+(35, 2, 0),
+(35, 3, 0),
+(36, 1, 0),
+(36, 2, 0),
+(36, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -394,36 +431,36 @@ CREATE TABLE `permissions` (
 --
 
 INSERT INTO `permissions` (`user_id`, `task_id`, `permission`) VALUES
-(3, 1, 0),
-(3, 4, 0),
-(3, 2, 0),
-(3, 3, 0),
+(2, 1, 0),
+(2, 4, 0),
+(2, 2, 0),
+(2, 3, 0),
+(2, 5, 0),
+(2, 6, 0),
+(2, 7, 0),
+(2, 8, 0),
+(2, 9, 0),
+(2, 10, 1),
+(2, 11, 0),
+(2, 12, 0),
+(2, 13, 0),
+(2, 14, 1),
+(2, 15, 0),
+(3, 21, 0),
+(3, 17, 1),
+(3, 19, 0),
+(3, 20, 0),
 (3, 5, 0),
 (3, 6, 0),
 (3, 7, 0),
-(3, 8, 0),
 (3, 9, 0),
 (3, 10, 1),
 (3, 11, 0),
-(3, 12, 0),
+(3, 12, 1),
 (3, 13, 0),
-(3, 14, 1),
+(3, 14, 0),
 (3, 15, 0),
-(5, 21, 0),
-(5, 17, 1),
-(5, 19, 0),
-(5, 20, 0),
-(5, 5, 0),
-(5, 6, 0),
-(5, 7, 0),
-(5, 9, 0),
-(5, 10, 1),
-(5, 11, 0),
-(5, 12, 1),
-(5, 13, 0),
-(5, 14, 0),
-(5, 15, 0),
-(5, 16, 0);
+(3, 16, 0);
 
 -- --------------------------------------------------------
 
@@ -439,34 +476,34 @@ CREATE TABLE `products` (
   `prod_color` varchar(15) NOT NULL,
   `prod_length` double NOT NULL,
   `prod_width` double NOT NULL,
-  `prod_height` double NOT NULL,
-  `prod_dim_uom` int(11) NOT NULL,
+  `prod_height` double DEFAULT NULL,
+  `prod_size_uom` varchar(6) NOT NULL,
   `prod_weight` double NOT NULL,
-  `prod_weight_uom` int(11) NOT NULL,
+  `prod_weight_uom` varchar(6) NOT NULL,
   `prod_moq` double NOT NULL,
-  `prod_moq_uom` int(11) NOT NULL,
-  `prod_mfg_time` double NOT NULL,
-  `prod_mfg_time_uom` int(11) NOT NULL,
-  `prod_cost` double NOT NULL,
-  `prod_cost_curr` varchar(3) NOT NULL,
-  `prod_price` double NOT NULL,
-  `prod_price_curr` varchar(3) NOT NULL,
+  `prod_moq_uom` varchar(6) NOT NULL,
+  `prod_mfg_time` double DEFAULT NULL,
+  `prod_mfg_time_uom` varchar(6) DEFAULT NULL,
+  `prod_cost` double DEFAULT NULL,
+  `prod_cost_curr` varchar(3) DEFAULT NULL,
+  `prod_price` double DEFAULT NULL,
+  `prod_price_curr` varchar(3) DEFAULT NULL,
   `ip_qty` double NOT NULL,
-  `ip_qty_uom` int(11) NOT NULL,
+  `ip_qty_uom` varchar(6) NOT NULL,
   `ip_weight` double NOT NULL,
-  `ip_weight_uom` int(11) NOT NULL,
+  `ip_weight_uom` varchar(6) NOT NULL,
   `ip_length` double NOT NULL,
   `ip_width` double NOT NULL,
   `ip_height` double NOT NULL,
-  `ip_dim_uom` int(11) NOT NULL,
+  `ip_dim_uom` varchar(6) NOT NULL,
   `mp_qty` double NOT NULL,
-  `mp_qty_uom` int(11) NOT NULL,
+  `mp_qty_uom` varchar(6) NOT NULL,
   `mp_weight` double NOT NULL,
-  `mp_weight_uom` int(11) NOT NULL,
+  `mp_weight_uom` varchar(6) NOT NULL,
   `mp_length` double NOT NULL,
   `mp_width` double NOT NULL,
   `mp_height` double NOT NULL,
-  `mp_dim_uom` int(11) NOT NULL,
+  `mp_dim_uom` varchar(6) NOT NULL,
   `date_created` datetime NOT NULL,
   `date_modified` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Products';
@@ -475,23 +512,29 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`prod_id`, `prod_cat_id`, `prod_style_num`, `prod_name`, `prod_color`, `prod_length`, `prod_width`, `prod_height`, `prod_dim_uom`, `prod_weight`, `prod_weight_uom`, `prod_moq`, `prod_moq_uom`, `prod_mfg_time`, `prod_mfg_time_uom`, `prod_cost`, `prod_cost_curr`, `prod_price`, `prod_price_curr`, `ip_qty`, `ip_qty_uom`, `ip_weight`, `ip_weight_uom`, `ip_length`, `ip_width`, `ip_height`, `ip_dim_uom`, `mp_qty`, `mp_qty_uom`, `mp_weight`, `mp_weight_uom`, `mp_length`, `mp_width`, `mp_height`, `mp_dim_uom`, `date_created`, `date_modified`) VALUES
-(1, 8, '72504-18', 'My first product 2PK hand towel', 'Gold', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '2020-02-28 10:00:00', '2020-02-28 10:00:00'),
-(2, 8, '72504-19', 'My 2nd product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 8, '72504-20', 'My 3rd product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 8, '72504-21', 'My 4th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 8, '72504-22', 'My 5th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 8, '72504-23', 'My 6th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(7, 8, '72504-24', 'My 7th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 8, '72504-25', 'My 8th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(9, 8, '72504-26', 'My 9th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(10, 8, '72504-27', 'My 10th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(11, 8, '72504-28', 'My 11th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(12, 8, '72504-29', 'My 12th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(13, 8, '72504-30', 'My 13th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(14, 8, '72504-31', 'My 14th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(15, 8, '72504-32', 'My 15th product 2PK hand towel', '', 72, 16, 0.5, 4, 346, 6, 500, 14, 15, 18, 75, 'INR', 6, 'USD', 2, 10, 350, 6, 16, 12, 6, 4, 12, 14, 4.2, 7, 20, 14, 10, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(16, 19, '72504-33', 'My first product 2PK hand towel', 'Gold', 12, 10, 8, 4, 185, 6, 500, 10, 20, 18, 0, '', 0, '', 12, 10, 200, 6, 14, 12, 10, 4, 24, 14, 250, 6, 24, 10, 6, 4, '2020-02-29 11:00:00', '2020-02-29 11:00:00');
+INSERT INTO `products` (`prod_id`, `prod_cat_id`, `prod_style_num`, `prod_name`, `prod_color`, `prod_length`, `prod_width`, `prod_height`, `prod_size_uom`, `prod_weight`, `prod_weight_uom`, `prod_moq`, `prod_moq_uom`, `prod_mfg_time`, `prod_mfg_time_uom`, `prod_cost`, `prod_cost_curr`, `prod_price`, `prod_price_curr`, `ip_qty`, `ip_qty_uom`, `ip_weight`, `ip_weight_uom`, `ip_length`, `ip_width`, `ip_height`, `ip_dim_uom`, `mp_qty`, `mp_qty_uom`, `mp_weight`, `mp_weight_uom`, `mp_length`, `mp_width`, `mp_height`, `mp_dim_uom`, `date_created`, `date_modified`) VALUES
+(1, 1, '72504-18', 'My first product 2PK hand towel', 'Gold', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '2020-02-28 10:00:00', '2020-02-28 10:00:00'),
+(5, 1, '72504-22', 'My 5th product 2PK hand towel', '', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, 1, '72504-23', 'My 6th product 2PK hand towel', '', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, 1, '72504-24', 'My 7th product 2PK rugs', '', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(8, 3, '72504-25', 'My 8th product 2PK hand towel', '', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(9, 3, '72504-26', 'My 9th product 2PK hand towel', '', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(10, 4, '72504-27', 'My 10th product 2PK hand towel', '', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(11, 4, '72504-28', 'My 11th product 2PK hand towel', '', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(12, 1, '72504-29', 'My 12th product 2PK hand towel', '', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(13, 1, '72504-30', 'My 13th product 2PK hand towel', '', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(14, 3, '72504-31', 'My 14th product 2PK hand towel', '', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(15, 5, '72504-32', 'My 15th product 2PK hand towel', '', 72, 16, 0.5, '4', 346, '6', 500, '14', 15, '18', 75, 'INR', 6, 'USD', 2, '10', 350, '6', 16, 12, 6, '4', 12, '14', 4.2, '7', 20, 14, 10, '4', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(16, 5, '72504-33', 'My first product 2PK hand towel', 'Gold', 12, 10, 8, '4', 185, '6', 500, '10', 20, '18', 0, '', 0, '', 12, '10', 200, '6', 14, 12, 10, '4', 24, '14', 250, '6', 24, 10, 6, '4', '2020-02-29 11:00:00', '2020-02-29 11:00:00'),
+(17, 1, '72504-18', 'My first product 2PK hand towel', 'Gold', 18, 12, 10, 'in', 500, 'g', 1000, 'sets', 15, 'days', 10, 'USD', 15, 'USD', 2, 'pcs', 1000, 'g', 25, 24, 8, 'in', 24, 'sets', 20000, 'g', 50, 48, 16, 'in', '2020-03-03 12:00:00', '2020-03-03 12:00:00'),
+(18, 6, '72516-18', 'My new cool product 2PK wash towel', 'Tan', 20, 18, 14, 'in', 500, 'g', 1000, 'sets', 15, 'days', 12, 'USD', 15, 'USD', 2, 'pcs', 1000, 'g', 35, 30, 15, 'in', 24, 'sets', 24000, 'g', 40, 30, 15, 'in', '2020-03-06 10:00:00', '2020-03-06 10:00:00'),
+(20, 5, '78184-10', 'MyBlue bird style 2PK hand towel', 'Blue', 18, 14, 0, 'in', 200, 'g', 500, 'ea', 0, '', 9.99, 'USD', 12.99, 'USD', 2, 'pcs', 1000, 'g', 36, 28, 16, 'in', 12, 'sets', 12000, 'g', 40, 30, 17, 'in', '2020-03-06 11:00:00', '2020-03-06 11:00:00'),
+(21, 6, '72534-18', 'My first product 2PK wash towel', 'Gold', 18, 14, 8, 'in', 434, 'g', 1000, 'sets', 0, '', 0, '', 0, '', 2, 'pcs', 868, 'g', 8, 6, 2.25, 'in', 12, 'sets', 18, 'kg', 20, 16, 7, 'in', '2020-03-13 09:00:00', '2020-03-13 09:00:00'),
+(22, 8, '72504-18', 'My first product 2PK hand towel', 'Gold', 18, 16, 4, 'in', 386, 'g', 500, 'pcs', 0, '', 0, '', 0, '', 2, 'pcs', 698, 'g', 20, 16, 8, 'in', 12, 'pcs', 18, 'kg', 26, 24, 12, 'in', '2020-03-13 10:00:00', '2020-03-13 10:00:00'),
+(23, 5, '72504-18', 'My first product 2PK hand towel', 'Gold', 18, 16, 4, 'in', 386, 'g', 500, 'pcs', 0, '', 0, '', 0, '', 2, 'pcs', 698, 'g', 20, 16, 8, 'in', 12, 'pcs', 18, 'kg', 26, 24, 12, 'in', '2020-03-13 10:00:00', '2020-03-13 10:00:00'),
+(24, 17, '72504-18', 'My first product 2PK hand towel', 'Gold', 18, 16, 0, 'in', 40, 'g', 500, 'pcs', 0, '', 0, '', 0, '', 2, 'pcs', 200, 'g', 30, 24, 20, 'in', 12, 'pcs', 800, 'g', 60, 48, 40, 'in', '2020-03-20 12:00:00', '2020-03-20 12:00:00'),
+(25, 16, '62548-48', 'OUTDOOR RUBBER MATS', 'BROWN', 18, 10, 0, 'in', 156, 'g', 200, 'pcs', 0, '', 0, '', 0, '', 1, 'pcs', 160, 'g', 8, 6, 3, 'in', 30, 'pcs', 4.8, 'kg', 36, 30, 15, 'in', '2020-03-24 14:00:00', '2020-03-24 14:00:00'),
+(26, 5, '12345-36', '6PK SET HAND TOWEL', 'WHITE', 28, 16, 0, 'in', 150, 'g', 50, 'sets', 0, '', 0, '', 0, '', 6, 'pcs', 900, 'g', 18, 16, 4, 'in', 10, 'sets', 9, 'kg', 42, 36, 28, 'in', '2020-04-01 10:00:00', '2020-04-01 10:00:00');
 
 -- --------------------------------------------------------
 
@@ -535,30 +578,30 @@ INSERT INTO `tasks` (`task_id`, `task_name`, `task_cat`, `task_class`, `task_met
 (19, 'Create notification', 'Notification_Settings', 'notifs', 'create_notif', 'settings/', 1),
 (20, 'Delete notification', 'Notification_Settings', 'notifs', 'delete_notif', 'settings/', 1),
 (21, 'View user logs page', 'Logs_Settings', 'logs', 'index', 'settings/', 1),
-(22, 'View categories page', 'Item_Categories', 'categories', 'index', 'items/', 1),
-(23, 'Get all categories table', 'Item_Categories', 'categories', 'get_cat_serverside', 'items/', 0),
-(24, 'Delete category', 'Item_Categories', 'categories', 'delete_cat', 'items/', 1),
-(25, 'Load categories datalist options', 'Item_Categories', 'categories', 'load_cat_list', 'items/', 0),
-(26, 'Load sub categories datalist options', 'Item_Categories', 'categories', 'load_subcat_list', 'items/', 0),
-(27, 'Create category', 'Item_Categories', 'categories', 'create_cat', 'items/', 1),
-(28, 'Edit and update category', 'Item_Categories', 'categories', 'save_cat_changes', 'items/', 1),
-(42, 'View materials page', 'Item_Materials', 'materials', 'index', 'items/', 1),
-(43, 'Get all materials table', 'Item_Materials', 'materials', 'get_matl_serverside', 'items/', 0),
-(44, 'View create materials page', 'Item_Materials', 'materials', 'view_create_matl', 'items/', 1),
-(45, 'Load categories select options', 'Item_Materials', 'materials', 'load_cat_list', 'items/', 0),
-(46, 'Load sub categories select options', 'Item_Materials', 'materials', 'load_subcat_list', 'items/', 0),
-(47, 'Create material', 'Item_Materials', 'materials', 'create_matl', 'items/', 0),
-(48, 'View edit materials page', 'Item_Materials', 'materials', 'view_edit_matl', 'items/', 1),
-(49, 'Save material changes', 'Item_Materials', 'materials', 'save_matl_changes', 'items/', 0),
-(50, 'Delete material', 'Item_Materials', 'materials', 'delete_matl', 'items/', 1),
 (52, 'Load measurement units select options', 'System_Measurement_Units', 'uom', 'load_uom_options', 'systems/', 0),
-(53, '', '', 'products', 'index', 'items/', 1),
-(54, '', '', 'products', 'view_create_prod', 'items/', 1),
-(55, '', '', 'categories', 'get_cat_options', 'items/', 1),
-(56, '', '', 'products', 'get_prod_cat_options', 'items/', 1),
-(57, '', '', 'products', 'get_prod_subcat_options', 'items/', 1),
-(58, '', '', 'uom', 'get_uom_options', 'systems/', 1),
-(59, '', '', 'products', 'create_product', 'items/', 1);
+(74, 'View categories page', 'Categories', 'categories', 'index', 'items/', 1),
+(75, 'Get all categories table', 'Categories', 'categories', 'get_cat_serverside', 'items/', 0),
+(76, 'Create category', 'Categories', 'categories', 'create_cat', 'items/', 1),
+(77, 'Update category', 'Categories', 'categories', 'save_cat_changes', 'items/', 1),
+(78, 'View materials page', 'Materials', 'materials', 'index', 'items/', 1),
+(79, 'Get all categories in table', 'Materials', 'materials', 'get_matl_serverside', 'items/', 0),
+(80, 'View create material page', 'Materials', 'materials', 'view_create_matl', 'items/', 0),
+(81, 'Get material category options', 'Materials', 'materials', 'get_matl_cat_options', 'items/', 0),
+(82, 'Create material', 'Materials', 'materials', 'create_matl', 'items/', 1),
+(83, 'View edit material page', 'Materials', 'materials', 'view_edit_matl', 'items/', 0),
+(84, 'Update material', 'Materials', 'materials', 'save_matl_changes', 'items/', 1),
+(85, 'Delete material', 'Materials', 'materials', 'delete_matl', 'items/', 1),
+(86, 'View products page', 'Products', 'products', 'index', 'items/', 1),
+(87, 'Get all products in table', 'Products', 'products', 'get_prod_serverside', 'items/', 0),
+(88, 'View create product page', 'Products', 'products', 'view_create_prod', 'items/', 0),
+(89, 'Get product category options', 'Products', 'products', 'get_prod_cat_options', 'items/', 0),
+(90, 'Create product', 'Products', 'products', 'create_product', 'items/', 1),
+(91, 'View product BOM page', 'Products', 'bom', 'index', 'items/', 0),
+(92, 'Get material description BOM addition', 'Products', 'bom', 'get_matl_desc_by_id', 'items/', 0),
+(93, 'Get material options for BOM addition', 'Products', 'bom', 'get_matl_options_by_search', 'items/', 0),
+(94, 'Add BOM to the product', 'Products', 'bom', 'add_bom', 'items/', 1),
+(95, 'Delete BOM of a product', 'Products', 'bom', 'delete_bom', 'items/', 1),
+(96, 'Delete product', 'Products', 'products', 'delete_prod', 'items/', 1);
 
 -- --------------------------------------------------------
 
@@ -626,12 +669,19 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `phone`, `gender`, `dob`, `title`, `date_regd`, `role`, `is_verified`) VALUES
 (1, 'Tarique', 'tarique@rituraj.com', '$2y$10$xYU8x7mxFQrC23blDOOI0.bpypr8Sr9kDLZ6ejLKnwVyr2aaDCr7G', '', '', '0000-00-00', '', '2019-12-04 13:29:43', 'ADMIN', 1),
-(3, 'Accounts', 'accounts@orientoriginals.com', '$2y$10$D92qVcReJcBhxBxXK7xRiug58aFYM44SFizRr23wVYgbJJIpkktkq', '', '', '0000-00-00', '', '2020-01-24 07:11:13', 'BASIC', 1),
-(5, 'Tarique Google', 'mtarique001@gmail.com', '$2y$10$trLFpKlnvwsEMrB0wRNyAu1Bx8DAcXv7SZRz8MlghdggI1ZycZ7sO', '', '', '0000-00-00', '', '2020-01-29 12:10:20', 'BASIC', 1);
+(2, 'Accounts', 'accounts@orientoriginals.com', '$2y$10$D92qVcReJcBhxBxXK7xRiug58aFYM44SFizRr23wVYgbJJIpkktkq', '', '', '0000-00-00', '', '2020-01-24 07:11:13', 'BASIC', 1),
+(3, 'Tarique Google', 'mtarique001@gmail.com', '$2y$10$trLFpKlnvwsEMrB0wRNyAu1Bx8DAcXv7SZRz8MlghdggI1ZycZ7sO', '', '', '0000-00-00', '', '2020-01-29 12:10:20', 'BASIC', 1);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `bom`
+--
+ALTER TABLE `bom`
+  ADD UNIQUE KEY `prod_matl_id` (`prod_id`,`matl_id`),
+  ADD KEY `fk_bom_materials` (`matl_id`);
 
 --
 -- Indexes for table `categories`
@@ -656,7 +706,8 @@ ALTER TABLE `logs`
 -- Indexes for table `materials`
 --
 ALTER TABLE `materials`
-  ADD PRIMARY KEY (`matl_id`);
+  ADD PRIMARY KEY (`matl_id`),
+  ADD KEY `fk_materials_categories` (`matl_cat_id`);
 
 --
 -- Indexes for table `notif`
@@ -668,7 +719,8 @@ ALTER TABLE `notif`
 -- Indexes for table `notif_rcpts`
 --
 ALTER TABLE `notif_rcpts`
-  ADD KEY `fk_rcpt_notif` (`notif_id`);
+  ADD KEY `fk_rcpt_notif` (`notif_id`),
+  ADD KEY `fk_rcpt_users` (`user_id`);
 
 --
 -- Indexes for table `permissions`
@@ -681,7 +733,8 @@ ALTER TABLE `permissions`
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`prod_id`);
+  ADD PRIMARY KEY (`prod_id`),
+  ADD KEY `fk_products_categories` (`prod_cat_id`);
 
 --
 -- Indexes for table `tasks`
@@ -712,7 +765,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `logs`
 --
@@ -722,22 +775,22 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT for table `materials`
 --
 ALTER TABLE `materials`
-  MODIFY `matl_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `matl_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `notif`
 --
 ALTER TABLE `notif`
-  MODIFY `notif_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `notif_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 --
 -- AUTO_INCREMENT for table `uom`
 --
@@ -747,10 +800,17 @@ ALTER TABLE `uom`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `bom`
+--
+ALTER TABLE `bom`
+  ADD CONSTRAINT `fk_bom_materials` FOREIGN KEY (`matl_id`) REFERENCES `materials` (`matl_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_bom_products` FOREIGN KEY (`prod_id`) REFERENCES `products` (`prod_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `logs`
@@ -759,10 +819,17 @@ ALTER TABLE `logs`
   ADD CONSTRAINT `fk_logs_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `materials`
+--
+ALTER TABLE `materials`
+  ADD CONSTRAINT `fk_materials_categories` FOREIGN KEY (`matl_cat_id`) REFERENCES `categories` (`cat_id`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `notif_rcpts`
 --
 ALTER TABLE `notif_rcpts`
-  ADD CONSTRAINT `fk_rcpt_notif` FOREIGN KEY (`notif_id`) REFERENCES `notif` (`notif_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_rcpt_notif` FOREIGN KEY (`notif_id`) REFERENCES `notif` (`notif_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_rcpt_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `permissions`
@@ -770,6 +837,12 @@ ALTER TABLE `notif_rcpts`
 ALTER TABLE `permissions`
   ADD CONSTRAINT `fk_perms_task` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`task_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_perms_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `fk_products_categories` FOREIGN KEY (`prod_cat_id`) REFERENCES `categories` (`cat_id`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

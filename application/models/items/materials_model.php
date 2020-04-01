@@ -102,6 +102,19 @@ class Materials_model extends CI_model
 		return $query->num_rows();
 	}
 
+	public function get_matl_by_search($keyword)
+	{
+		$query = $this->db
+						->select('*')
+						->like('matl_name', $keyword)
+						->or_like('matl_color', $keyword)
+						->or_like('matl_id', $keyword)
+						->get('materials');
+
+		if($query->num_rows() > 0) return $query->result_array();
+		else return null;
+	}
+
 	/**
 	 * Insert new material
 	 * 

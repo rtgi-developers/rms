@@ -14,7 +14,7 @@ $this->load->view('templates/loader');
     max-height: 300px;
     margin-bottom: 10px;
     overflow:scroll;
-    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;	
 }
 </style>
 <div id="resCreateProd"></div>

@@ -1,10 +1,8 @@
 <script>
 $(document).ready(function(){
-	/*
-	|------------------------------------------------
-	| GET ALL MATERIALS TABLE ON PAGE LOAD
-	|------------------------------------------------
-	*/
+	/**
+	 * Get all materials table on page load using server side
+	 */
 	var dt_matl = $('#tblMatl').DataTable({
 		"processing": true, 
 		"serverSide": true, 
@@ -63,11 +61,9 @@ $(document).ready(function(){
 		}
 	});
 
-	/*
-	|------------------------------------------------
-	| SEARCH CATEGORY TABLE
-	|------------------------------------------------
-	*/
+	/**
+	 * Search materials table
+	 */
 	$("#txtSearchMatl").on('keyup', function(){
 		dt_matl.search($('#txtSearchMatl').val()).draw();
 	});

@@ -254,13 +254,18 @@ class Products extends CI_Controller
 				$nestedData[4] = '<small>'.$prod_cat.'</small>';
 				$nestedData[5] = '
 					<div class="d-flex flex-row">
-						<a href="'.base_url('items/product/view_edit_prod?prodid='.$row->prod_id).'"
-							class="px-1 text-decoration-none lnk-edit-prod text-primary"
+						<a href="'.base_url('items/bom?prodid='.$row->prod_id.'&prodname='.$row->prod_name).'"
+							class="px-2 text-decoration-none lnk-prod-bom text-dark"
+							title="Bill of Materials">
+							<i class="las la-list-alt la-lg"></i>
+						</a>	
+						<a href="'.base_url('items/products/view_edit_prod?prodid='.$row->prod_id).'"
+							class="px-2 text-decoration-none lnk-edit-prod text-primary"
 							title="Edit Product">
 							<i class="las la-pencil-alt la-lg"></i>
 						</a>	
 						<a href="#" 
-							class="px-1 text-decoration-none lnk-del-prod text-danger" 
+							class="px-2 text-decoration-none lnk-del-prod text-danger" 
 							title="Delete Product" 
 							prod-id="'.$row->prod_id.'">
 							<i class="las la-trash la-lg"></i>
