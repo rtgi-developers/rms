@@ -105,8 +105,8 @@
                     </span>
                 </a>
                 <ul class="collapse flex-column list-unstyled pl-4 pb3" id="submenuContacts">
-                    <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Customer</a></li>
-                    <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Supplier</a></li>
+                    <li class="nav-item side-nav-item"><a href="<?php echo base_url('contacts/customers'); ?>" class="nav-link text-muted side-nav-link">Customers</a></li>
+                    <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Suppliers</a></li>
                 </ul>
             </li>
     	</ul>
