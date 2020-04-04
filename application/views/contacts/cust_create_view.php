@@ -40,41 +40,17 @@ $this->load->view('templates/loader');
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="txtCustAddr1" class="font-weight-bold">Address Line 1</label>
-                    <input type="text" name="txtCustAddr1" id="txtCustAddr1" class="form-control form-control-sm">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="txtCustAddr2" class="font-weight-bold">Address Line 2</label>
-                    <input type="text" name="txtCustAddr2" id="txtCustAddr2" class="form-control form-control-sm">
-                </div>
-            </div>
-            <div class="form-row">
                 <div class="form-group col-md-3">
-                    <label for="txtCustCity" class="font-weight-bold">City</label>
-                    <input type="text" name="txtCustCity" id="txtCustCity" class="form-control form-control-sm">
+                    <label for="txtCustPymtTerms" class="font-weight-bold">Terms of Payment</label>
+                    <input type="text" name="txtCustPymtTerms" id="txtCustPymtTerms" class="form-control form-control-sm">
                 </div>
-                <div class="form-group col-md-3">
-                    <label for="txtCustState" class="font-weight-bold">State</label>
-                    <input type="text" name="txtCustState" id="txtCustState" class="form-control form-control-sm">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="txtCustPostalCode" class="font-weight-bold">Postal Code</label>
-                    <input type="text" name="txtCustPostalCode" id="txtCustPostalCode" class="form-control form-control-sm">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="txtCustCountry" class="font-weight-bold">Country</label>
-                    <input type="text" name="txtCustCountry" id="txtCustCountry" class="form-control form-control-sm">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-9">
                     <label for="txtCustComment" class="font-weight-bold">Comment</label>
                     <div class="d-flex flex-row">
-                        <input type="text" name="txtCustComment" id="txtCustComment" class="form-control form-control-sm col-md-9">
-                        <div class="col-md-3">
-                            <button id="btnCreateCust" class="btn btn-sm btn-primary">Create Customer</button>
-                            <button id="btnCancel" class="btn btn-sm btn-secondary">Cancel</button>
+                        <input type="text" name="txtCustComment" id="txtCustComment" class="form-control form-control-sm col-md-8">
+                        <div class="col-md-4">
+                            <button type="submit" id="btnCreateCust" class="btn btn-sm btn-primary">Create Customer</button>
+                            <a href="javascript: history.back();" class="btn btn-sm btn-secondary">Cancel</a>
                         </div>
                     </div>
                 </div>
