@@ -192,11 +192,11 @@ class Customers extends CI_Controller
 				$nestedData[2] = $cust_email;
 				$nestedData[3] = $cust_phone;
 				$nestedData[4] = '
-					<div class="d-flex flex-row">	
+					<div class="d-flex flex-row text-center">	
 						<a href="'.base_url('contacts/customers/view_cust_addr?custid='.$row->cust_id.'&custname='.$row->cust_name).'"
 							class="px-2 text-decoration-none lnk-cust-addr text-primary"
-							title="Manage addresses">
-							<i class="las la-address-book la-2x"></i>
+							title="Manage address">
+							<i class="las la-address-book la-lg"></i>
 						</a>
 						<a href="'.base_url('items/products/view_edit_prod?prodid='.$row->cust_id).'"
 							class="px-2 text-decoration-none lnk-edit-prod text-primary"
@@ -204,9 +204,9 @@ class Customers extends CI_Controller
 							<i class="las la-pencil-alt la-lg"></i>
 						</a>	
 						<a href="#" 
-							class="px-2 text-decoration-none lnk-del-prod text-danger" 
+							class="px-2 text-decoration-none lnk-del-cust text-danger" 
 							title="Delete Product" 
-							prod-id="'.$row->cust_id.'">
+							cust-id="'.$row->cust_id.'">
 							<i class="las la-trash la-lg"></i>
 						</a>
 					</div>
@@ -230,6 +230,36 @@ class Customers extends CI_Controller
 
         // Send json encoded response
         echo json_encode($json_data);
+	}
+
+	/**
+	 * Delete customer
+	 *
+	 * @return void
+	 */
+	public function delete_cust()
+	{	
+		// Get customer id
+		$cust_id = $this->input->get('custid'); 
+
+		// Query to delete customer 
+		$result = $this->customers_model->delete_cust($cust_id);
+		
+		// Validate query result 
+		if($result['status'] == true)
+		{
+			$json_data['status'] = 'success'; 
+			$json_data['title']  = 'Deleted!'; 
+			$json_data['data']   = $result['data']; 
+		}
+		else {
+			$json_data['status'] = 'error';
+			$json_data['title']  = 'Oops!'; 
+			$json_data['data']   = $result['data']; 
+		}
+
+		// Send json encoded response
+		echo json_encode($json_data); 
 	}
 
 	/**

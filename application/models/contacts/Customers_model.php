@@ -133,6 +133,28 @@ class Customers_model extends CI_model
 		return $query->num_rows();
 	}
 
+	/**
+	 * Query to delete customer
+	 *
+	 * @param 	integer 	$cust_id 	Customer id
+	 * @return 	void
+	 */
+	public function delete_cust($cust_id)
+	{
+		$query = $this->db
+						->where('cust_id', $cust_id)
+						->delete('customers');
+
+		if($query)
+		{
+			$result['status'] = true;
+			$result['data']   = "Customers deleted."; 
+
+			return $result;
+		}
+		else return $this->get_db_error();
+	}
+
 	 /**
 	  * Query to insert customer address
 	  *

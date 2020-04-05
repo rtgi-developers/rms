@@ -107,7 +107,7 @@ $this->load->view('templates/footer');
 
 						// Delete confirmation
 						swal({
-							title: "Confirm delete!", 
+							title: "Confirm Delete!", 
 							text: "Are you sure you want to delete this customer?", 
 							icon: "warning", 
 							buttons: ["No", "Yes"],
@@ -139,7 +139,7 @@ $this->load->view('templates/footer');
 		{
 			$.ajax({
 				type: "get", 
-				url: "<?php echo base_url('contacts/products/delete_cust'); ?>", 
+				url: "<?php echo base_url('contacts/customers/delete_cust'); ?>", 
 				data: "custid="+cust_id, 
 				dataType: "json", 
 				beforeSend: function()
