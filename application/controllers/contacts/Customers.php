@@ -69,9 +69,10 @@ class Customers extends CI_Controller
 			$cust_data['cust_email_2']     = $this->input->post('txtCustEmail2');
 			$cust_data['cust_phone_1']     = $this->input->post('txtCustPhone1');
 			$cust_data['cust_phone_2']     = $this->input->post('txtCustPhone2');
-			$cust_data['cust_pymt_terms']  = $this->input->post('txtCustPymtTerms');
+			$cust_data['cust_pymt_terms']  = strtoupper($this->input->post('txtCustPymtTerms'));
 			$cust_data['cust_comment']     = $this->input->post('txtCustComment');
 			$cust_data['cust_created_on']  = date('Y-m-d H: i: s'); 
+			$cust_data['cust_modified_on'] = date('Y-m-d H: i: s'); 
 
 			// Query to insert customer data
 			$result = $this->customers_model->insert_cust($cust_data); 
@@ -126,6 +127,11 @@ class Customers extends CI_Controller
 		echo json_encode($json_data); 
 	}
 
+	/**
+	 * Get customers datatable using server side processing
+	 *
+	 * @return void
+	 */
 	public function get_cust_serverside()
 	{
 		// Columns
@@ -198,7 +204,7 @@ class Customers extends CI_Controller
 							title="Manage address">
 							<i class="las la-address-book la-lg"></i>
 						</a>
-						<a href="'.base_url('items/products/view_edit_prod?prodid='.$row->cust_id).'"
+						<a href="'.base_url('contacts/customers/view_edit_cust?custid='.$row->cust_id).'"
 							class="px-2 text-decoration-none lnk-edit-prod text-primary"
 							title="Edit Product">
 							<i class="las la-pencil-alt la-lg"></i>
@@ -230,6 +236,193 @@ class Customers extends CI_Controller
 
         // Send json encoded response
         echo json_encode($json_data);
+	}
+
+	/**
+	 * View edit customer page 
+	 *
+	 * @return void
+	 */
+	public function view_edit_cust()
+	{	
+		$page['title']          = "Edit Customer"; 
+		$page['description']    = "Edit customer details."; 
+		$page['cust_id']        = $this->input->get('custid'); 
+		$page['form_edit_cust'] = $this->show_edit_cust_form($this->input->get('custid'));
+
+		$this->load->view('contacts/cust_edit_view', $page); 
+	}
+
+	/**
+	 * Show edit customer form
+	 *
+	 * @param 	integer 	$cust_id 	Customer id
+	 * @return 	void
+	 */
+	public function show_edit_cust_form($cust_id)
+	{	
+		// Queru to get customer by id
+		$result = $this->customers_model->get_cust($cust_id); 
+
+		// Validate query result
+		if($result['status'] == true)
+		{
+			$html = '
+				<div class="card rounded-0">
+					<div class="card-body">
+						<form id="formEditCust">
+							<div class="form-row">
+								<div class="form-group col-md-3 content-hide">
+									<label for="txtEditCustId" class="font-weight-bold req-after">Customer Id</label>
+									<input type="text" name="txtEditCustId" id="txtEditCustId" class="form-control form-control-sm" value="'.$cust_id.'">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="txtEditCustName" class="font-weight-bold req-after">Customer Name</label>
+									<input type="text" name="txtEditCustName" id="txtEditCustName" class="form-control form-control-sm" value="'.$result['data'][0]['cust_name'].'">
+								</div>
+								<div class="form-group col-md-6">
+									<label for="txtEditCustWebsite" class="font-weight-bold">Website</label>
+									<input type="url" name="txtEditCustWebsite" id="txtEditCustWebsite" class="form-control form-control-sm" placeholder="https://example.com" value="'.$result['data'][0]['cust_website'].'">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-3">
+									<label for="txtEditCustEmail1" class="font-weight-bold req-after">Email 1</label>
+									<input type="email" name="txtEditCustEmail1" id="txtEditCustEmail1" class="form-control form-control-sm" placeholder="email_1@example.com" value="'.$result['data'][0]['cust_email_1'].'">
+								</div>
+								<div class="form-group col-md-3">
+									<label for="txtEditCustEmail2" class="font-weight-bold">Email 2</label>
+									<input type="email" name="txtEditCustEmail2" id="txtEditCustEmail2" class="form-control form-control-sm" placeholder="email_2@example.com" value="'.$result['data'][0]['cust_email_2'].'">
+								</div>
+								<div class="form-group col-md-3">
+									<label for="txtEditCustPhone1" class="font-weight-bold req-after">Phone 1</label>
+									<input type="tel" name="txtEditCustPhone1" id="txtEditCustPhone1" class="form-control form-control-sm" value="'.$result['data'][0]['cust_phone_1'].'">
+								</div>
+								<div class="form-group col-md-3">
+									<label for="txtEditCustPhone2" class="font-weight-bold">Phone 2</label>
+									<input type="tel" name="txtEditCustPhone2" id="txtEditCustPhone2" class="form-control form-control-sm" value="'.$result['data'][0]['cust_phone_2'].'">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-3">
+									<label for="txtEditCustPymtTerms" class="font-weight-bold">Terms of Payment</label>
+									<input type="text" name="txtEditCustPymtTerms" id="txtEditCustPymtTerms" class="form-control form-control-sm" value="'.$result['data'][0]['cust_pymt_terms'].'">
+								</div>
+								<div class="form-group col-md-9">
+									<label for="txtEditCustComment" class="font-weight-bold">Comment</label>
+									<div class="d-flex flex-row">
+										<input type="text" name="txtEditCustComment" id="txtEditCustComment" class="form-control form-control-sm col-md-8" value="'.$result['data'][0]['cust_comment'].'">
+										<div class="col-md-4">
+											<button type="submit" id="btnSaveCustChanges" class="btn btn-sm btn-primary">Save Changes</button>
+											<a href="javascript: history.back();" class="btn btn-sm btn-secondary">Cancel</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			';
+		}
+		else {
+			$html = '
+				<div class="alert alert-danger alert-dismissible fade show rounded-0" role="alert">
+					<strong>Oops!</strong> '.$result['data'].'
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			'; 
+		}
+
+		return $html; 
+	}
+
+	/**
+	 * Save customer changes 
+	 *
+	 * @return void
+	 */
+	public function save_cust_changes()
+	{
+		// Set validation rules
+		$this->form_validation->set_rules('txtEditCustId', 'Customer Id', 'required');
+		$this->form_validation->set_rules('txtEditCustName', 'Customer Name', 'required'); 
+		$this->form_validation->set_rules('txtEditCustWebsite', 'Customer Website', 'valid_url'); 
+		$this->form_validation->set_rules('txtEditCustEmail1', 'Customer Email 1', 'required|valid_email');
+		$this->form_validation->set_rules('txtEditCustEmail2', 'Customer Email 2', 'valid_email');
+		$this->form_validation->set_rules('txtEditCustPhone1', 'Customer Phone 1', 'required');
+
+		// Validate user inputs
+		if($this->form_validation->run() == true)
+		{	
+			/// Customer id
+			$cust_id = $this->input->post('txtEditCustId'); 
+
+			// Customer data
+			$cust_data['cust_name']        = $this->input->post('txtEditCustName');
+			$cust_data['cust_website']     = $this->input->post('txtEditCustWebsite');
+			$cust_data['cust_email_1']     = $this->input->post('txtEditCustEmail1');
+			$cust_data['cust_email_2']     = $this->input->post('txtEditCustEmail2');
+			$cust_data['cust_phone_1']     = $this->input->post('txtEditCustPhone1');
+			$cust_data['cust_phone_2']     = $this->input->post('txtEditCustPhone2');
+			$cust_data['cust_pymt_terms']  = strtoupper($this->input->post('txtEditCustPymtTerms'));
+			$cust_data['cust_comment']     = $this->input->post('txtEditCustComment');
+			$cust_data['cust_modified_on']  = date('Y-m-d H: i: s'); 
+
+			// Query to update customer changes
+			$result = $this->customers_model->update_cust($cust_id, $cust_data); 
+
+			// Query result
+			if($result['status'] == 'success')
+			{
+				$html = '
+					<div class="alert alert-success alert-dismissible fade show rounded-0" role="alert">
+						<strong>Updated!</strong> '.$result['data'].'
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				';
+
+				$json_data['status'] = 'success'; 
+				$json_data['title']  = 'Updated!'; 
+				$json_data['data'] = $html; 
+			}
+			else {
+				$html = '
+					<div class="alert alert-danger alert-dismissible fade show rounded-0" role="alert">
+						<strong>Oops!</strong> '.$result['data'].'
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				';
+
+				$json_data['status'] = 'error'; 
+				$json_data['title']  = 'Oops!'; 
+				$json_data['data'] = $html; 
+			}
+		}
+		else {
+			$html = '
+				<div class="alert alert-danger alert-dismissible fade show rounded-0" role="alert">
+					<strong>Oops!</strong> '.validation_errors().'
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			';
+
+			$json_data['status'] = 'error'; 
+			$json_data['title']  = 'Oops!'; 
+			$json_data['data'] = $html; 
+		}
+
+		// Send json encoded response 
+		echo json_encode($json_data); 
 	}
 
 	/**

@@ -35,6 +35,58 @@ class Customers_model extends CI_model
 	}
 	
 	/**
+	 * Get customer by customer id
+	 *
+	 * @param 	integer 	$cust_id 	Customer id
+	 * @return 	void
+	 */
+	public function get_cust($cust_id)
+	{
+		$query = $this->db
+						->where('cust_id', $cust_id)
+						->get('customers'); 
+
+		if($query)
+		{
+			if($query->num_rows() > 0)
+			{
+				$result['status'] = true; 
+				$result['data'] = $query->result_array(); 
+			}
+			else {
+				$result['status'] = false; 
+				$result['data'] = "Customer not found.";  	
+			}
+
+			return $result;
+		}
+		else return $this->get_db_error(); 
+	}
+
+	/**
+	 * Query to update customer changes
+	 *
+	 * @param 	integer 	$cust_id		Customer id
+	 * @param 	array 		$cust_data		Customer's changed data
+	 * @return 	void			
+	 */
+	public function update_cust($cust_id, $cust_data)
+	{	
+		$query = $this->db
+						->where('cust_id', $cust_id)
+						->update('customers', $cust_data);
+
+		if($query)
+		{
+			$result['status'] = true; 
+			$result['data']   = 'Customer changes has been successfully updated!'; 
+
+			return $result;
+		}
+		else return $this->get_db_error();
+	}
+
+	/**
 	 * Query to insert new customer data
 	 *
 	 * @param 	array 	$cust_data 	Customers data
