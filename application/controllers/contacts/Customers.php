@@ -198,20 +198,20 @@ class Customers extends CI_Controller
 				$nestedData[2] = $cust_email;
 				$nestedData[3] = $cust_phone;
 				$nestedData[4] = '
-					<div class="d-flex flex-row text-center">	
+					<div class="d-flex flex-row justify-content-center">	
 						<a href="'.base_url('contacts/customers/view_cust_addr?custid='.$row->cust_id.'&custname='.$row->cust_name).'"
-							class="px-2 text-decoration-none lnk-cust-addr text-primary"
-							title="Manage address">
+							class="px-2 text-decoration-none lnk-cust-addr text-info"
+							title="Manage customer address">
 							<i class="las la-address-book la-lg"></i>
 						</a>
 						<a href="'.base_url('contacts/customers/view_edit_cust?custid='.$row->cust_id).'"
 							class="px-2 text-decoration-none lnk-edit-prod text-primary"
-							title="Edit Product">
+							title="Edit customer">
 							<i class="las la-pencil-alt la-lg"></i>
 						</a>	
 						<a href="#" 
 							class="px-2 text-decoration-none lnk-del-cust text-danger" 
-							title="Delete Product" 
+							title="Delete customer" 
 							cust-id="'.$row->cust_id.'">
 							<i class="las la-trash la-lg"></i>
 						</a>
