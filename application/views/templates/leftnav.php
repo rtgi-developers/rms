@@ -4,9 +4,12 @@
  */
 .leftnav {
   position: fixed;
-  top: 0;
+  top: 55px;
+  height: calc(100vh - 55px);
   bottom: 0;
   left: 0;
+  max-width: 220px !important;
+  min-width: 220px !important; 
   z-index: 100; /* Behind the navbar */
   padding: 0;
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
@@ -15,12 +18,9 @@
 .leftnav-sticky {
   position: -webkit-sticky;
   position: sticky;
-  top: 55px; /* Height of navbar */
-  height: calc(100vh - 55px);
   padding-top: .5rem;
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-  /*z-index: 1;*/
 }
 
 .leftnav .nav-link {
@@ -50,7 +50,7 @@
 </style>
 
 <!-- Side navbar -->
-<nav class="col-md-2 d-none d-md-block bg-whitesmoke leftnav">
+<nav class="d-md-bloc bg-whitesmoke leftnav">
 	<div class="leftnav-sticky">
     	<ul class="nav flex-column">
     		<li class="nav-item">
@@ -88,13 +88,18 @@
         		</a>
         	</li>
         	<li class="nav-item">
-                <a class="nav-link clearfix" href="#">
+                <a class="nav-link clearfix" href="#submenuOrders" data-toggle="collapse" aria-expanded="false">
                     <span class="float-left"><i class="las la-clipboard-list la-lg"></i> Orders</span>
                     <span class="float-right">
                         <i class="las la-angle-right"></i>
                         <i class="las la-angle-down content-hide"></i>
                     </span>
                 </a>
+                <ul class="collapse flex-column list-unstyled pl-4 pb3" id="submenuOrders">
+                    <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Purchase Orders</a></li>
+                    <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Work Orders</a></li>
+                    <li class="nav-item side-nav-item"><a href="<?php echo base_url('orders/sales'); ?>" class="nav-link text-muted side-nav-link">Sales Orders</a></li>
+                </ul>
             </li>
             <li class="nav-item">
                 <a class="nav-link clearfix" href="#submenuContacts" data-toggle="collapse" aria-expanded="false">

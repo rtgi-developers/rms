@@ -1,7 +1,5 @@
-
 		</main>
 	</div>
-</div>
 </body>
 
 <footer class="text-center mt-auto mb-3">
@@ -10,5 +8,5 @@
 		<a href="#" target="_blank" class="text-decoration-none">Privacy policy</a>
 	</div>
 	<div>&copy; <?php echo date('Y').', '.$this->config->item('app_company'); ?></div>
-</footer>
+</footer>		
 </html>

@@ -5,6 +5,7 @@
 .border-bottom { 
     border-bottom: 1px solid #e5e5e5; 
 }
+
 [data-letters]:before {
     content:attr(data-letters);
     display:inline-block;
@@ -16,11 +17,38 @@
     text-align:center;
     border-radius:50%;
     border: white 1px solid;
-    background:#16d39a;
+    background:#0ca940;
     vertical-align:middle;
     margin-right:0em;
     color:#ffffff;
 }
+
+[data-icons]:before {
+    content:attr(data-icons);
+    display:inline-block;
+    font-size:1.5em;
+    width:1.5em;
+    height:1.5em;
+    line-height:1.3em;
+    text-align:center;
+    border-radius:50%;
+    background:#ff3e80;
+    vertical-align:middle;
+    margin-right:0em;
+    color:#ffffff;
+}
+
+.dropdown-menu > a:hover, .dropdown-menu > a:focus {
+    background-image:none !important;
+    background-color: #c6e8fb;
+}
+
+.dropdown-menu-center {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  top: 100% !important;
+}
+
 span.notif-badge {
     position: relative;
     top: -14px;
@@ -31,52 +59,62 @@ span.notif-badge {
 }
 </style>
 
-<!-- Top navbar -->
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark shadow-sm py-1" id="topNav">
-    
-    <div class="mx-auto rder-0">
-        <a class="navbar-brand" href="#">
-            <img src="<?php echo base_url('assets/img/logo/rms_logo_hz_light1.png'); ?>" width="180" height="40" class="d-inline-block align-top" alt="Site logo">
-        </a>
-    </div>
-    
-    <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="las la-ellipsis-v"></i>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item mt-1">
-                <a class="nav-link menu-nav-item" id="navLinkNotif" href="<?php echo base_url('systems/notifs'); ?>">
+<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark shadow-sm py-1" id="topNav">
+    <div class="container-fluid px-0">
+        <div class="mr-auto" style="min-width: 220px; max-width: 220px;">
+            <a class="navbar-brand" href="#">
+                <img src="<?php echo base_url('assets/img/logo/rms_logo_hz_light1.png'); ?>" width="180" height="40" class="d-inline-bloc aligntop" alt="Website logo">
+            </a>
+        </div>
+        <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="las la-bars la-lg text-white"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="nav navbar-nav d-flex flex-row justify-content-center ml-auto">
+            <li class="nav-item mt-1 pl-1">
+                <a class="nav-link" id="navLinkNotif" href="<?php echo base_url('systems/notifs'); ?>">
                     <i class="lar la-bell text-white" style="font-size: 24px;"></i>
                 </a>
             </li>
-            <li class="nav-item mt-1">
-                <a class="nav-link menu-nav-item" href="<?php echo base_url('settings/menu'); ?>">
+            <li class="nav-item mt-1 pl-1">
+                <a class="nav-link" href="<?php echo base_url('settings/menu'); ?>">
                     <i class="la la-cog text-white" style="font-size: 24px;"></i>
                 </a>
             </li>
-            <li class="nav-item mt-1">
-                <a class="nav-link menu-nav-item" href="<?php echo base_url('users/logout'); ?>">
+            <li class="nav-item mt-1 pl-1">
+                <a class="nav-link" href="<?php echo base_url('users/logout'); ?>">
                     <i class="las la-power-off text-white" style="font-size: 24px;"></i>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link menu-nav-item" href="#">
-                    <span class="pr-2 text-white"><?php echo $this->session->userdata('_username'); ?></span>
+            <li class="nav-item pl-1">
+                <a class="nav-link" href="#">
+                    <span class="text-white pr-1"><?php echo $this->session->userdata('_username'); ?></span>
                     <span data-letters="<?php echo substr($this->session->userdata('_username'), 0, 1); ?>"></span>
                 </a>
             </li>
         </ul>
+        </div>
     </div>
 </nav>
 
+<!-- Crate action shortcut -->
+<div class="dropdown" style="position: fixed !important; left: 50% !important; top: 10px !important; z-index: 9999;">
+    <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="text-decoration-none">
+        <span data-icons="+"></span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-center rounded-0 animated zoomIn mt-3" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> Purchase order</a>
+        <a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> Work order</a>
+        <a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> Sales order</a>
+        <a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> New product</a>
+        <a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> New material</a>
+    </div>
+</div>
+    
 <script>
     $(document).ready(function(){
-        /*
-        |------------------------------------------
-        | Get number of unread notificatin
-        |------------------------------------------
+        /**
+         * Get number of unread notifications
          */
         $.ajax({
             type: "get", 
