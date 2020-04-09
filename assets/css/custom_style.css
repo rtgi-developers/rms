@@ -298,6 +298,13 @@
   background-color: rgba(255, 255, 255, 0.7);
 }
 
+/* Center bootstrap 4 dropdown menu */
+.dropdown-menu-center {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  top: 100% !important;
+}
+
 /* POINTER CURSOR */
 .cursor-pointer {
   cursor: pointer;

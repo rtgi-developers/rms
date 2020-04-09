@@ -23,32 +23,6 @@
     color:#ffffff;
 }
 
-[data-icons]:before {
-    content:attr(data-icons);
-    display:inline-block;
-    font-size:1.5em;
-    width:1.5em;
-    height:1.5em;
-    line-height:1.3em;
-    text-align:center;
-    border-radius:50%;
-    background:#ff3e80;
-    vertical-align:middle;
-    margin-right:0em;
-    color:#ffffff;
-}
-
-.dropdown-menu > a:hover, .dropdown-menu > a:focus {
-    background-image:none !important;
-    background-color: #c6e8fb;
-}
-
-.dropdown-menu-center {
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  top: 100% !important;
-}
-
 span.notif-badge {
     position: relative;
     top: -14px;
@@ -97,20 +71,6 @@ span.notif-badge {
     </div>
 </nav>
 
-<!-- Crate action shortcut -->
-<div class="dropdown" style="position: fixed !important; left: 50% !important; top: 10px !important; z-index: 9999;">
-    <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="text-decoration-none">
-        <span data-icons="+"></span>
-    </a>
-    <div class="dropdown-menu dropdown-menu-center rounded-0 animated zoomIn mt-3" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> Purchase order</a>
-        <a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> Work order</a>
-        <a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> Sales order</a>
-        <a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> New product</a>
-        <a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> New material</a>
-    </div>
-</div>
-    
 <script>
     $(document).ready(function(){
         /**
