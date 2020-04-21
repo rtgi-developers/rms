@@ -128,6 +128,93 @@ class Customers extends CI_Controller
 	}
 
 	/**
+	 * Get customer options for select or datalist
+	 *
+	 * @return void
+	 */
+    public function get_cust_options_by_search()
+    {
+        $keyword = $this->input->get('keyword'); 
+
+        $result = $this->customers_model->get_cust_by_search($keyword); 
+
+        $cust_options = '';
+
+        if(!empty($result))
+        {
+            foreach($result as $row)
+            {    
+				$cust = '['.$row['cust_id'].'] '.$row['cust_name']; 
+
+                $cust_options .=  '<option value="'.$cust.'"></option>';
+			}	
+        }
+		
+		echo $cust_options; 
+	}
+
+	/**
+	 * Get customers select options
+	 *
+	 * @return void
+	 */
+	public function get_cust_options()
+    {
+        $result = $this->customers_model->get_cust(); 
+
+        $cust_options = '<option value>Select customer...</option>	';
+
+        if($result['status'] == true)
+        {
+            foreach($result['data'] as $row)
+            {    
+				$cust = '['.$row['cust_id'].'] '.$row['cust_name']; 
+
+                $cust_options .=  '<option value="'.$row['cust_id'].'">'.$cust.'</option>';
+			}	
+        }
+		
+		echo $cust_options; 
+	}
+
+	/**
+	 * Get customers address options
+	 *
+	 * @return void
+	 */
+	public function get_cust_addr_options()
+	{	
+		// Customer id
+		$cust_id = $this->input->get('custid'); 
+
+		// Customer address html options
+		$cust_addr_options = '<option value>Select address...</option>';
+
+		// Query to get customer address
+		$result = $this->customers_model->get_cust_addr($cust_id); 
+
+		// Check empty query response
+		if(!empty($result))
+		{	
+			foreach($result as $row)
+			{   
+				// Format customer address  
+				$cust_addr = "[".$row->cust_addr_id."] "; 
+				$cust_addr .= $row->cust_addr_1.", "; 
+				if($row->cust_addr_2 != "") $cust_addr .= $row->cust_addr_2.", "; 	
+				$cust_addr .= $row->cust_city.", ";
+				$cust_addr .= $row->cust_state." ";
+				$cust_addr .= $row->cust_postal_code.", ";
+				$cust_addr .= $row->cust_country;
+
+				$cust_addr_options .=  '<option value="'.$row->cust_addr_id.'">'.$cust_addr.'</option>';
+			}	
+		}
+		
+		echo $cust_addr_options;
+	}
+
+	/**
 	 * Get customers datatable using server side processing
 	 *
 	 * @return void

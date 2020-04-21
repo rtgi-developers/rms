@@ -50,7 +50,7 @@
 </style>
 
 <!-- Side navbar -->
-<nav class="d-md-bloc bg-whitesmoke leftnav">
+<nav class="d-md-bloc bg-whitesmok leftnav" style="background: #f7f7f7;">
 	<div class="leftnav-sticky">
     	<ul class="nav flex-column">
     		<li class="nav-item">
@@ -65,7 +65,7 @@
                         <i class="las la-angle-right"></i>
                     </span>
         		</a>
-                <ul class="collapse flex-column list-unstyled pl-4 pb3" id="submenuItems">
+                <ul class="collapse flex-column list-unstyled pl-4 pb3 animated fadeIn slow" id="submenuItems">
                     <li class="nav-item side-nav-item">
                         <a href="<?php echo base_url('items/products'); ?>" class="nav-link text-muted side-nav-link">Products</a>
                     </li>
@@ -95,7 +95,7 @@
                         <i class="las la-angle-down content-hide"></i>
                     </span>
                 </a>
-                <ul class="collapse flex-column list-unstyled pl-4 pb3" id="submenuOrders">
+                <ul class="collapse flex-column list-unstyled pl-4 pb3 animated fadeIn slow" id="submenuOrders">
                     <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Purchase Orders</a></li>
                     <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Work Orders</a></li>
                     <li class="nav-item side-nav-item"><a href="<?php echo base_url('orders/sales'); ?>" class="nav-link text-muted side-nav-link">Sales Orders</a></li>
@@ -109,7 +109,7 @@
                         <i class="las la-angle-down content-hide"></i>
                     </span>
                 </a>
-                <ul class="collapse flex-column list-unstyled pl-4 pb3" id="submenuContacts">
+                <ul class="collapse flex-column list-unstyled pl-4 pb3 animated fadeIn slow" id="submenuContacts">
                     <li class="nav-item side-nav-item"><a href="<?php echo base_url('contacts/customers'); ?>" class="nav-link text-muted side-nav-link">Customers</a></li>
                     <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Suppliers</a></li>
                 </ul>

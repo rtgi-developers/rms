@@ -28,12 +28,9 @@ $config = array(
             array('Pound', 'lb')
         ), 
         'Count' => array(
-            array('Pieces', 'pcs'), 
-            array('Each', 'ea'), 
+            array('Pieces', 'pcs'),  
+            array('Pack', 'pck'),
             array('Box', 'box'), 
-            array('Dozen', 'dz'), 
-            array('Sets', 'sets'), 
-            array('Pack', 'pck')
         ), 
         'Volume' => array(
             array('Liter', 'l'), 

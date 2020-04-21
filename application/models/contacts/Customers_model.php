@@ -40,11 +40,18 @@ class Customers_model extends CI_model
 	 * @param 	integer 	$cust_id 	Customer id
 	 * @return 	void
 	 */
-	public function get_cust($cust_id)
-	{
-		$query = $this->db
+	public function get_cust($cust_id = null)
+	{	
+		if(isset($cust_id))
+		{
+			$query = $this->db
 						->where('cust_id', $cust_id)
 						->get('customers'); 
+		}
+		else {
+			$query = $this->db->get('customers');  
+		}
+		
 
 		if($query)
 		{
@@ -61,6 +68,24 @@ class Customers_model extends CI_model
 			return $result;
 		}
 		else return $this->get_db_error(); 
+	}
+
+	/**
+	 * Get materials by name, id and color
+	 *
+	 * @param 	string 	$keyword	Search keyword
+	 * @return 	void
+	 */
+	public function get_cust_by_search($keyword)
+	{
+		$query = $this->db
+						->select('*')
+						->like('cust_name', $keyword)
+						->or_like('cust_id', $keyword)
+						->get('customers');
+
+		if($query->num_rows() > 0) return $query->result_array();
+		else return null;
 	}
 
 	/**

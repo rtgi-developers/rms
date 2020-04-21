@@ -294,6 +294,63 @@ class Products extends CI_Controller
 	}
 
 	/**
+	 * Get product options for select or datalist
+	 *
+	 * @return void
+	 */
+    public function get_prod_options_by_search()
+    {
+        $keyword = $this->input->get('keyword'); 
+
+        $result = $this->products_model->get_prod_by_search($keyword); 
+
+        $prod_options = '';
+
+        if(!empty($result))
+        {
+            foreach($result as $row)
+            {    
+				$prod = '['.$row['prod_id'].'] '.$row['prod_name'].' '.$row['prod_color']; 
+
+				preg_match('/\\[(.+?)\\]/', $prod, $match); 
+
+				$pid = $match[1]; 
+
+				/* $prod .= " - ".$pid;  */
+				
+
+                $prod_options .=  '<option value="'.$prod.'"></option>';
+			}	
+        }
+		
+		echo $prod_options; 
+	}
+
+	/**
+	 * Get product details
+	 *
+	 * @return void
+	 */
+	public function get_prod_details()
+	{
+		$prod_id = $this->input->get('prodid');
+		
+		$result = $this->products_model->get_prod_by_id($prod_id); 
+
+		if(!empty($result))
+		{
+			$json_data['status'] = 'success'; 
+			$json_data['prod_uom'] = $result[0]->prod_moq_uom; 
+		}
+		else {
+			$json_data['status'] = 'error'; 
+			$json_data['data'] = 'Could not fetch product quantity UOM.'; 
+		}
+
+		echo json_encode($json_data); 
+	}
+
+	/**
 	 * Delete product 
 	 * 
 	 * @return json

@@ -102,6 +102,12 @@ class Materials_model extends CI_model
 		return $query->num_rows();
 	}
 
+	/**
+	 * Get materials by name, id and color
+	 *
+	 * @param 	string 	$keyword	Search keyword
+	 * @return 	void
+	 */
 	public function get_matl_by_search($keyword)
 	{
 		$query = $this->db

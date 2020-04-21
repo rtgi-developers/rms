@@ -17,7 +17,7 @@ class Sales extends CI_Controller
 
 		$this->load->helper('auth_helper');
 
-		//$this->load->model(array('contacts/customers_model')); 
+		$this->load->model(array('orders/sales_model')); 
 	}
 
 	/**
@@ -30,7 +30,222 @@ class Sales extends CI_Controller
 		$page['title']       = "Sales Orders"; 
 		$page['description'] = "Manage all sales orders."; 
 
-		$this->load->view('orders/sales_view', $page); 
-    }
+		$this->load->view('orders/so_view', $page); 
+	}
+
+	/**
+	 * View create sales order page
+	 *
+	 * @return void
+	 */
+	public function view_create_so()
+	{
+		$page['title']       = "Create Sales Order"; 
+		$page['description'] = "Create new sales order for customer."; 
+
+		$this->load->view('orders/so_create_view.php', $page); 
+	}
+
+	/**
+	 * Create sales order
+	 *
+	 * @return void
+	 */
+	public function add_so_header()
+	{
+		// Set form validation rules 
+		$this->form_validation->set_rules('txtCust', 'Customer', 'required');
+		$this->form_validation->set_rules('txtBillAddrId', 'Billing Address', 'required'); 
+		$this->form_validation->set_rules('txtShipAddrId', 'Shipping Address', 'required'); 
+		$this->form_validation->set_rules('txtCustPO', 'Customer PO', 'required'); 
+		$this->form_validation->set_rules('txtOrderDate', 'Order Date', 'required'); 
+		$this->form_validation->set_rules('txtCancelDate', 'Cancel Date', 'required'); 
+		$this->form_validation->set_rules('txtCurrCode', 'Currency', 'required'); 
+		
+		// Validate
+		if($this->form_validation->run() == true)
+		{	
+			$customer = preg_match('/\\[(.+?)\\]/', $this->input->post('txtCust'), $match); 
+
+			$cust_id = $match[1]; 
+
+			// Form inputs
+			$so_header['cust_id']      = $cust_id; 
+			$so_header['bill_addr_id'] = $this->input->post('txtBillAddrId'); 
+			$so_header['ship_addr_id'] = $this->input->post('txtShipAddrId'); 
+			$so_header['cust_po']      = $this->input->post('txtCustPO'); 
+			$so_header['order_date']   = date('Y-m-d', strtotime($this->input->post('txtOrderDate'))); 
+			$so_header['cancel_date']  = date('Y-m-d', strtotime($this->input->post('txtCancelDate'))); 
+			$so_header['ship_method']  = $this->input->post('txtShipMethod'); 
+			$so_header['pymt_terms']   = $this->input->post('txtPymtTerms'); 
+			$so_header['curr_code']    = $this->input->post('txtCurrCode'); 
+			$so_header['date_created'] = date('Y-m-d');  
+			$so_header['date_updated'] = date('Y-m-d');  
+			$so_header['so_status']    = 'OPEN';
+			
+			// Query to insert sale order form data
+			$result = $this->sales_model->insert_so_header($so_header);
+			
+			// Validate query response
+			if($result['status'] == 'success')
+			{
+				$json_data['status'] = 'success';
+				$json_data['so_id']  = $result['data'];  	
+			}
+			else {
+				$json_data['status']  = 'error';
+				$json_data['message'] = $result['data'];
+			}
+		}
+		else {
+			$json_data['status']  = 'error';
+			$json_data['message'] = validation_errors();   
+		}
+
+		// Send json encoded response
+		echo json_encode($json_data); 
+	}
+
+	/**
+	 * Sales order details
+	 *
+	 * @return void
+	 */
+	public function add_so_details()
+	{
+		// Set form validation rules 
+		$this->form_validation->set_rules('txtSoId', 'Sales Order Id', 'required');
+		$this->form_validation->set_rules('txtProd', 'Customer', 'required');
+		$this->form_validation->set_rules('txtProdQty', 'Quantity', 'required'); 
+		$this->form_validation->set_rules('txtProdPrice', 'Price per unit', 'required');
+		
+		if($this->form_validation->run() == true)
+		{
+			$product = preg_match('/\\[(.+?)\\]/', $this->input->post('txtProd'), $match); 
+			$prod_id = $match[1]; 
+
+			$so_details['so_id']      = $this->input->post('txtSoId'); 
+			$so_details['prod_id']    = $prod_id; 
+			$so_details['prod_qty_ord']   = $this->input->post('txtProdQty');
+			$so_details['prod_qty_shp']   = 0; 
+			$so_details['prod_price'] = $this->input->post('txtProdPrice'); 
+
+			// Query insert SO product details
+			$result = $this->sales_model->insert_so_details($so_details); 
+
+			// Validate query response
+			if($result['status'] == 'success')
+			{
+				$html = '
+					<tr>
+						<td class="align-middle text-nowrap small p-0 w-50">
+							<input type="text" name="txtEditSoId" id="txtEditSoId" value="'.$so_details['so_id'].'" class="form-control form-control-sm border-0 rounded-0 content-hide" required>
+							<input type="search" list="listProd" name="txtEditProd" id="txtEditProd" value="'.$this->input->post('txtProd').'" class="form-control form-control-sm border-0 rounded-0" placeholder="Search and select product by name, color and id." required>   
+							<datalist id="listProd"></datalist>
+						</td>
+						<td class="align-middle text-nowrap small p-0">
+							<div class="input-group border-0">
+								<input type="number" step="any" name="txtEditProdQty" id="txtEditProdQty" value="'.$so_details['prod_qty_ord'].'" class="form-control form-control-sm border-0 rounded-0 text-right" required>  
+								<input type="text" name="txtEditProdQtyUOM" id="txtEditProdQtyUOM" value="'.$this->input->post('txtProdQtyUOM').'" class="form-control form-control-sm border-0 rounded-0 px-0 text-center text-prod-uom" placeholder="UOM" readonly>
+							</div>
+						</td>
+						<td class="align-middle text-nowrap small p-0">
+							<div class="input-group border-0">
+								<input type="number" step="any" name="txtEditProdPrice" id="txtEditProdPrice" value="'.$so_details['prod_price'].'" class="form-control form-control-sm border-0 rounded-0 text-right" required>  
+								<input type="text" name="txtEditProdPriceCurr" id="txtEditProdPriceCurr" value="'.$this->input->post('txtProdPriceCurr').'" class="form-control form-control-sm border-0 rounded-0 px-0 text-center" placeholder="CURR" readonly>
+							</div>    
+						</td>
+						<td class="align-middle text-nowrap small p-0">
+							<div class="input-group border-0">
+								<input type="number" step="any" name="txtEditTotalPrice" id="txtEditTotalPrice" value="'.round($so_details['prod_qty_ord']*$so_details['prod_price'], 2).'" class="form-control form-control-sm border-0 rounded-0 text-right" readonly>  
+								<input type="text" name="txtEditTotalPriceCurr" id="txtEditTotalPriceCurr" value="'.$this->input->post('txtTotalPriceCurr').'" class="form-control form-control-sm border-0 rounded-0 px-0 text-center" placeholder="CURR" readonly>
+							</div>    
+						</td>
+						<td class="align-middle text-nowrap small p-0">
+							<button type="button" class="btn btn-sm btn-link text-center text-danger btn-del-so-prod" title="Delete this product from sales order"><i class="fas fa-trash lalg"></i></button>
+						</td>
+					</tr>
+				';
+
+				$inserted_row = '
+					<tr>
+						<td class="align-middle text-nowrap small">
+							'.$this->input->post('txtProd').'
+						</td>
+						<td class="align-middle text-nowrap small px-1 py-0">
+                            <div class="d-flex flex-row justify-content-end">
+                                <span id="txtDispProdQty" class="pr-1">'.$so_details['prod_qty_ord'].'</span>
+                                <span class="text-prod-qty-uom">'.$this->input->post('txtProdQtyUOM').'</span>
+                            </div>
+						</td>
+						<td class="align-middle text-nowrap small py-0">
+                            <div class="d-flex flex-row justify-content-end">
+                                <span id="txtDispProdPrice" class="pr-1">'.$so_details['prod_price'].'</span>
+                                <span class="text-prod-qty-uom">'.$this->input->post('txtProdPriceCurr').'</span>
+                            </div>
+						</td>
+						<td class="align-middle text-nowrap small py-0">
+                            <div class="d-flex flex-row justify-content-end">
+                                <span id="txtDispTotalPrice" class="pr-1">'.round($so_details['prod_qty_ord']*$so_details['prod_price'], 2).'</span>
+                                <span class="text-prod-qty-uom">'.$this->input->post('txtTotalPriceCurr').'</span>
+                            </div>
+						</td>	
+						<td class="align-middle text-nowrap small p-0 justify-content-center">
+							<button type="button" class="btn btn-sm btn-link text-center text-danger btn-del-so-prod" so-id="'.$so_details['so_id'].'" prod-id="'.$so_details['prod_id'].'" title="Delete this product from sales order">
+								<i class="fas fa-trash lalg"></i>
+							</button>
+						</td>				
+					</tr>
+				';
+
+				$json_data['status'] = 'success';
+				$json_data['message']  = $inserted_row;  	
+			}
+			else {
+				$json_data['status']  = 'error';
+				$json_data['message'] = $result['data'];
+			}
+		}
+		else {
+			$json_data['status']  = 'error';
+			$json_data['message'] = validation_errors(); 
+		}
+
+		// Send json encoded response
+		echo json_encode($json_data); 
+	}
+
+	/**
+	 * Delete sales order product
+	 *
+	 * @return void
+	 */
+	public function delete_so_prod()
+	{	
+		$so_id = $this->input->get('soid'); 
+		$prod_id = $this->input->get('prodid');
+		
+		$result = $this->sales_model->delete_so_prod($so_id, $prod_id);
+
+		if($result['status'] == true)
+		{
+			$json_data = array(
+				'status' => 'success', 
+				'title'  => 'Deleted!', 
+				'data'   => $result['data']
+			);
+		}	
+		else {
+			$json_data = array(
+				'status' => 'error', 
+				'title'  => 'Oops!', 
+				'data'   => $result['data']
+			);
+		}
+		
+		// Send json encoded response
+		echo json_encode($json_data);
+	}
+
 }
 ?>

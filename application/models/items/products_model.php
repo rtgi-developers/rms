@@ -127,6 +127,41 @@ class Products_model extends CI_model
 		return $query->num_rows();
     }
 
+	/**
+	 * Get products by name, id and color
+	 *
+	 * @param 	string 	$keyword	Search keyword
+	 * @return 	void
+	 */
+	public function get_prod_by_search($keyword)
+	{
+		$query = $this->db
+						->select('*')
+						->like('prod_name', $keyword)
+						->or_like('prod_id', $keyword)
+						->or_like('prod_color', $keyword)
+						->get('products');
+
+		if($query->num_rows() > 0) return $query->result_array();
+		else return null;
+	}
+
+	/**
+	 * Get product data by id
+	 *
+	 * @param 	integer 	$prod_id 	Product id
+	 * @return 	void
+	 */
+	public function get_prod_by_id($prod_id)
+	{
+		$query = $this->db
+						->where('prod_id', $prod_id)
+						->get('products'); 
+
+		if($query->num_rows() > 0) return $query->result(); 
+		else return null; 
+	}
+
     /**
      * Delete product query
      *

@@ -13,14 +13,14 @@
     font-size:0.8em;
     width:2.5em;
     height:2.5em;
-    line-height:2.5em;
+    line-height:2.3em;
     text-align:center;
     border-radius:50%;
-    border: white 1px solid;
-    background:#0ca940;
+    border: #61dafb 2px solid;
+    /* background:#0ca940; */
     vertical-align:middle;
     margin-right:0em;
-    color:#ffffff;
+    color:#61dafb;
 }
 
 span.notif-badge {
@@ -63,7 +63,7 @@ span.notif-badge {
             <li class="nav-item pl-1">
                 <a class="nav-link" href="#">
                     <span class="text-white pr-1"><?php echo $this->session->userdata('_username'); ?></span>
-                    <span data-letters="<?php echo substr($this->session->userdata('_username'), 0, 1); ?>"></span>
+                    <span data-letters="<?php echo strtoupper(substr($this->session->userdata('_username'), 0, 1)); ?>"></span>
                 </a>
             </li>
         </ul>
