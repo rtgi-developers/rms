@@ -197,6 +197,10 @@
   background-color: #f5f7fa !important;
 }
 
+.bg-darkslategray {
+  background-color: #033f54 !important;
+}
+
 .text-gainsboro {
   background-color: #f6f6f6 !important;
 }
@@ -221,6 +225,10 @@
   background-color: #f5f7fa !important;
 }
 
+.text-darkslategray {
+  background-color: #033f54 !important;
+}
+
 .border-gainsboro {
   border: 1px solid #f6f6f6 !important;
 }
@@ -243,6 +251,10 @@
 
 .border-whitesmoke {
   border: 1px solid #f5f7fa !important;
+}
+
+.border-darkslategray {
+  border: 1px solid #033f54 !important;
 }
 
 /*
@@ -303,6 +315,16 @@
   left: 50% !important;
   transform: translateX(-50%) !important;
   top: 100% !important;
+}
+
+.dropdown-menu > a:hover {
+  background-color: #c6e8fb;
+  background-image: none;
+}
+
+/* Modify bootstrap table hover color */
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #ebf5fb;
 }
 
 /* POINTER CURSOR */

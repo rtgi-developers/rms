@@ -103,7 +103,7 @@ $autoload['helper'] = array('url', 'string', 'curr_helper', 'uom_helper', 'cat_h
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('config_custom');
+$autoload['config'] = array('config_custom', 'config_prefix');
 
 /*
 | -------------------------------------------------------------------

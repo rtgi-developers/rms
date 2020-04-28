@@ -19,7 +19,7 @@
 	<!-- Line Awesome 1.3.0 -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/libs/line-awesome/1.3.0/css/line-awesome.min.css'); ?>" />
 	<!-- Font awesome 5 Pro -->
-	<link rel="stylesheet" href="<?php echo base_url('assets/libs/fontawesome/5.0.0/css/all.min.css'); ?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/libs/fontawesome/5.13.0/css/all.min.css'); ?>">
 	<!-- Flatpicker -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/libs/flatpickr/dist/flatpickr.min.css'); ?>">
 	<link rel="stylesheet" href="<?php echo base_url('assets/libs/flatpickr/dist/themes/dark.css'); ?>">
@@ -41,6 +41,7 @@
 	<script src="<?php echo base_url('assets/libs/bootstrap/4.4.1/dist/js/bootstrap.min.js'); ?>"></script>
 	<!-- Bootstrap select 1.13.9 -->
 	<script src="<?php echo base_url('assets/libs/bootstrap-select/1.13.9/dist/js/bootstrap-select.min.js'); ?>"></script>
+	<script src="<?php echo base_url('assets/libs/fontawesome/5.13.0/js/all.min.js'); ?>"></script>
 	<!-- Flatpicker -->
 	<script src="<?php echo base_url('assets/libs/flatpickr/dist/flatpickr.min.js'); ?>"></script>
 	<!-- Jquery Datatables - JS -->

@@ -60,7 +60,8 @@ $colors: (
     "snow": #fafafa,
     "ghostwhite": #f6f8fa, 
     "slategray": #404e67, 
-    "whitesmoke": #f5f7fa
+    "whitesmoke": #f5f7fa, 
+    "darkslategray": #033f54
 );
 
 @mixin gen-props($prefix, $property) {
@@ -135,6 +136,16 @@ $colors: (
     left: 50% !important;
     transform: translateX(-50%) !important;
     top: 100% !important;
+}
+
+.dropdown-menu > a:hover {
+    background-color: #c6e8fb;
+    background-image: none;
+}
+
+/* Modify bootstrap table hover color */
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #ebf5fb;
 }
 
 /* POINTER CURSOR */

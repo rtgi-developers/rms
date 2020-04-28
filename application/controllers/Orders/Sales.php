@@ -247,5 +247,147 @@ class Sales extends CI_Controller
 		echo json_encode($json_data);
 	}
 
+	/**
+	 * Get sales orders datatable using server side processing
+	 *
+	 * @return void
+	 */
+	public function get_so_serverside()
+	{
+		// Columns
+		$columns = array(
+			0 => 'so_id', 
+			1 => 'cust_name', 
+			2 => 'cust_po', 
+			3 => 'order_date',  
+			4 => 'cancel_date', 
+			5 => 'so_status', 
+			6 => '', 
+			7 => ''
+		);	
+
+		// Post data
+		$limit  = $this->input->post('length');
+		$start  = $this->input->post('start');
+		$order  = $columns[$this->input->post('order')[0]['column']];
+		$dir    = $this->input->post('order')[0]['dir'];
+		$key    = $this->input->post('search')['value'];
+
+		// Get number of total and filtered
+		$total_data = $this->sales_model->count_all_so();
+		$total_filtered = $total_data;
+
+		// Query based on searched and non-searched keyword
+		if(empty($key))
+		{	
+			// Query to get all customers
+			$result = $this->sales_model->get_all_so($limit,$start,$order,$dir);
+		}
+		else {	
+			// Query to get searched customers
+			$result = $this->sales_model->get_search_so($limit,$start,$key,$order,$dir);
+			$total_filtered = $this->sales_model->count_search_so($key);
+		}
+
+		//  Declare an empty array to hold td values
+		$data = array();
+
+		// Non empty query result
+		if(!empty($result))
+		{
+			// Loop through query result
+			foreach($result as $row)
+			{	
+				$ready_to_ship_pct = rand(1, 100); 
+				// Data to be nested inside data array
+				$nestedData[0] = $this->config->item('SALES_ORDER')."-".str_pad($row->so_id, 5, 0, STR_PAD_LEFT);
+				$nestedData[1] = $row->cust_name;
+				$nestedData[2] = $row->cust_po;
+				$nestedData[3] = $row->order_date;
+				$nestedData[4] = $row->cancel_date; 
+				$nestedData[5] = $row->so_status; 
+				$nestedData[6] = '
+					<div class="progress rounded-0" style="height:12px;">
+						<div class="progress-bar progress-barstriped bg-success small" role="progressbar" style="width: '.$ready_to_ship_pct.'%" aria-valuenow="'.$ready_to_ship_pct.'" aria-valuemin="0" aria-valuemax="100">'.$ready_to_ship_pct.'%</div>
+					</div>
+				'; 
+				
+				$nestedData[7] = '
+					<div class="d-flex flex-row justify-content-center dropdown">
+						<a href="'.base_url().'"
+							class="px-2 text-decoration-none lnk-cust-addr text-secondary"
+							title="Print order"
+							data-toggle="dropdown" 
+							aria-haspopup="true" 
+							aria-expanded="false">
+							<i class="fas fa-ellipsis-h"></i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right animated slideIn rounded-0" aria-labelledby="dropdownMenuButton">
+							<a href="'.base_url().'"
+								class="px-2 text-decoration-none lnk-cust-addr text-secondary dropdown-item">
+								<i class="las la-print la-lg"></i> Print order
+							</a>	
+							<a href="'.base_url().'"
+								class="px-2 text-decoration-none lnk-cust-addr text-secondary dropdown-item">
+								<i class="fas fa-shipping-fast"></i> Ship order
+							</a>
+							<a href="'.base_url().'"
+								class="px-2 text-decoration-none lnk-edit-prod text-secondary dropdown-item">
+								<i class="fas fa-edit"></i> Edit order
+							</a>	
+							<a href="#" 
+								class="px-2 text-decoration-none lnk-del-cust text-danger dropdown-item"
+								so-id="'.$row->so_id.'">
+								<i class="fas fa-trash lalg"></i> Delete order
+							</a>
+						</div>
+						<!--
+						<a href="'.base_url().'"
+							class="px-2 text-decoration-none lnk-cust-addr text-secondary"
+							title="Print order">
+							<i class="las la-print la-lg"></i>
+						</a>	
+						<a href="'.base_url().'"
+							class="px-2 text-decoration-none lnk-cust-addr text-secondary"
+							title="Ship order">
+							<i class="fas fa-shipping-fast"></i>
+						</a>
+						<a href="'.base_url().'"
+							class="px-2 text-decoration-none lnk-edit-prod text-secondary"
+							title="Edit order">
+							<i class="fas fa-edit"></i>
+						</a>	
+						<a href="#" 
+							class="px-2 text-decoration-none lnk-del-cust text-danger" 
+							title="Delete order" 
+							data-toggle="tooltip" 
+							data-placement="bottom"
+							so-id="'.$row->so_id.'">
+							<i class="fas fa-trash lalg"></i>
+						</a>
+						-->
+					</div>
+				';
+
+				// Add nested data elements to data array
+				$data[] = $nestedData;
+			}
+		}
+		
+		// Get data into array
+		$json_data = array(
+			"success" 		  => true, 
+			"type"    		  => 'success',
+			"title"   		  => 'Sales orders table',
+			"draw"            => intval($this->input->post('draw')),  
+			"recordsTotal"    => intval($total_data),  
+			"recordsFiltered" => intval($total_filtered), 
+			"data"            => $data   
+		);
+
+        // Send json encoded response
+        echo json_encode($json_data);
+	}
+
 }
 ?>

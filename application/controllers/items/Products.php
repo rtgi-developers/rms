@@ -282,7 +282,7 @@ class Products extends CI_Controller
 		$json_data = array(
 			"success" 		  => true, 
 			"type"    		  => 'success',
-			"title"   		  => 'Materials List',
+			"title"   		  => 'Products Table',
 			"draw"            => intval($this->input->post('draw')),  
 			"recordsTotal"    => intval($total_data),  
 			"recordsFiltered" => intval($total_filtered), 

@@ -16,7 +16,7 @@ $this->load->view('templates/loader');
                         <input list="listCust" type="search" name="txtCust" id="txtCust" class="form-control form-control-sm col-md-6" placeholder="Search and select customer" required>
                         <datalist id="listCust"></datalist>
                         <a href="<?php echo base_url('contacts/customers/view_create_cust'); ?>" id="lnkCreateCust" class="text-decoration-none text-nowrap mt-1 col-md-6">
-                            <i class="fal fa-plus-square"></i> Create customer
+                            <i class="far fa-plus-square"></i> Create customer
                         </a>
                     </div>
                 </div>

@@ -94,7 +94,7 @@ $(document).ready(function(){
 			}, 
 			error: function()
 			{	
-				$("#tblMatl").html('<tbody><tr><td class="align-middle text-center" colspan="4">No products found!</td></tr></tbody>');
+				$("#tblProd").html('<tbody><tr><td class="align-middle text-center" colspan="4">No products found!</td></tr></tbody>');
 			}
 		}, 
 		"createdRow": function(row, data, index)
