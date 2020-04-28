@@ -8,13 +8,13 @@ $this->load->view('templates/loader');
 
 <div id="resCust"></div>
 
-<div class="card rounded-0">
+<div class="card rounded-0 shadow-sm">
     <div class="card-body">
         <form id="formCreateCust">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="txtCustName" class="font-weight-bold req-after">Customer Name</label>
-                    <input type="text" name="txtCustName" id="txtCustName" class="form-control form-control-sm">
+                    <input type="text" name="txtCustName" id="txtCustName" class="form-control form-control-sm" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="txtCustWebsite" class="font-weight-bold">Website</label>
@@ -23,7 +23,7 @@ $this->load->view('templates/loader');
             </div>
             <div class="form-row">
                 <div class="form-group col-md-3">
-                    <label for="txtCustEmail1" class="font-weight-bold req-after">Email 1</label>
+                    <label for="txtCustEmail1" class="font-weight-bold">Email 1</label>
                     <input type="email" name="txtCustEmail1" id="txtCustEmail1" class="form-control form-control-sm" placeholder="email_1@example.com">
                 </div>
                 <div class="form-group col-md-3">
@@ -31,7 +31,7 @@ $this->load->view('templates/loader');
                     <input type="email" name="txtCustEmail2" id="txtCustEmail2" class="form-control form-control-sm" placeholder="email_2@example.com">
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="txtCustPhone1" class="font-weight-bold req-after">Phone 1</label>
+                    <label for="txtCustPhone1" class="font-weight-bold">Phone 1</label>
                     <input type="tel" name="txtCustPhone1" id="txtCustPhone1" class="form-control form-control-sm">
                 </div>
                 <div class="form-group col-md-3">
@@ -41,8 +41,11 @@ $this->load->view('templates/loader');
             </div>
             <div class="form-row">
                 <div class="form-group col-md-3">
-                    <label for="txtCustPymtTerms" class="font-weight-bold">Terms of Payment</label>
-                    <input type="text" name="txtCustPymtTerms" id="txtCustPymtTerms" class="form-control form-control-sm">
+                    <label for="txtCustDefCurr" class="font-weight-bold req-after">Default Currency</label>
+                    <select name="txtCustDefCurr" id="txtCustDefCurr" class="custom-select custom-select-sm" required>
+                        <option value>Currency</option>
+                        <?php echo get_curr_options(); ?>
+                    </select>
                 </div>
                 <div class="form-group col-md-9">
                     <label for="txtCustComment" class="font-weight-bold">Comment</label>

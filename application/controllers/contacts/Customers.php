@@ -56,9 +56,9 @@ class Customers extends CI_Controller
 		// Set validation rules
 		$this->form_validation->set_rules('txtCustName', 'Customer Name', 'required'); 
 		$this->form_validation->set_rules('txtCustWebsite', 'Customer Website', 'valid_url'); 
-		$this->form_validation->set_rules('txtCustEmail1', 'Customer Email 1', 'required|valid_email');
+		$this->form_validation->set_rules('txtCustEmail1', 'Customer Email 1', 'valid_email');
 		$this->form_validation->set_rules('txtCustEmail2', 'Customer Email 2', 'valid_email');
-		$this->form_validation->set_rules('txtCustPhone1', 'Customer Phone 1', 'required');
+		$this->form_validation->set_rules('txtCustDefCurr', 'Default Currency', 'required');
 
 		// Validate user inputs
 		if($this->form_validation->run() == true)
@@ -69,7 +69,7 @@ class Customers extends CI_Controller
 			$cust_data['cust_email_2']     = $this->input->post('txtCustEmail2');
 			$cust_data['cust_phone_1']     = $this->input->post('txtCustPhone1');
 			$cust_data['cust_phone_2']     = $this->input->post('txtCustPhone2');
-			$cust_data['cust_pymt_terms']  = strtoupper($this->input->post('txtCustPymtTerms'));
+			$cust_data['cust_def_curr']    = $this->input->post('txtCustDefCurr');
 			$cust_data['cust_comment']     = $this->input->post('txtCustComment');
 			$cust_data['cust_created_on']  = date('Y-m-d H: i: s'); 
 			$cust_data['cust_modified_on'] = date('Y-m-d H: i: s'); 
@@ -361,13 +361,13 @@ class Customers extends CI_Controller
 							<div class="form-row">
 								<div class="form-group col-md-3 content-hide">
 									<label for="txtEditCustId" class="font-weight-bold req-after">Customer Id</label>
-									<input type="text" name="txtEditCustId" id="txtEditCustId" class="form-control form-control-sm" value="'.$cust_id.'">
+									<input type="text" name="txtEditCustId" id="txtEditCustId" class="form-control form-control-sm" value="'.$cust_id.'" required>
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-6">
 									<label for="txtEditCustName" class="font-weight-bold req-after">Customer Name</label>
-									<input type="text" name="txtEditCustName" id="txtEditCustName" class="form-control form-control-sm" value="'.$result['data'][0]['cust_name'].'">
+									<input type="text" name="txtEditCustName" id="txtEditCustName" class="form-control form-control-sm" value="'.$result['data'][0]['cust_name'].'" required>
 								</div>
 								<div class="form-group col-md-6">
 									<label for="txtEditCustWebsite" class="font-weight-bold">Website</label>
@@ -376,7 +376,7 @@ class Customers extends CI_Controller
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-3">
-									<label for="txtEditCustEmail1" class="font-weight-bold req-after">Email 1</label>
+									<label for="txtEditCustEmail1" class="font-weight-bold">Email 1</label>
 									<input type="email" name="txtEditCustEmail1" id="txtEditCustEmail1" class="form-control form-control-sm" placeholder="email_1@example.com" value="'.$result['data'][0]['cust_email_1'].'">
 								</div>
 								<div class="form-group col-md-3">
@@ -384,7 +384,7 @@ class Customers extends CI_Controller
 									<input type="email" name="txtEditCustEmail2" id="txtEditCustEmail2" class="form-control form-control-sm" placeholder="email_2@example.com" value="'.$result['data'][0]['cust_email_2'].'">
 								</div>
 								<div class="form-group col-md-3">
-									<label for="txtEditCustPhone1" class="font-weight-bold req-after">Phone 1</label>
+									<label for="txtEditCustPhone1" class="font-weight-bold">Phone 1</label>
 									<input type="tel" name="txtEditCustPhone1" id="txtEditCustPhone1" class="form-control form-control-sm" value="'.$result['data'][0]['cust_phone_1'].'">
 								</div>
 								<div class="form-group col-md-3">
@@ -394,8 +394,11 @@ class Customers extends CI_Controller
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-3">
-									<label for="txtEditCustPymtTerms" class="font-weight-bold">Terms of Payment</label>
-									<input type="text" name="txtEditCustPymtTerms" id="txtEditCustPymtTerms" class="form-control form-control-sm" value="'.$result['data'][0]['cust_pymt_terms'].'">
+									<label for="txtEditCustDefCurr" class="font-weight-bold req-after">Default Currency</label>
+									<select name="txtEditCustDefCurr" id="txtEditCustDefCurr" class="custom-select custom-select-sm" required>
+										<option value>Currency</option>
+										'.get_curr_options($result['data'][0]['cust_def_curr']).'
+									</select>
 								</div>
 								<div class="form-group col-md-9">
 									<label for="txtEditCustComment" class="font-weight-bold">Comment</label>
@@ -438,9 +441,9 @@ class Customers extends CI_Controller
 		$this->form_validation->set_rules('txtEditCustId', 'Customer Id', 'required');
 		$this->form_validation->set_rules('txtEditCustName', 'Customer Name', 'required'); 
 		$this->form_validation->set_rules('txtEditCustWebsite', 'Customer Website', 'valid_url'); 
-		$this->form_validation->set_rules('txtEditCustEmail1', 'Customer Email 1', 'required|valid_email');
+		$this->form_validation->set_rules('txtEditCustEmail1', 'Customer Email 1', 'valid_email');
 		$this->form_validation->set_rules('txtEditCustEmail2', 'Customer Email 2', 'valid_email');
-		$this->form_validation->set_rules('txtEditCustPhone1', 'Customer Phone 1', 'required');
+		$this->form_validation->set_rules('txtEditCustDefCurr', 'Default Currency', 'required');
 
 		// Validate user inputs
 		if($this->form_validation->run() == true)
@@ -455,9 +458,9 @@ class Customers extends CI_Controller
 			$cust_data['cust_email_2']     = $this->input->post('txtEditCustEmail2');
 			$cust_data['cust_phone_1']     = $this->input->post('txtEditCustPhone1');
 			$cust_data['cust_phone_2']     = $this->input->post('txtEditCustPhone2');
-			$cust_data['cust_pymt_terms']  = strtoupper($this->input->post('txtEditCustPymtTerms'));
+			$cust_data['cust_def_curr']    = $this->input->post('txtEditCustDefCurr');
 			$cust_data['cust_comment']     = $this->input->post('txtEditCustComment');
-			$cust_data['cust_modified_on']  = date('Y-m-d H: i: s'); 
+			$cust_data['cust_modified_on'] = date('Y-m-d H: i: s'); 
 
 			// Query to update customer changes
 			$result = $this->customers_model->update_cust($cust_id, $cust_data); 
