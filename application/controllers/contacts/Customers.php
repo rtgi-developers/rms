@@ -70,6 +70,7 @@ class Customers extends CI_Controller
 			$cust_data['cust_phone_1']     = $this->input->post('txtCustPhone1');
 			$cust_data['cust_phone_2']     = $this->input->post('txtCustPhone2');
 			$cust_data['cust_def_curr']    = $this->input->post('txtCustDefCurr');
+			$cust_data['cust_pymt_terms']  = strtoupper($this->input->post('txtCustPymtTerms'));
 			$cust_data['cust_comment']     = $this->input->post('txtCustComment');
 			$cust_data['cust_created_on']  = date('Y-m-d H: i: s'); 
 			$cust_data['cust_modified_on'] = date('Y-m-d H: i: s'); 
@@ -285,23 +286,30 @@ class Customers extends CI_Controller
 				$nestedData[2] = $cust_email;
 				$nestedData[3] = $cust_phone;
 				$nestedData[4] = '
-					<div class="d-flex flex-row justify-content-center">	
-						<a href="'.base_url('contacts/customers/view_cust_addr?custid='.$row->cust_id.'&custname='.$row->cust_name).'"
-							class="px-2 text-decoration-none lnk-cust-addr text-info"
-							title="Manage customer address">
-							<i class="las la-address-book la-lg"></i>
+					<div class="d-flex flex-row justify-content-center dropdown">
+						<a href="#"
+							class="px-2 text-decoration-none text-secondary lnk-cust-actions"
+							title="Print order"
+							data-toggle="dropdown" 
+							aria-haspopup="true" 
+							aria-expanded="false">
+							<i class="fas fa-ellipsis-h"></i>
 						</a>
-						<a href="'.base_url('contacts/customers/view_edit_cust?custid='.$row->cust_id).'"
-							class="px-2 text-decoration-none lnk-edit-prod text-primary"
-							title="Edit customer">
-							<i class="las la-pencil-alt la-lg"></i>
-						</a>	
-						<a href="#" 
-							class="px-2 text-decoration-none lnk-del-cust text-danger" 
-							title="Delete customer" 
-							cust-id="'.$row->cust_id.'">
-							<i class="las la-trash la-lg"></i>
-						</a>
+						<div class="dropdown-menu dropdown-menu-right animated slideIn rounded-0 shadow-md" aria-labelledby="dropdownMenuButton">
+							<a href="'.base_url('contacts/customers/view_cust_addr?custid='.$row->cust_id.'&custname='.$row->cust_name).'"
+								class="px-2 text-decoration-none lnk-cust-addr text-secondary dropdown-item">
+								<i class="fas fa-address-book"></i> Manage addresses
+							</a>	
+							<a href="'.base_url('contacts/customers/view_edit_cust?custid='.$row->cust_id).'"
+								class="px-2 text-decoration-none lnk-edit-cust text-secondary dropdown-item">
+								<i class="fas fa-edit"></i> Edit customer
+							</a>	
+							<a href="#" 
+								class="px-2 text-decoration-none lnk-del-cust text-danger dropdown-item"
+								cust-id="'.$row->cust_id.'">
+								<i class="fas fa-trash"></i> Delete customer
+							</a>
+						</div>
 					</div>
 				';
 
@@ -400,17 +408,21 @@ class Customers extends CI_Controller
 										'.get_curr_options($result['data'][0]['cust_def_curr']).'
 									</select>
 								</div>
-								<div class="form-group col-md-9">
+								<div class="form-group col-md-3">
+									<label for="txtEditCustPymtTerms" class="font-weight-bold">Terms of Payment</label>
+									<input type="text" name="txtEditCustPymtTerms" id="txtEditCustPymtTerms" class="form-control form-control-sm" value="'.$result['data'][0]['cust_pymt_terms'].'">
+								</div>
+								<div class="form-group col-md-6">
 									<label for="txtEditCustComment" class="font-weight-bold">Comment</label>
-									<div class="d-flex flex-row">
-										<input type="text" name="txtEditCustComment" id="txtEditCustComment" class="form-control form-control-sm col-md-8" value="'.$result['data'][0]['cust_comment'].'">
-										<div class="col-md-4">
-											<button type="submit" id="btnSaveCustChanges" class="btn btn-sm btn-primary">Save Changes</button>
-											<a href="javascript: history.back();" class="btn btn-sm btn-secondary">Cancel</a>
-										</div>
-									</div>
+									<input type="text" name="txtEditCustComment" id="txtEditCustComment" class="form-control form-control-sm" value="'.$result['data'][0]['cust_comment'].'">
 								</div>
 							</div>
+							<div class="form-row">
+								<div class="form-group col-md-12 text-right">
+									<a href="javascript: history.back();" class="btn btn-sm btn-secondary">Cancel</a>
+									<button type="submit" id="btnSaveCustChanges" class="btn btn-sm btn-primary">Save Changes</button>
+								</div>
+							</div>	
 						</form>
 					</div>
 				</div>
@@ -459,6 +471,7 @@ class Customers extends CI_Controller
 			$cust_data['cust_phone_1']     = $this->input->post('txtEditCustPhone1');
 			$cust_data['cust_phone_2']     = $this->input->post('txtEditCustPhone2');
 			$cust_data['cust_def_curr']    = $this->input->post('txtEditCustDefCurr');
+			$cust_data['cust_pymt_terms']  = strtoupper($this->input->post('txtEditCustPymtTerms'));
 			$cust_data['cust_comment']     = $this->input->post('txtEditCustComment');
 			$cust_data['cust_modified_on'] = date('Y-m-d H: i: s'); 
 
@@ -589,8 +602,8 @@ class Customers extends CI_Controller
 					<tr>
 						<td class="align-middle text-nowrap text-left w-75">'.$cust_addr.'</td>
 						<td class="align-middle text-center">
-							<a href="#" class="text-decoration-none lnk-del-cust-addr" data-toggle="tooltip" data-placement="bottom" data-html="false" title="Delete address" cust-id="'.$row->cust_id.'" cust-addr-id="'.$row->cust_addr_id.'">
-								<i class="las la-trash la-lg text-danger"></i>
+							<a href="#" class="text-decoration-none text-danger lnk-del-cust-addr" data-toggle="tooltip" data-placement="bottom" data-html="false" title="Delete address" cust-id="'.$row->cust_id.'" cust-addr-id="'.$row->cust_addr_id.'">
+								<i class="fas fa-trash"></i>
 							</a>
 						</td>
 					</tr>

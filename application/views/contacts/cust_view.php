@@ -76,7 +76,8 @@ $this->load->view('templates/footer');
 				{
 					$('#loader').show();
 				}, 
-				complete: function(){
+				complete: function()
+				{
 					$('#loader').hide();
 				}, 
 				data: {
@@ -89,7 +90,8 @@ $this->load->view('templates/footer');
 				}
 			}, 
 			"createdRow": function(row, data, index)
-			{
+			{	
+				$(row).css('height', '60px'); 
 				$('td', row).addClass('align-middle');
 				$('td:eq(0)', row).addClass('text-center');
 				$('td:eq(3)', row).addClass('text-left');
