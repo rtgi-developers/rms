@@ -22,6 +22,7 @@ $this->load->view('templates/loader');
 	}
 </style>
 
+
 <div class="d-flex flex-row no-gutters mb-2">
 	<div class="input-group pr-2 col-md-10">
 	    <span class="input-group-prepend">
@@ -31,10 +32,11 @@ $this->load->view('templates/loader');
 	    </span>
 	    <input class="form-control form-control-sm py-2 border-left-0 border bg-whitesmoke table-tool-input" type="search" id="txtSearchCust" placeholder="Search customers">
 	</div>
-	<a href="<?php echo base_url('contacts/customers/view_create_cust'); ?>" id="lnkCreateCust" class="btn btn-primary btn-sm btn-block text-nowrap border-gainsboro-2 col-md-2">
-		<i class="las la-plus-circle la-lg"></i> Create Customer
+	<a href="<?php echo base_url('contacts/customers/view_create_cust'); ?>" id="lnkCreateCust" class="btn btn-primary btn-sm btn-block text-nowrap col-md-2">
+		<i class="fas fa-plus-circle"></i> Create Customer
 	</a>
 </div>
+
 
 <table class="table table-sm table-hover border border-gainsboro-2" id="tblCust">
 	<thead>
