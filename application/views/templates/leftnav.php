@@ -47,6 +47,14 @@
   text-transform: uppercase;
 }
 
+ul.collapse > li.nav-item > a {
+    font-size: 14px !important; 
+    line-height: 10px !important; 
+}
+ul.collapse > li.nav-item > a:hover {
+    color: #ffa024 !important;  
+}
+
 </style>
 
 <!-- Side navbar -->
@@ -99,6 +107,7 @@
                     <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Purchase Orders</a></li>
                     <li class="nav-item side-nav-item"><a href="<?php echo base_url(); ?>" class="nav-link text-muted side-nav-link">Work Orders</a></li>
                     <li class="nav-item side-nav-item"><a href="<?php echo base_url('orders/sales'); ?>" class="nav-link text-muted side-nav-link">Sales Orders</a></li>
+                    <li class="nav-item side-nav-item"><a href="<?php echo base_url('orders/invoice'); ?>" class="nav-link text-muted side-nav-link">Invoicing</a></li>
                 </ul>
             </li>
             <li class="nav-item">

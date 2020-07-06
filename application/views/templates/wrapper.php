@@ -28,10 +28,11 @@
 			<a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="text-decoration-none">
 				<span class="shadow-sm" data-icons="+"></span>
 			</a>
-			<div class="dropdown-menu shadow-sm rounded-0 animated zoomIn mr4 mb3" aria-labelledby="dropdownMenuLink" style="margin-top: -70px;">
+			<div class="dropdown-menu shadow-sm rounded-0 animated zoomIn mr4 mb3" aria-labelledby="dropdownMenuLink" style="margin-top: -90px;">
 				<a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> Purchase order</a>
 				<a class="dropdown-item px-2" href="<?php echo base_url(); ?>"><i class="las la-plus la-lg"></i> Work order</a>
 				<a class="dropdown-item px-2" href="<?php echo base_url('orders/sales/view_create_so'); ?>"><i class="las la-plus la-lg"></i> Sales order</a>
+				<a class="dropdown-item px-2" href="<?php echo base_url('orders/invoice/view_create_inv'); ?>"><i class="las la-plus la-lg"></i> Invoice</a>
 				<a class="dropdown-item px-2" href="<?php echo base_url('items/products/view_create_prod'); ?>"><i class="las la-plus la-lg"></i> New product</a>
 				<a class="dropdown-item px-2" href="<?php echo base_url('items/materials/view_create_matl'); ?>"><i class="las la-plus la-lg"></i> New material</a>
 			</div>
